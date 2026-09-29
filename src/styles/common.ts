@@ -79,6 +79,7 @@ export const common = StyleSheet.create({
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: colors.inputBackground,
   },
   title: {
     ...typography.title,

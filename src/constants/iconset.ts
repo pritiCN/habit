@@ -1,24 +1,25 @@
-export type IconSet = 'Ionicons' | 'MaterialIcons' | 'FontAwesome5' | 'Feather' | 'SimpleLineIcons'
+export type IconLibrary = 'Ionicons' | 'MaterialIcons' | 'FontAwesome5' | 'Feather' | 'SimpleLineIcons'
 
 export type Icon = {
+    id: string
     name: string;
-    set: IconSet;
+    set: IconLibrary;
 }
 
-export const icons = {
-    bar_chart: {name: 'bar-chart', set: 'Ionicons' },
-    book: {name: 'book', set: 'Ionicons' },
-    brain: {name: 'brain', set: 'FontAwesome5' },
-    business: {name: 'business', set: 'Ionicons' },
-    checkmark: {name: 'checkmark', set: 'Ionicons' },
-    cup: {name: 'cup', set: 'SimpleLineIcons' },
-    directions_run: {name: 'directions-run', set: 'MaterialIcons' },
-    heart:  {name: 'heart', set: 'Ionicons' },
-    leaf:  {name: 'leaf', set: 'Ionicons' },
-    phonelink_erase: {name: 'phonelink-erase', set: 'MaterialIcons' },
-    sports_gymnastics: {name: 'sports-gymnastics', set: 'MaterialIcons' },
-    star: {name: 'star', set: 'Ionicons' },
-    target: {name: 'target', set: 'Feather' },
-    water: {name: 'water', set: 'Ionicons' },
-    work: {name: 'work', set: 'MaterialIcons' },
-} satisfies Record<string, Icon>;
+export const IconsSet: Icon[] = [
+    {id: 'bar_chart', name: 'bar-chart', set: 'Ionicons' },
+    {id: 'book',name: 'book', set: 'Ionicons' },
+    {id: 'brain',name: 'brain', set: 'FontAwesome5' },
+    {id: 'business',name: 'business', set: 'Ionicons' },
+    {id: 'checkmark',name: 'checkmark', set: 'Ionicons' },
+    {id: 'cup',name: 'cup', set: 'SimpleLineIcons' },
+    {id: 'directions_run',name: 'directions-run', set: 'MaterialIcons' },
+    {id: 'heart',name: 'heart', set: 'Ionicons' },
+    {id: 'leaf',name: 'leaf', set: 'Ionicons' },
+    {id: 'phonelink_erase',name: 'phonelink-erase', set: 'MaterialIcons' },
+    {id: 'sports_gymnastics',name: 'sports-gymnastics', set: 'MaterialIcons' },
+    {id: 'star',name: 'star', set: 'Ionicons' },
+    {id: 'target',name: 'target', set: 'Feather' },
+    {id: 'water',name: 'water', set: 'Ionicons' },
+    {id: 'work',name: 'work', set: 'MaterialIcons' },
+];

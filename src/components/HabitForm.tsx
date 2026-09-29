@@ -3,9 +3,12 @@ import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { common } from '../styles/common'
 import { styles } from '../styles/CreateHabitScreen.styles'
 import { colors } from '../styles/theme'
-import { iconOptions } from '../constants/icons'
 import LabelPickerModal from './LabelPickerModal'
 import { Habit } from '../constants/habit'
+import ColorField from './ColorField'
+import { ColorsSet } from '../constants/colorset'
+import IconFiels from './IconFiels'
+import { IconsSet } from '../constants/iconset'
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         onSave: (habit: Habit) => void;
@@ -14,14 +17,10 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     }) => {
     const [name, setName] = useState(initialHabit?.name ?? '');
     const [description, setDescription] = useState(initialHabit?.description ?? '')
-    const [selectedEmoji, setSeletedEmoji] = useState(initialHabit?.icon ?? iconOptions[0].icon)
-    const [expanded, setExpanded] = useState(false);
+    const [selectedIcon, setSeletedIcon] = useState(initialHabit?.icon ?? IconsSet[0].id)
+    const [selectedColor, setSelectedColor] = useState(initialHabit?.color ?? ColorsSet[0].id)
     const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
-    const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelids ?? [])
-    
-    const displayIcon = expanded
-        ? iconOptions
-        : iconOptions.slice(0, 6)
+    const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelids ?? []);
     
     const handleSave = () => {
         const trimmed = name.trim();
@@ -30,8 +29,9 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         const newHabit: Habit = {
             id: initialHabit?.id ??  Date.now().toString(),
             name: trimmed,
+            color: selectedColor,
             description: description,
-            icon: selectedEmoji,
+            icon: selectedIcon,
             completedDates: initialHabit?.completedDates ??  [],
             labelids: labelIds
         }
@@ -51,42 +51,18 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     onChangeText={setName}
                 />
             </View>
+            
+            <ColorField 
+                panalStyle={[common.panel, styles.fieldGroup]}
+                selectedColor={selectedColor}
+                onSelect={setSelectedColor}
+            />
 
-            <View style={styles.iconSection}>
-                <Text style={[common.label, styles.label]}>Choose an Icon</Text>
-                <View style={styles.iconRow}>
-                    {
-                        displayIcon.map((option) => {
-                            const isSelected = option.emoji === selectedEmoji;
-                            return(
-                                <TouchableOpacity 
-                                    key={option.emoji}
-                                    style={[
-                                        common.iconCircle,
-                                        { backgroundColor: option.color },
-                                        isSelected && styles.iconSelected,
-                                    ]}
-
-                                    onPress={() =>setSeletedEmoji(option.emoji)}
-                                >
-                                    <Text style={styles.iconEmoji}>{option.emoji}</Text>
-                                </TouchableOpacity>
-                            )
-                        })
-                    }
-                    {
-                        !expanded &&
-                        (
-                            <TouchableOpacity
-                                style={[common.iconCircle, styles.moreButton]}
-                                onPress={()=>setExpanded(true)}
-                            >
-                                <Text style={styles.moreButtonText}>•••</Text>
-                            </TouchableOpacity>
-                        )
-                    }
-                </View>
-            </View>
+            <IconFiels 
+                panalStyle={styles.iconSection}
+                selectedIcon={selectedIcon}
+                onSelect={setSeletedIcon}
+            />
             
             <View style={[common.panel, styles.fieldGroup]}>
                 <Text style={[common.label, styles.label]}>Description (Optional)</Text>

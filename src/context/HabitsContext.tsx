@@ -46,8 +46,7 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     }
 
     const toggleToday = (habitId: string) => {
-
-    const today = getTodayString();
+        const today = getTodayString();
         setHabits((prev) => 
             prev.map((habit) => {
                 if(habit.id !== habitId) return habit;
@@ -59,7 +58,7 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             })
         )
     }
-
+    
     return (
         <HabitsContext.Provider value={{
             habits, 

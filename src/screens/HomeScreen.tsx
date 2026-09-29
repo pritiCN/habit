@@ -9,7 +9,6 @@ import { getTodayString } from '../utils/date'
 import { useHabits } from '../context/HabitsContext'
 import { Habit } from '../constants/habit'
 import { IconComponent } from '../components/appIcon'
-import { icons } from '../constants/iconset'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
@@ -21,10 +20,10 @@ function HabitItem({
     habit: Habit;
     onPress: () => void;
     onToggle: () => void;
-   }) {
+  }) {
     const today = getTodayString();
     const isDoneToday = habit.completedDates.includes(today)
-
+    
   return (
     <TouchableOpacity
       // 8-digit hex: habit color at ~10% (background) and ~30% (border) opacity
@@ -41,7 +40,7 @@ function HabitItem({
         onPress={onToggle}
       >
         <IconComponent
-          icon={icons.checkmark}
+          icon={'checkmark'}
           size={16}
           color={isDoneToday ? colors.onPrimary : colors.textMuted}
         />
@@ -52,7 +51,7 @@ function HabitItem({
 
 const HomeScreen = ({ navigation }: Props) => {
   const {habits, toggleToday} = useHabits();  
-
+  
   return (
     <SafeAreaView style={common.screen}>
       <View style={styles.header}>
