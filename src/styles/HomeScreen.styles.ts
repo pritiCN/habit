@@ -12,14 +12,14 @@ export const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingBottom: spacing.lg,
   },
-  emoji: {
-    fontSize: 24,
-    marginRight: spacing.sm,
-  },
   habitInfo: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    gap: spacing.md,
+  },
+  habitCard: {
+    borderWidth: 1,
+    elevation: 0,
+    shadowOpacity: 0,
   },
   toggleButton: {
     width: 28,
@@ -31,15 +31,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: spacing.sm,
   },
-  toggleButtonText: {
-    fontSize: 14,
-    color: colors.textMuted,
-  },
   toggleButtonDone: {
     backgroundColor: colors.success,
     borderColor: colors.success,
-  },
-  toggleButtonTextDone: {
-    color: colors.onPrimary,
   },
 });

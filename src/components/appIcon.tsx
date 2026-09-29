@@ -14,5 +14,6 @@ export const IconComponent = ({icon, color, size = 22}: {
   size?: number
 }) => {
   const Component = iconSet[icon.set]
-  return <Component name={icon.name} color={color} size={size} />
+  // lineHeight = size keeps the glyph vertically centered next to text
+  return <Component name={icon.name} color={color} size={size} style={{ lineHeight: size }} />
 }

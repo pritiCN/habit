@@ -4,10 +4,12 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '../types/navigation'
 import { common } from '../styles/common'
 import { styles } from '../styles/HomeScreen.styles'
+import { colors } from '../styles/theme'
 import { getTodayString } from '../utils/date'
 import { useHabits } from '../context/HabitsContext'
 import { Habit } from '../constants/habit'
 import { IconComponent } from '../components/appIcon'
+import { icons } from '../constants/iconset'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
@@ -21,20 +23,28 @@ function HabitItem({
     onToggle: () => void;
    }) {
     const today = getTodayString();
-    const isDoneToday = habit?.completedDates.includes(today)
+    const isDoneToday = habit.completedDates.includes(today)
 
   return (
-    <TouchableOpacity style={common.card} onPress={onPress}>
-      <View style={styles.habitInfo}>
-        <IconComponent icon={habit.icon} />
-        <Text style={common.bodyText}>{habit.name}</Text>
+    <TouchableOpacity
+      // 8-digit hex: habit color at ~10% (background) and ~30% (border) opacity
+      style={[common.card, styles.habitCard, { backgroundColor: `${habit.color}1A`, borderColor: `${habit.color}4D` }]}
+      onPress={onPress}
+    >
+      <View style={[common.buttonRow, styles.habitInfo]}>
+        <IconComponent icon={habit.icon} color={habit.color} />
+        <Text style={[common.bodyText, { color: habit.color }]}>{habit.name}</Text>
       </View>
 
       <TouchableOpacity
         style={[styles.toggleButton, isDoneToday && styles.toggleButtonDone]}
         onPress={onToggle}
       >
-        <Text style={[styles.toggleButtonText, isDoneToday && styles.toggleButtonTextDone]}>✓</Text>
+        <IconComponent
+          icon={icons.checkmark}
+          size={16}
+          color={isDoneToday ? colors.onPrimary : colors.textMuted}
+        />
       </TouchableOpacity>
     </TouchableOpacity>
   );

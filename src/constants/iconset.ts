@@ -10,6 +10,7 @@ export const icons = {
     book: {name: 'book', set: 'Ionicons' },
     brain: {name: 'brain', set: 'FontAwesome5' },
     business: {name: 'business', set: 'Ionicons' },
+    checkmark: {name: 'checkmark', set: 'Ionicons' },
     cup: {name: 'cup', set: 'SimpleLineIcons' },
     directions_run: {name: 'directions-run', set: 'MaterialIcons' },
     heart:  {name: 'heart', set: 'Ionicons' },
