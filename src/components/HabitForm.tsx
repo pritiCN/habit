@@ -4,8 +4,8 @@ import { common } from '../styles/common'
 import { styles } from '../styles/CreateHabitScreen.styles'
 import { colors } from '../styles/theme'
 import { iconOptions } from '../constants/icons'
-import { Habit } from '../types/habit'
 import LabelPickerModal from './LabelPickerModal'
+import { Habit } from '../constants/habit'
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         onSave: (habit: Habit) => void;
@@ -14,14 +14,15 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     }) => {
     const [name, setName] = useState(initialHabit?.name ?? '');
     const [description, setDescription] = useState(initialHabit?.description ?? '')
-    const [selectedEmoji, setSeletedEmoji] = useState(initialHabit?.emoji ?? iconOptions[0].emoji)
+    const [selectedEmoji, setSeletedEmoji] = useState(initialHabit?.icon ?? iconOptions[0].icon)
     const [expanded, setExpanded] = useState(false);
     const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
+    const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelids ?? [])
     
     const displayIcon = expanded
         ? iconOptions
         : iconOptions.slice(0, 6)
-
+    
     const handleSave = () => {
         const trimmed = name.trim();
         if(trimmed === '') return;
@@ -30,8 +31,9 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             id: initialHabit?.id ??  Date.now().toString(),
             name: trimmed,
             description: description,
-            emoji: selectedEmoji,
-            completedDates: initialHabit?.completedDates ??  []
+            icon: selectedEmoji,
+            completedDates: initialHabit?.completedDates ??  [],
+            labelids: labelIds
         }
 
         onSave(newHabit)
@@ -111,7 +113,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     </View>
                     <View style={common.buttonRow}>
                         <View style={styles.labelsBadge}>
-                            <Text style={styles.labelsBadgeText}>0 Labels</Text>
+                            <Text style={styles.labelsBadgeText}>{labelIds.length} Labels</Text>
                         </View>
                         <Text style={styles.labelsChevron}>›</Text>
                     </View>
@@ -119,7 +121,14 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             </TouchableOpacity>
             
             {
-                isLabelModalVisible && <LabelPickerModal onClose={() => setIsLabelModalVisible(false)} />
+                isLabelModalVisible && <LabelPickerModal 
+                    onClose={() => setIsLabelModalVisible(false)} 
+                    onDone={(ids) => {
+                        setIsLabelModalVisible(false)
+                        setLabelIds(ids)
+                    }} 
+                    selectedLabels = {labelIds}
+                />
             }
             
             {

@@ -1,14 +1,9 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { Habit } from "../types/habit";
 import { loadHabits, saveHabits } from "../storage/habitStorage";
 import { getTodayString } from "../utils/date";
+import { Habit, Habits } from "../constants/habit";
 
-const initialHabits: Habit[] = [
-    { id: '1', name: 'Drink water', emoji: '💧', completedDates: [] },
-    { id: '2', name: 'Read 10 pages', emoji: '📖', completedDates: [] },
-    { id: '3', name: 'Stretch', emoji: '🧘', completedDates: [] },
-    { id: '4', name: 'No phone before bed', emoji: '📵', completedDates: [] },
-];
+const initialHabits: Habit[] = Habits;
 
 type HabitsContextType = {
     habits: Habit[];
@@ -56,10 +51,10 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         setHabits((prev) => 
             prev.map((habit) => {
                 if(habit.id !== habitId) return habit;
-                const alreadyDone = habit.completedDates.includes(today)
+                const alreadyDone = habit?.completedDates.includes(today)
                 const updatedDates = alreadyDone 
-                ? habit.completedDates.filter((date) => date != today)
-                : [...habit.completedDates, today]
+                ? habit?.completedDates.filter((date) => date != today)
+                : [...habit?.completedDates, today]
                 return {... habit, completedDates: updatedDates};
             })
         )

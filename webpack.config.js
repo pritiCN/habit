@@ -20,7 +20,7 @@ module.exports = {
     rules: [
       {
         test: /\.[jt]sx?$/,
-        exclude: /node_modules[\\/](?!(react-native-web|@react-native)[\\/])/,
+        exclude: /node_modules[\\/](?!(react-native-web|@react-native|react-native-vector-icons)[\\/])/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -31,6 +31,11 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)$/,
         type: 'asset/resource',
+      },
+      {
+        test: /\.ttf$/,
+        type: 'asset/resource',
+        include: path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
       },
       {
         test: /\.m?js$/,

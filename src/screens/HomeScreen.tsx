@@ -2,11 +2,12 @@ import React from 'react'
 import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '../types/navigation'
-import type { Habit } from '../types/habit'
 import { common } from '../styles/common'
 import { styles } from '../styles/HomeScreen.styles'
 import { getTodayString } from '../utils/date'
 import { useHabits } from '../context/HabitsContext'
+import { Habit } from '../constants/habit'
+import { IconComponent } from '../components/appIcon'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
@@ -20,12 +21,12 @@ function HabitItem({
     onToggle: () => void;
    }) {
     const today = getTodayString();
-    const isDoneToday = habit.completedDates.includes(today)
+    const isDoneToday = habit?.completedDates.includes(today)
 
   return (
     <TouchableOpacity style={common.card} onPress={onPress}>
       <View style={styles.habitInfo}>
-        <Text style={styles.emoji}>{habit.emoji}</Text>
+        <IconComponent icon={habit.icon} />
         <Text style={common.bodyText}>{habit.name}</Text>
       </View>
 
