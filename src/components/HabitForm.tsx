@@ -18,7 +18,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const [name, setName] = useState(initialHabit?.name ?? '');
     const [description, setDescription] = useState(initialHabit?.description ?? '')
     const [selectedIcon, setSeletedIcon] = useState(initialHabit?.icon ?? IconsSet[0].id)
-    const [selectedColor, setSelectedColor] = useState(initialHabit?.color ?? ColorsSet[0].id)
+    const [selectedColor, setSelectedColor] = useState(initialHabit?.colorId ?? ColorsSet[0].id)
     const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
     const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelids ?? []);
     
@@ -29,7 +29,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         const newHabit: Habit = {
             id: initialHabit?.id ??  Date.now().toString(),
             name: trimmed,
-            color: selectedColor,
+            colorId: selectedColor,
             description: description,
             icon: selectedIcon,
             completedDates: initialHabit?.completedDates ??  [],

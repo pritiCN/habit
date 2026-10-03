@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useContext, useEffect, useState } from
 import { loadHabits, saveHabits } from "../storage/habitStorage";
 import { getTodayString } from "../utils/date";
 import { Habit, Habits } from "../constants/habit";
+import { ColorsSet } from "../constants/colorset";
 
 const initialHabits: Habit[] = Habits;
 
@@ -11,6 +12,7 @@ type HabitsContextType = {
     updateHabit: (habit: Habit) => void;
     deleteHabit: (id: string) => void;
     toggleToday: (id: string) => void;
+    getColor: (colorId: string) => string;
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined)
@@ -58,6 +60,11 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             })
         )
     }
+
+    const getColor = (colorId: string) => {
+        const colorObj = ColorsSet.find((c) => c.id === colorId);
+        return colorObj ? colorObj.color : '#000000'; // default to black if not found
+    }
     
     return (
         <HabitsContext.Provider value={{
@@ -65,7 +72,8 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             addHabit, 
             updateHabit, 
             deleteHabit,
-            toggleToday
+            toggleToday,
+            getColor
         }}>
             {children}
         </HabitsContext.Provider>

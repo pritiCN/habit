@@ -22,17 +22,19 @@ function HabitItem({
     onToggle: () => void;
   }) {
     const today = getTodayString();
-    const isDoneToday = habit.completedDates.includes(today)
+    const isDoneToday = habit.completedDates.includes(today);
+    const { getColor } = useHabits();
+    const habitColor = getColor(habit.colorId);
     
   return (
     <TouchableOpacity
       // 8-digit hex: habit color at ~10% (background) and ~30% (border) opacity
-      style={[common.card, styles.habitCard, { backgroundColor: `${habit.color}1A`, borderColor: `${habit.color}4D` }]}
+      style={[common.card, styles.habitCard, { backgroundColor: `${habitColor}1A`, borderColor: `${habitColor}4D` }]}
       onPress={onPress}
     >
       <View style={[common.buttonRow, styles.habitInfo]}>
-        <IconComponent icon={habit.icon} color={habit.color} />
-        <Text style={[common.bodyText, { color: habit.color }]}>{habit.name}</Text>
+        <IconComponent icon={habit.icon} color={habitColor} />
+        <Text style={[common.bodyText, { color: habitColor }]}>{habit.name}</Text>
       </View>
 
       <TouchableOpacity
