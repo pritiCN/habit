@@ -79,6 +79,11 @@ const HomeScreen = ({ navigation }: Props) => {
             onToggle={() => toggleToday(item.id)}
           />
         )}
+        ListEmptyComponent={
+          <Text style={[common.subtitle, { textAlign: 'center', marginTop: 32 }]}>
+            No habits yet. Tap "+ Add" to create one.
+          </Text>
+        }
         contentContainerStyle={styles.list}
       />
     </SafeAreaView>

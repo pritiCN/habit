@@ -1,16 +1,14 @@
-import { Icon, IconsSet } from "./iconset";
-
 export type Label = {
     id: string;
     name: string;
-    color: string;
-    icon: Icon;
+    colorId: string;
+    icon: string;
 }
 
 export const Labels: Label[] = [
-    // {id: '1', name: 'Health', color: '#0029f6', icon: iconsSet.heart},
-    // {id: '2', name: 'Fitness', color: '#ea0b5b', icon: iconsSet.sports_gymnastics},
-    // {id: '3', name: 'Productivity', color: '#e82203', icon: iconsSet.bar_chart},
-    // {id: '4', name: 'Work', color: '#0029f6', icon: iconsSet.work},
-    // {id: '5', name: 'Finance', color: '#fc6306', icon: iconsSet.business},
+    {id: '1', name: 'Health', colorId: '1', icon: 'bar_chart'},
+    {id: '2', name: 'Fitness', colorId: '2', icon: 'bar_chart'},
+    {id: '3', name: 'Productivity', colorId: '3', icon: 'bar_chart'},
+    {id: '4', name: 'Work', colorId: '4', icon: 'bar_chart'},
+    {id: '5', name: 'Finance', colorId: '5', icon: 'bar_chart'},
 ] 

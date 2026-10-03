@@ -41,6 +41,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
     return (
         <View>
+            {/* Habit name (required) - handleSave ignores the save if it's empty after trimming */}
             <View style={[common.panel, styles.fieldGroup]}>
                 <Text style={[common.label, styles.label]}>Habit Name</Text>
                 <TextInput
@@ -62,6 +63,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 panalStyle={styles.iconSection}
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}
+                selectedColor={selectedColor}
             />
             
             <View style={[common.panel, styles.fieldGroup]}>

@@ -23,3 +23,7 @@ export const IconsSet: Icon[] = [
     {id: 'water',name: 'water', set: 'Ionicons' },
     {id: 'work',name: 'work', set: 'MaterialIcons' },
 ];
+
+export const IconExceptionList: string[] =  [
+    'checkmark'
+];
