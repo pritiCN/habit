@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
 import { colors } from '../styles/theme'
 import { styles } from '../styles/LabelPickerModal.styles'
+import { inputStyles } from '../styles/input.styles'
 import { Labels } from '../constants/labelset'
 import { IconComponent } from './appIcon'
 import { useHabits } from '../context/HabitsContext'
@@ -59,10 +60,10 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
               </TouchableOpacity>
             </View>
 
-            <View style={styles.searchBar}>
+            <View style={inputStyles.searchBar}>
               <Ionicons name="search" size={18} color={colors.textMuted} />
               <TextInput
-                style={styles.searchInput}
+                style={inputStyles.searchInput}
                 placeholder='Search labels...'
                 placeholderTextColor={colors.textMuted}
                 value={search}

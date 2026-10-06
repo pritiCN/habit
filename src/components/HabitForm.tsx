@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { common } from '../styles/common'
+import { inputStyles } from '../styles/input.styles'
 import { styles } from '../styles/CreateHabitScreen.styles'
 import { colors } from '../styles/theme'
 import LabelPickerModal from './LabelPickerModal'
@@ -45,7 +46,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             <View style={[common.panel, styles.fieldGroup]}>
                 <Text style={[common.label, styles.label]}>Habit Name</Text>
                 <TextInput
-                    style={common.input}
+                    style={inputStyles.input}
                     placeholderTextColor={colors.textMuted}
                     placeholder='e.g. Drink Water'
                     value={name}
@@ -69,7 +70,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             <View style={[common.panel, styles.fieldGroup]}>
                 <Text style={[common.label, styles.label]}>Description (Optional)</Text>
                 <TextInput
-                    style={[common.input, { minHeight: 80, textAlignVertical: 'top' }]}
+                    style={[inputStyles.input, inputStyles.textArea]}
                     placeholderTextColor={colors.textMuted}
                     placeholder='Add a short note about your habit...'
                     value={description}

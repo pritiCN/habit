@@ -64,14 +64,6 @@ export const common = StyleSheet.create({
     flex: 1, // fill the space between the two sides
     textAlign: 'center',
   },
-  input: {
-    borderRadius: radius.md,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.md,
-    fontSize: 16,
-    color: colors.text,
-    backgroundColor: colors.inputBackground,
-  },
   label: {
     fontSize: 14,
     fontWeight: '600',

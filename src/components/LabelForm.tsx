@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
+import { inputStyles } from '../styles/input.styles'
 import { colors } from '../styles/theme'
 import { styles } from '../styles/CreateHabitScreen.styles'
 import IconFiels from './IconFiels'
@@ -36,7 +37,7 @@ const LabelForm = ({onCancel}: {
         <View style={[common.panel, styles.fieldGroup]}>
             <Text style={[common.label, styles.label]}>Habit Name</Text>
             <TextInput
-                style={common.input}
+                style={inputStyles.input}
                 placeholderTextColor={colors.textMuted}
                 placeholder='e.g. Drink Water'
                 value={name}

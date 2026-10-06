@@ -18,20 +18,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: spacing.sm,
   },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.sm,
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.md,
-    borderRadius: radius.sm,
-    backgroundColor: colors.inputBackground,
-  },
-  searchInput: {
-    flex: 1,
-    paddingVertical: spacing.sm,
-    fontSize: 16,
-    color: colors.text,  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',

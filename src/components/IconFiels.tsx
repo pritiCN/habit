@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { StyleProp, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { common } from '../styles/common'
 import { styles } from '../styles/CreateHabitScreen.styles'
-import { IconExceptionList, IconsSet } from '../constants/iconset'
-import { IconComponent } from './appIcon'
+import { IconsSet } from '../constants/iconset'
+import { IconComponent, iconSet } from './appIcon'
 import { useHabits } from '../context/HabitsContext'
+import { inputStyles } from '../styles/input.styles'
+import { colors, spacing } from '../styles/theme'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
     panalStyle?: StyleProp<ViewStyle>,
@@ -13,17 +16,35 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
     selectedColor?: string
 }) => {
     const [expanded, setExpanded] = useState(false);
-    const newIconset = IconsSet.filter((item) => IconExceptionList.includes(item.id) === false);
     const {getColor} = useHabits()
     const colorCode = getColor(selectedColor || '#000');
+    const [search, setSearch] = useState('')
     
+    const filteredIcon = IconsSet.filter((icon) => {
+        return icon.name.toLowerCase().includes(search.trim().toLowerCase())
+    })
+
+    console.log(filteredIcon);
+    
+
     const displayIcon = expanded
-        ? newIconset
-        : newIconset.slice(0, 6)
+        ? filteredIcon
+        : filteredIcon.slice(0, 6)
     
     return (
         <View style={panalStyle}>
             <Text style={[common.label, styles.label]}>Choose an Icon</Text>
+
+            <View style={[inputStyles.searchBar, { marginTop: 0, marginBottom: spacing.md }]}>
+              <Ionicons name="search" size={18} color={colors.textMuted} />
+              <TextInput
+                style={inputStyles.searchInput}
+                placeholder='Search labels...'
+                placeholderTextColor={colors.textMuted}
+                value={search}
+                onChangeText={setSearch}
+              />
+            </View>
             <View style={styles.iconRow}>
                 {
                     displayIcon.map((option) => {      
@@ -48,7 +69,7 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
                     })
                 }
                 {
-                    !expanded &&
+                    !expanded && filteredIcon.length > 6 &&
                     (
                         <TouchableOpacity
                             style={[common.iconCircle, styles.moreButton]}

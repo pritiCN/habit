@@ -9,6 +9,7 @@ import { getTodayString } from '../utils/date'
 import { useHabits } from '../context/HabitsContext'
 import { Habit } from '../constants/habit'
 import { IconComponent } from '../components/appIcon'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
@@ -41,11 +42,7 @@ function HabitItem({
         style={[styles.toggleButton, isDoneToday && styles.toggleButtonDone]}
         onPress={onToggle}
       >
-        <IconComponent
-          icon={'checkmark'}
-          size={16}
-          color={isDoneToday ? colors.onPrimary : colors.textMuted}
-        />
+        <Ionicons name="checkmark" size={16} color={isDoneToday ? colors.onPrimary : colors.textMuted} />
       </TouchableOpacity>
     </TouchableOpacity>
   );
