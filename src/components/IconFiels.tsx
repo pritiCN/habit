@@ -7,15 +7,15 @@ import { IconComponent } from './appIcon'
 import { useHabits } from '../context/HabitsContext'
 
 const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
-    panalStyle: StyleProp<ViewStyle>,
-    selectedIcon: string,
-    onSelect: (Icon: string) => void,
-    selectedColor: string
+    panalStyle?: StyleProp<ViewStyle>,
+    selectedIcon?: string,
+    onSelect?: (Icon: string) => void,
+    selectedColor?: string
 }) => {
     const [expanded, setExpanded] = useState(false);
     const newIconset = IconsSet.filter((item) => IconExceptionList.includes(item.id) === false);
     const {getColor} = useHabits()
-    const colorCode = getColor(selectedColor);
+    const colorCode = getColor(selectedColor || '#000');
     
     const displayIcon = expanded
         ? newIconset
@@ -31,7 +31,7 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
                         return(
                             <TouchableOpacity
                                 key={option.id}
-                                onPress={() => onSelect(option.id)}
+                                onPress={() => onSelect?.(option.id)}
                             >
                                 <View style={[
                                     common.iconCircle,

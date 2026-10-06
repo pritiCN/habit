@@ -1,6 +1,7 @@
 export type Color = {
     id: string;
     color: string;
+    blackColor?: boolean;
 }
 
 export const ColorsSet: Color[] = [
@@ -16,10 +17,10 @@ export const ColorsSet: Color[] = [
     {id: '10', color: '#4caf50'},
     {id: '11', color: '#8bc34a'},
     {id: '12', color: '#cddc39'},
-    {id: '13', color: '#ffeb3b'},
-    {id: '14', color: '#ffc107'},
+    {id: '13', color: '#ffeb3b', blackColor: true},
+    {id: '14', color: '#ffc107', blackColor: true},
     {id: '15', color: '#ff9800'},
-    {id: '16', color: '#ff5722'},
+    {id: '16', color: '#fc509d'},
     {id: '17', color: '#795548'},
     {id: '18', color: '#9e9e9e'},
     {id: '19', color: '#607d8b'},

@@ -54,13 +54,13 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             </View>
             
             <ColorField 
-                panalStyle={[common.panel, styles.fieldGroup]}
+                panalStyle={[styles.fieldGroup]}
                 selectedColor={selectedColor}
                 onSelect={setSelectedColor}
             />
 
             <IconFiels 
-                panalStyle={styles.iconSection}
+                panalStyle={[common.panel, styles.iconSection]}
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}
                 selectedColor={selectedColor}

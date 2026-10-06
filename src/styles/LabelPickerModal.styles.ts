@@ -18,10 +18,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: spacing.sm,
   },
-  title: {
-    flex: 1,
-    textAlign: 'center',
-  },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -75,5 +71,22 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.primary,
+  },
+  createButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+    marginTop: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: radius.md,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: colors.primary,
+  },
+  createButtonText: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: colors.primary,
   },
 });

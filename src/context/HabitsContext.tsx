@@ -12,7 +12,7 @@ type HabitsContextType = {
     updateHabit: (habit: Habit) => void;
     deleteHabit: (id: string) => void;
     toggleToday: (id: string) => void;
-    getColor: (colorId: string) => string;
+    getColor: (colorId: string, text?: boolean) => string;
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined)
@@ -61,8 +61,12 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         )
     }
 
-    const getColor = (colorId: string) => {
+    const getColor = (colorId: string, text?: boolean) => {
         const colorObj = ColorsSet.find((c) => c.id === colorId);
+        if(text) {
+            return colorObj ? colorObj.blackColor ? '#000000' : colorObj.color  : '#000000'
+        }
+        
         return colorObj ? colorObj.color : '#000000'; // default to black if not found
     }
     

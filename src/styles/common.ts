@@ -60,6 +60,10 @@ export const common = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
   },
+  headerTitle: {
+    flex: 1, // fill the space between the two sides
+    textAlign: 'center',
+  },
   input: {
     borderRadius: radius.md,
     paddingHorizontal: spacing.md,

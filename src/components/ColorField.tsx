@@ -5,9 +5,9 @@ import { common } from '../styles/common';
 import { styles } from '../styles/CreateHabitScreen.styles';
 
 const ColorField = ({panalStyle, onSelect, selectedColor}: {
-  panalStyle : StyleProp<ViewStyle>
-  onSelect: (Color: string) => void
-  selectedColor: string
+  panalStyle?: StyleProp<ViewStyle>
+  onSelect?: (Color: string) => void
+  selectedColor?: string
 }) => {
   const [expanded, setExpanded] = useState(false);
   const displayColor = expanded
@@ -24,7 +24,7 @@ const ColorField = ({panalStyle, onSelect, selectedColor}: {
             return(
               <TouchableOpacity
                 key={option.id}
-                onPress={() => onSelect(option.id)}
+                onPress={() => onSelect?.(option.id)}
               >
                 <View 
                   style={[

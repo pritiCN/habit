@@ -6,6 +6,8 @@ import { colors } from '../styles/theme'
 import { styles } from '../styles/LabelPickerModal.styles'
 import { Labels } from '../constants/labelset'
 import { IconComponent } from './appIcon'
+import { useHabits } from '../context/HabitsContext'
+import LabelForm from './LabelForm'
 
 const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
   onClose: ()=> void,
@@ -13,13 +15,24 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
   selectedLabels: string[]
 }) => {
   const [seletedIds, setSeletedIds] = useState<string[]>(selectedLabels);
+  const [search, setSearch] = useState('');
+  const [mode, setMode] = useState<'pick' | 'create'>('pick')
 
   const toggleLabel = (id: string) => {
     setSeletedIds((prev) => {
       return prev.includes(id) ? prev.filter((seletedId) => seletedId !== id) : [...prev, id]
     })    
   }
+  const {getColor} = useHabits();
+  
+  const filteredLabels = Labels.filter((label) => {
+    return label.name.toLowerCase().includes(search.trim().toLowerCase())
+  })  
 
+  const setIsCreating = () => {
+    setMode('pick');
+  }
+  
   return (
     <Modal
       animationType="slide"
@@ -29,11 +42,18 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
       <View style={styles.overlay}>
         <View style={[common.panel, styles.sheet]}>
             <View style={styles.handle} />
+            {
+              mode === 'create' && (
+                <LabelForm 
+                  onCancel={setIsCreating}
+                />
+              )
+            }
             <View style={common.buttonRow}>
               <TouchableOpacity onPress={onClose}>
                 <Text style={[common.label, { color: colors.primary }]}>Cancel</Text>
               </TouchableOpacity>
-              <Text style={[common.label, styles.title]}>Select Labels</Text>
+              <Text style={[common.label, common.headerTitle]}>Select Labels</Text>
               <TouchableOpacity onPress={() => onDone(seletedIds)}>
                 <Text style={[common.label, { color: colors.success }]}>Done ({seletedIds.length})</Text>
               </TouchableOpacity>
@@ -45,27 +65,30 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                 style={styles.searchInput}
                 placeholder='Search labels...'
                 placeholderTextColor={colors.textMuted}
+                value={search}
+                onChangeText={setSearch}
               />
             </View>
 
             <Text style={styles.sectionTitle}>All Labels</Text>
             <View style={styles.chipGrid}>
               {
-                Labels.map((label) => {
+                filteredLabels.map((label) => {
                   const isSelected = seletedIds.includes(label.id)
+                  const colorCode = getColor(label.colorId)
                   return(
                     <TouchableOpacity
                       key={label.id}
                       // 8-digit hex: label color at ~10% opacity for the soft tint
                       style={[
                         styles.chip,
-                        { backgroundColor: `${label.color}1A` },
+                        { backgroundColor: `${colorCode}1A` },
                         isSelected && styles.chipSelected,
                       ]}
                       onPress={() => toggleLabel(label.id)}
                     >
-                      <IconComponent  icon={label.icon} color={label.color}/>
-                      <Text style={[styles.chipText, { color: label.color }]}>{label.name}</Text>
+                      <IconComponent  icon={label.icon} color={colorCode}/>
+                      <Text style={[styles.chipText, { color: getColor(label.colorId, true) }]}>{label.name}</Text>
                       {isSelected && (
                         <View style={styles.checkBadge}>
                           <Ionicons name="checkmark" size={14} color={colors.onPrimary} />
@@ -75,7 +98,17 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                   )
                 })
               }
+              {
+                filteredLabels.length === 0 && (
+                  <Text style={{ color: colors.textMuted }}>No labels found</Text>
+                )
+              }
             </View>
+
+            <TouchableOpacity style={styles.createButton} onPress={() => setMode('create')}>
+              <Ionicons name="add" size={22} color={colors.primary} />
+              <Text style={styles.createButtonText}>Create New Label</Text>
+            </TouchableOpacity>
         </View>
       </View>
     </Modal>
