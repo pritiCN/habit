@@ -28,7 +28,7 @@ const ColorField = ({panalStyle, onSelect, selectedColor}: {
               >
                 <View 
                   style={[
-                    common.iconCircle,
+                    common.iconSquare,
                     {backgroundColor: option.color},
                     isSeleted && styles.iconSelected
                   ]}></View>
@@ -40,7 +40,7 @@ const ColorField = ({panalStyle, onSelect, selectedColor}: {
             !expanded &&
             (
                 <TouchableOpacity
-                    style={[common.iconCircle, styles.moreButton]}
+                    style={[common.iconSquare, styles.moreButton]}
                     onPress={()=>setExpanded(true)}
                 >
                     <Text style={styles.moreButtonText}>•••</Text>

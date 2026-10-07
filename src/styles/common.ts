@@ -69,10 +69,10 @@ export const common = StyleSheet.create({
     fontWeight: '600',
     color: colors.text,
   },
-  iconCircle: {
+  iconSquare: {
     width: 48,
     height: 48,
-    borderRadius: 24,
+    borderRadius: radius.md,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.inputBackground,

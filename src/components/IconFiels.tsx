@@ -22,10 +22,7 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
     
     const filteredIcon = IconsSet.filter((icon) => {
         return icon.name.toLowerCase().includes(search.trim().toLowerCase())
-    })
-
-    console.log(filteredIcon);
-    
+    })    
 
     const displayIcon = expanded
         ? filteredIcon
@@ -55,7 +52,7 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
                                 onPress={() => onSelect?.(option.id)}
                             >
                                 <View style={[
-                                    common.iconCircle,
+                                    common.iconSquare,
                                     isSelect && styles.iconSelected,
                                     {backgroundColor: `${colorCode}1A`, borderColor: `${colorCode}4D`}
                                 ]}>
@@ -72,7 +69,7 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
                     !expanded && filteredIcon.length > 6 &&
                     (
                         <TouchableOpacity
-                            style={[common.iconCircle, styles.moreButton]}
+                            style={[common.iconSquare, styles.moreButton]}
                             onPress={()=>setExpanded(true)}
                         >
                             <Text style={styles.moreButtonText}>•••</Text>

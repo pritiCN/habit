@@ -10,6 +10,7 @@ import ColorField from './ColorField'
 import { ColorsSet } from '../constants/colorset'
 import IconFiels from './IconFiels'
 import { IconsSet } from '../constants/iconset'
+import { LabelProvider } from '../context/LabelContext'
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         onSave: (habit: Habit) => void;
@@ -100,14 +101,18 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             </TouchableOpacity>
             
             {
-                isLabelModalVisible && <LabelPickerModal 
-                    onClose={() => setIsLabelModalVisible(false)} 
-                    onDone={(ids) => {
-                        setIsLabelModalVisible(false)
-                        setLabelIds(ids)
-                    }} 
-                    selectedLabels = {labelIds}
-                />
+                isLabelModalVisible && (
+                    <LabelProvider>
+                        <LabelPickerModal 
+                            onClose={() => setIsLabelModalVisible(false)} 
+                            onDone={(ids) => {
+                                setIsLabelModalVisible(false)
+                                setLabelIds(ids)
+                            }} 
+                            selectedLabels = {labelIds}
+                        />
+                    </LabelProvider>
+                )
             }
             
             {
