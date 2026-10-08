@@ -1,13 +1,14 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { Label, Labels } from '../constants/labelset';
 import { Habit } from '../constants/habit';
-import { loadLabels } from '../storage/labelStorage';
+import { loadLabels, saveLabels } from '../storage/labelStorage';
 
 const initialLabels: Label[] = Labels
 
 type labelContextType = {
     labels: Label[];
-    searchLabels: (query: string) => Label[]
+    searchLabels: (query: string) => Label[];
+    addLabels: (label: Label) => void
 }
 
 const LabelContext = createContext<labelContextType | undefined>(undefined);
@@ -23,17 +24,28 @@ export function LabelProvider({children}: {children: ReactNode}) {
             setLabels(stored ?? initialLabels)
             setIsloaded(true)
         })()
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if(isloaded) {
+            saveLabels(labels);
+        }
+    }, [isloaded, labels])
 
     const searchLabels = (query: string) => {
         const q = query.trim().toLowerCase();
         return labels.filter((label) => label.name.toLowerCase().includes(q))
     }
 
+    const addLabels = (label: Label) => {
+        setLabels((prev) => [...prev, label])
+    }
+    
     return(
         <LabelContext.Provider value={{
             labels,
-            searchLabels
+            searchLabels,
+            addLabels
         }}>
             {children}
         </LabelContext.Provider>

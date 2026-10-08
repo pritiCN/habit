@@ -1,7 +1,17 @@
 import AsyncStorage  from "@react-native-async-storage/async-storage";
 import { Label } from "../constants/labelset";
 
-const LABEL_KEY = 'habit_label'
+const LABEL_KEY = 'HABIT_LABELS'
+
+export async function saveLabels(labels: Label[]): Promise<void> {
+    try {
+        const json = JSON.stringify(labels);
+        await AsyncStorage.setItem(LABEL_KEY, json)        
+    } catch (error) {
+        console.error('Failed to save labels:', error)
+    }
+    
+}
 
 export async function loadLabels(): Promise<Label[] | null> {
     try {

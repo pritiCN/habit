@@ -9,28 +9,37 @@ import IconFiels from './IconFiels'
 import { ColorsSet } from '../constants/colorset'
 import ColorField from './ColorField'
 import { IconsSet } from '../constants/iconset'
+import { Label } from '../constants/labelset'
+import { useLabel } from '../context/LabelContext'
 
 const LabelForm = ({onCancel}: {
     onCancel: () => void;
-    // onDone: () => void;
 }) => {
     const [name, setName] = useState('')
     const [selectedColor, setSelectedColor] = useState(ColorsSet[0].id)
     const [selectedIcon, setSeletedIcon] = useState(IconsSet[0].id)
-    console.log(selectedIcon);
+
+    const {addLabels} = useLabel();
     
     const handleSave = () => {
-        
+        const trimming = name.trim();
+        if(trimming === '') return
+
+        const newLabel: Label = {
+            id: Date.now().toString(),
+            name: trimming,
+            colorId: selectedColor,
+            icon: selectedIcon
+        }
+
+        addLabels(newLabel);
+        onCancel()
     }
     return (
         <View style={{ backgroundColor: colors.background }}>
             <View style={[common.buttonRow, { justifyContent: 'space-between' }]}>
                 <TouchableOpacity onPress={onCancel} hitSlop={10}>
                     <Ionicons name="arrow-back" size={24} color={colors.primary} />
-                </TouchableOpacity>
-
-                <TouchableOpacity>
-                    <Text style={[common.label, { color: colors.success }]}>Done</Text>
                 </TouchableOpacity>
             </View>
 
