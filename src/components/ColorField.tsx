@@ -2,7 +2,7 @@ import React, { use, useState } from 'react'
 import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { Color, ColorsSet } from '../constants/colorset'
 import { common } from '../styles/common';
-import { styles } from '../styles/CreateHabitScreen.styles';
+import { styles } from '../styles/form.styles';
 
 const ColorField = ({panalStyle, onSelect, selectedColor}: {
   panalStyle?: StyleProp<ViewStyle>

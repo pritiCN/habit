@@ -1,7 +1,8 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { loadHabits, saveHabits } from "../storage/habitStorage";
 import { getTodayString } from "../utils/date";
-import { Habit, Habits } from "../constants/habit";
+import { Habit } from "../types/habit";
+import { Habits } from "../constants/habit";
 import { ColorsSet } from "../constants/colorset";
 
 const initialHabits: Habit[] = Habits;

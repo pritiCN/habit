@@ -1,5 +1,5 @@
 import AsyncStorage  from "@react-native-async-storage/async-storage";
-import { Label } from "../constants/labelset";
+import { Label } from "../types/label";
 
 const LABEL_KEY = 'HABIT_LABELS'
 

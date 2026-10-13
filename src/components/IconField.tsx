@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { StyleProp, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { common } from '../styles/common'
-import { styles } from '../styles/CreateHabitScreen.styles'
+import { styles } from '../styles/form.styles'
 import { IconsSet } from '../constants/iconset'
-import { IconComponent, iconSet } from './appIcon'
+import { IconComponent, iconSet } from './AppIcon'
 import { useHabits } from '../context/HabitsContext'
 import { inputStyles } from '../styles/input.styles'
 import { colors, spacing } from '../styles/theme'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
+const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
     panalStyle?: StyleProp<ViewStyle>,
     selectedIcon?: string,
     onSelect?: (Icon: string) => void,
@@ -81,4 +81,4 @@ const IconFiels = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
     )
 }
 
-export default IconFiels
+export default IconField

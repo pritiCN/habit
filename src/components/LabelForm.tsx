@@ -4,12 +4,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
 import { colors } from '../styles/theme'
-import { styles } from '../styles/CreateHabitScreen.styles'
-import IconFiels from './IconFiels'
+import { styles } from '../styles/form.styles'
+import IconField from './IconField'
 import { ColorsSet } from '../constants/colorset'
 import ColorField from './ColorField'
 import { IconsSet } from '../constants/iconset'
-import { Label } from '../constants/labelset'
+import { Label } from '../types/label'
 import { useLabel } from '../context/LabelContext'
 
 const LabelForm = ({onCancel}: {
@@ -65,7 +65,7 @@ const LabelForm = ({onCancel}: {
                 onSelect={setSelectedColor}
             />
 
-            <IconFiels 
+            <IconField 
                 panalStyle={[common.panel, styles.iconSection]}
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}

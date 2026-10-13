@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
-import { styles } from '../styles/CreateHabitScreen.styles'
+import { styles } from '../styles/form.styles'
 import { colors } from '../styles/theme'
 import LabelPickerModal from './LabelPickerModal'
-import { Habit } from '../constants/habit'
+import { Habit } from '../types/habit'
 import ColorField from './ColorField'
 import { ColorsSet } from '../constants/colorset'
-import IconFiels from './IconFiels'
+import IconField from './IconField'
 import { IconsSet } from '../constants/iconset'
 import { LabelProvider } from '../context/LabelContext'
 
@@ -61,7 +61,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 onSelect={setSelectedColor}
             />
 
-            <IconFiels 
+            <IconField 
                 panalStyle={[common.panel, styles.iconSection]}
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}

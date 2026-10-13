@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
-import { Label, Labels } from '../constants/labelset';
-import { Habit } from '../constants/habit';
+import { Label } from '../types/label';
+import { Labels } from '../constants/labelset';
 import { loadLabels, saveLabels } from '../storage/labelStorage';
 
 const initialLabels: Label[] = Labels
@@ -57,7 +57,7 @@ export function LabelProvider({children}: {children: ReactNode}) {
 export function useLabel() {
   const context = useContext(LabelContext);
   if (context === undefined) {
-    throw new Error('useHabits must be used within a HabitsProvider');
+    throw new Error('useLabel must be used within a LabelProvider');
   }
   return context;
 }

@@ -1,12 +1,4 @@
-export type Habit = {
-    id: string;
-    name: string;
-    colorId: string;
-    description?: string;
-    icon: string;
-    completedDates: string[]
-    labelids?: string[]
-};
+import { Habit } from '../types/habit'
 
 export const Habits: Habit[] = [
     {id: '1', colorId: '1', name: 'Drink water', icon: 'water', completedDates: []},

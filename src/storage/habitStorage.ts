@@ -1,5 +1,5 @@
 import AsyncStorage  from "@react-native-async-storage/async-storage";
-import { Habit } from "../constants/habit";
+import { Habit } from "../types/habit";
 
 const HABITS_KEY = 'HABITS'
 export async function saveHabits(habits:Habit[]): Promise<void> {

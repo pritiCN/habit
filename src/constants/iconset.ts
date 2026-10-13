@@ -1,6 +1,6 @@
-import type { iconSet } from '../components/appIcon'
+import type { iconSet } from '../components/AppIcon'
 
-// Derived from the libraries registered in appIcon.tsx, so adding one there updates this type
+// Derived from the libraries registered in AppIcon.tsx, so adding one there updates this type
 export type IconLibrary = keyof typeof iconSet
 
 export type Icon = {

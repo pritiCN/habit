@@ -1,7 +1,7 @@
 import React from 'react'
 import { Alert, Platform, SafeAreaView, Text, View } from 'react-native'
 import { common } from '../styles/common'
-import { styles } from '../styles/CreateHabitScreen.styles'
+import { styles } from '../styles/form.styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/navigation'
 import HabitForm from '../components/HabitForm'

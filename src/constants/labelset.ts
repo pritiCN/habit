@@ -1,9 +1,4 @@
-export type Label = {
-    id: string;
-    name: string;
-    colorId: string;
-    icon: string;
-}
+import { Label } from '../types/label'
 
 export const Labels: Label[] = [
     {id: 'Health', name: 'Health', colorId: '6', icon: 'heart'},

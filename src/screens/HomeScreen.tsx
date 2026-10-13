@@ -7,8 +7,8 @@ import { styles } from '../styles/HomeScreen.styles'
 import { colors } from '../styles/theme'
 import { getTodayString } from '../utils/date'
 import { useHabits } from '../context/HabitsContext'
-import { Habit } from '../constants/habit'
-import { IconComponent } from '../components/appIcon'
+import { Habit } from '../types/habit'
+import { IconComponent } from '../components/AppIcon'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
