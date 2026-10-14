@@ -88,4 +88,28 @@ export const common = StyleSheet.create({
   subtitle: {
     ...typography.caption,
   },
+  // Full-screen dim layer that centers its child (popups, dialogs)
+  backdrop: {
+    ...StyleSheet.absoluteFill,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  // Width for a centered dialog; combine with common.panel
+  dialog: {
+    width: '100%',
+    maxWidth: 320,
+  },
+  // One tappable row in a menu or list
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    paddingVertical: spacing.md,
+  },
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: colors.border,
+  },
 });

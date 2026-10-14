@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
@@ -9,28 +9,33 @@ import { IconComponent } from './AppIcon'
 import { useHabits } from '../context/HabitsContext'
 import LabelForm from './LabelForm'
 import { useLabel } from '../context/LabelContext'
+import LabelActionPopup from './LabelActionPopup'
 
 const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
   onClose: ()=> void,
   onDone: (ids: string[]) => void,
   selectedLabels: string[]
 }) => {
-  const [seletedIds, setSeletedIds] = useState<string[]>(selectedLabels);
   const [search, setSearch] = useState('');
   const [mode, setMode] = useState<'pick' | 'create'>('pick')
-
-  const toggleLabel = (id: string) => {
-    setSeletedIds((prev) => {
-      return prev.includes(id) ? prev.filter((seletedId) => seletedId !== id) : [...prev, id]
-    })    
-  }
+  const [actionLabel, SetActionLabel] = useState('')
   const {getColor} = useHabits();
-  const {searchLabels} = useLabel();
+  const {searchLabels, setSelectedIds, toggleLabel, selectedIds, startEditing} = useLabel();
+
+  useEffect(() => {
+    setSelectedIds(selectedLabels)
+  }, [])
   
   const filteredLabels = searchLabels(search) 
 
   const setIsCreating = () => {
     setMode('pick');
+  }
+
+  const handleUpdate = (labelId: string) => {
+    setMode('create')
+    startEditing(labelId)
+    SetActionLabel('')
   }
   
   return (
@@ -54,8 +59,8 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                       <Text style={[common.label, { color: colors.primary }]}>Cancel</Text>
                     </TouchableOpacity>
                     <Text style={[common.label, common.headerTitle]}>Select Labels</Text>
-                    <TouchableOpacity onPress={() => onDone(seletedIds)}>
-                      <Text style={[common.label, { color: colors.success }]}>Done ({seletedIds.length})</Text>
+                    <TouchableOpacity onPress={() => onDone(selectedIds)}>
+                      <Text style={[common.label, { color: colors.success }]}>Done ({selectedIds.length})</Text>
                     </TouchableOpacity>
                   </View>
 
@@ -74,7 +79,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                   <View style={styles.chipGrid}>
                     {
                       filteredLabels.map((label) => {
-                        const isSelected = seletedIds.includes(label.id)
+                        const isSelected = selectedIds.includes(label.id)
                         const colorCode = getColor(label.colorId)
                         return(
                           <TouchableOpacity
@@ -86,6 +91,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                               isSelected && styles.chipSelected,
                             ]}
                             onPress={() => toggleLabel(label.id)}
+                            onLongPress={() => SetActionLabel(label.id)}
                           >
                             <IconComponent  icon={label.icon} color={colorCode}/>
                             <Text style={[styles.chipText, { color: getColor(label.colorId, true) }]}>{label.name}</Text>
@@ -113,6 +119,16 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
               )
             }
         </View>
+
+        {
+          actionLabel !== '' && (
+            <LabelActionPopup 
+              closePopup={() => SetActionLabel('')}
+              updateLabel={handleUpdate}
+              labelId={actionLabel}
+            />
+          )
+        }
       </View>
     </Modal>
   )

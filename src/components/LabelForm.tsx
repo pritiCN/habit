@@ -15,36 +15,42 @@ import { useLabel } from '../context/LabelContext'
 const LabelForm = ({onCancel}: {
     onCancel: () => void;
 }) => {
-    const [name, setName] = useState('')
-    const [selectedColor, setSelectedColor] = useState(ColorsSet[0].id)
-    const [selectedIcon, setSeletedIcon] = useState(IconsSet[0].id)
-
-    const {addLabels} = useLabel();
+    const {addLabel, editingLabel, clearEditingLabel, updateLabel} = useLabel();
+    const [selectedColor, setSelectedColor] = useState(editingLabel?.colorId ?? ColorsSet[0].id)
+    const [selectedIcon, setSeletedIcon] = useState(editingLabel?.icon ?? IconsSet[0].id)    
+    const [name, setName] = useState(editingLabel?.name ?? '')
+    console.log(editingLabel);
     
     const handleSave = () => {
         const trimming = name.trim();
-        if(trimming === '') return
+        if(trimming === '') return        
 
-        const newLabel: Label = {
-            id: Date.now().toString(),
-            name: trimming,
-            colorId: selectedColor,
-            icon: selectedIcon
+        if (editingLabel) {
+            updateLabel({ ...editingLabel, name: trimming, colorId: selectedColor, icon: selectedIcon })
+        } else {
+            addLabel({ id: Date.now().toString(), name: trimming, colorId: selectedColor, icon: selectedIcon })
         }
+        handleCancel()
+    }
 
-        addLabels(newLabel);
+    const handleCancel = () => {
         onCancel()
+        clearEditingLabel()
     }
     return (
         <View style={{ backgroundColor: colors.background }}>
             <View style={[common.buttonRow, { justifyContent: 'space-between' }]}>
-                <TouchableOpacity onPress={onCancel} hitSlop={10}>
+                <TouchableOpacity onPress={handleCancel} hitSlop={10}>
                     <Ionicons name="arrow-back" size={24} color={colors.primary} />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.header}>
-            <Text style={[common.title, styles.title]}>Create New Label</Text>
+            <Text style={[common.title, styles.title]}>
+                {
+                    editingLabel ? 'Update Label' : 'Create New Label'
+                }
+            </Text>
             <Text style={[common.subtitle, styles.subtitle]}>Customize your label to organize your habits.</Text>
             </View>
 
