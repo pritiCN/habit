@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
 import { colors } from '../styles/theme'
@@ -10,6 +10,7 @@ import { useHabits } from '../context/HabitsContext'
 import LabelForm from './LabelForm'
 import { useLabel } from '../context/LabelContext'
 import LabelActionPopup from './LabelActionPopup'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
   onClose: ()=> void,
@@ -21,6 +22,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
   const [actionLabel, SetActionLabel] = useState('')
   const {getColor} = useHabits();
   const {searchLabels, setSelectedIds, toggleLabel, selectedIds, startEditing} = useLabel();
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
     setSelectedIds(selectedLabels)
@@ -44,9 +46,13 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
       transparent={true}
       onRequestClose={onClose}
     >
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, { paddingBottom: insets.bottom, paddingTop: insets.top }]}>
         <View style={[common.panel, styles.sheet]}>
             <View style={styles.handle} />
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+            >
             {
               mode === 'create' ? (
                 <LabelForm 
@@ -118,6 +124,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                 </>
               )
             }
+            </ScrollView>
         </View>
 
         {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Platform, SafeAreaView, Text, View } from 'react-native'
+import { Alert, Platform, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -48,20 +48,25 @@ const EditHabitScreen = ({ navigation, route }: Props) => {
   }
   
   return (
-    <SafeAreaView style={[common.screen, styles.container]}>
-      <View style={styles.header}>
-        <Text style={[common.title, styles.title]}>Edit Habit</Text>
-        <Text style={[common.subtitle, styles.subtitle]}>Update or remove this habit.</Text>
-      </View>
+    <SafeAreaView style={common.screen}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.header}>
+          <Text style={[common.title, styles.title]}>Edit Habit</Text>
+          <Text style={[common.subtitle, styles.subtitle]}>Update or remove this habit.</Text>
+        </View>
 
-      <HabitForm
-        initialHabit={habit}
-        onSave={(updated) => {
-          updateHabit(updated)
-          navigation.goBack();
-        }}
-        secondaryAction={{ label: 'Delete', onPress: handleDelete }}
-      />
+        <HabitForm
+          initialHabit={habit}
+          onSave={(updated) => {
+            updateHabit(updated)
+            navigation.goBack();
+          }}
+          secondaryAction={{ label: 'Delete', onPress: handleDelete }}
+        />
+      </ScrollView>
     </SafeAreaView>
   )
 }

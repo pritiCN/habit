@@ -4,6 +4,7 @@ import { spacing, colors, radius } from './theme';
 export const styles = StyleSheet.create({
   container: {
     padding: spacing.md,
+    paddingBottom: spacing.lg * 2,
   },
   header: {
     marginBottom: spacing.lg,

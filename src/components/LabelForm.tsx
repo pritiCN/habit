@@ -19,7 +19,6 @@ const LabelForm = ({onCancel}: {
     const [selectedColor, setSelectedColor] = useState(editingLabel?.colorId ?? ColorsSet[0].id)
     const [selectedIcon, setSeletedIcon] = useState(editingLabel?.icon ?? IconsSet[0].id)    
     const [name, setName] = useState(editingLabel?.name ?? '')
-    console.log(editingLabel);
     
     const handleSave = () => {
         const trimming = name.trim();
@@ -78,7 +77,7 @@ const LabelForm = ({onCancel}: {
                 selectedColor={selectedColor}
             />
             <TouchableOpacity style={common.button} onPress={handleSave}>
-                <Text style={common.buttonText}>Save label</Text>
+                <Text style={common.buttonText}>{editingLabel ? 'Update label' : 'Save label'}</Text>
             </TouchableOpacity>
         </View>
     )

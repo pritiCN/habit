@@ -36,7 +36,7 @@ const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
               <Ionicons name="search" size={18} color={colors.textMuted} />
               <TextInput
                 style={inputStyles.searchInput}
-                placeholder='Search labels...'
+                placeholder='Search icons...'
                 placeholderTextColor={colors.textMuted}
                 value={search}
                 onChangeText={setSearch}

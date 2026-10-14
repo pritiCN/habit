@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   },
   sheet: {
     margin: spacing.md,
+    maxHeight: '90%',
   },
   handle: {
     width: 40,

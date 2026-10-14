@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, SafeAreaView } from 'react-native'
+import { Text, View, SafeAreaView, ScrollView } from 'react-native'
 import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -12,16 +12,21 @@ type Props = NativeStackScreenProps<RootStackParamList, 'CreateHabit'>;
 const CreateHabitScreen = ({navigation}: Props) => {
   const {addHabit} = useHabits();
   return (
-    <SafeAreaView style={[common.screen, styles.container]}>
-      <View style={styles.header}>
-        <Text style={[common.title, styles.title]}>Create New Habit</Text>
-        <Text style={[common.subtitle, styles.subtitle]}>Small step. Big changes.</Text>
-      </View>
+    <SafeAreaView style={common.screen}>
+      <ScrollView
+        contentContainerStyle={styles.container}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.header}>
+          <Text style={[common.title, styles.title]}>Create New Habit</Text>
+          <Text style={[common.subtitle, styles.subtitle]}>Small step. Big changes.</Text>
+        </View>
 
-      <HabitForm onSave={(habit) => {
-        addHabit(habit)
-        navigation.goBack();
-      }}  />
+        <HabitForm onSave={(habit) => {
+          addHabit(habit)
+          navigation.goBack();
+        }} />
+      </ScrollView>
     </SafeAreaView>
   )
 }
