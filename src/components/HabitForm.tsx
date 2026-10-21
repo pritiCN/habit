@@ -20,10 +20,10 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     }) => {
     const [name, setName] = useState(initialHabit?.name ?? '');
     const [description, setDescription] = useState(initialHabit?.description ?? '')
-    const [selectedIcon, setSeletedIcon] = useState(initialHabit?.icon ?? IconsSet[0].id)
+    const [selectedIcon, setSeletedIcon] = useState(initialHabit?.iconId ?? IconsSet[0].id)
     const [selectedColor, setSelectedColor] = useState(initialHabit?.colorId ?? ColorsSet[0].id)
     const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
-    const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelids ?? []);
+    const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelIds ?? []);
     const {setCurrentHabit} = useHabits()
     
     const handleSave = () => {
@@ -35,9 +35,9 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             name: trimmed,
             colorId: selectedColor,
             description: description,
-            icon: selectedIcon,
+            iconId: selectedIcon,
             completedDates: initialHabit?.completedDates ??  [],
-            labelids: labelIds
+            labelIds: labelIds
         }
 
         onSave(newHabit)
@@ -67,6 +67,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             <ColorField 
                 panalStyle={[styles.fieldGroup]}
                 selectedColor={selectedColor}
+                currentColor={initialHabit?.colorId ?? undefined}
                 onSelect={setSelectedColor}
             />
 
@@ -75,6 +76,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}
                 selectedColor={selectedColor}
+                currentIcon={initialHabit?.iconId ?? undefined}
             />
             
             <View style={[common.panel, styles.fieldGroup]}>

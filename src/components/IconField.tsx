@@ -3,17 +3,18 @@ import { StyleProp, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'r
 import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { IconsSet } from '../constants/iconset'
-import { IconComponent, iconSet } from './AppIcon'
+import { IconComponent } from './AppIcon'
 import { useHabits } from '../context/HabitsContext'
 import { inputStyles } from '../styles/input.styles'
 import { colors, spacing } from '../styles/theme'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
+const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor, currentIcon}: {
     panalStyle?: StyleProp<ViewStyle>,
     selectedIcon?: string,
     onSelect?: (Icon: string) => void,
-    selectedColor?: string
+    selectedColor?: string,
+    currentIcon?: string
 }) => {
     const [expanded, setExpanded] = useState(false);
     const {getColor} = useHabits()
@@ -24,9 +25,8 @@ const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
         return icon.name.toLowerCase().includes(search.trim().toLowerCase())
     })    
 
-    const {currentHabit} = useHabits();
-    const current = filteredIcon.find((i) => i.id === currentHabit?.icon);
-    const otherIcon = filteredIcon.filter((i) => i.id !== currentHabit?.icon);
+    const current = filteredIcon.find((i) => i.id === currentIcon);
+    const otherIcon = filteredIcon.filter((i) => i.id !== currentIcon);
     const ordered = current ? [current, ...otherIcon] : otherIcon   
     const displayIcon = expanded ? ordered : ordered.slice(0, 6)
     

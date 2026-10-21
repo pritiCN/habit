@@ -34,7 +34,7 @@ function HabitItem({
       onPress={onPress}
     >
       <View style={[common.buttonRow, styles.habitInfo]}>
-        <IconComponent icon={habit.icon} color={habitColor} />
+        <IconComponent icon={habit.iconId} color={habitColor} />
         <Text style={[common.bodyText, { color: habitColor }]}>{habit.name}</Text>
       </View>
 

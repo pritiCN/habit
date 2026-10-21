@@ -9,7 +9,6 @@ import IconField from './IconField'
 import { ColorsSet } from '../constants/colorset'
 import ColorField from './ColorField'
 import { IconsSet } from '../constants/iconset'
-import { Label } from '../types/label'
 import { useLabel } from '../context/LabelContext'
 
 const LabelForm = ({onCancel}: {
@@ -17,7 +16,7 @@ const LabelForm = ({onCancel}: {
 }) => {
     const {addLabel, editingLabel, clearEditingLabel, updateLabel} = useLabel();
     const [selectedColor, setSelectedColor] = useState(editingLabel?.colorId ?? ColorsSet[0].id)
-    const [selectedIcon, setSeletedIcon] = useState(editingLabel?.icon ?? IconsSet[0].id)    
+    const [selectedIcon, setSeletedIcon] = useState(editingLabel?.iconId ?? IconsSet[0].id)    
     const [name, setName] = useState(editingLabel?.name ?? '')
     
     const handleSave = () => {
@@ -25,9 +24,9 @@ const LabelForm = ({onCancel}: {
         if(trimming === '') return        
 
         if (editingLabel) {
-            updateLabel({ ...editingLabel, name: trimming, colorId: selectedColor, icon: selectedIcon })
+            updateLabel({ ...editingLabel, name: trimming, colorId: selectedColor, iconId: selectedIcon })
         } else {
-            addLabel({ id: Date.now().toString(), name: trimming, colorId: selectedColor, icon: selectedIcon })
+            addLabel({ id: Date.now().toString(), name: trimming, colorId: selectedColor, iconId: selectedIcon })
         }
         handleCancel()
     }
@@ -68,6 +67,7 @@ const LabelForm = ({onCancel}: {
                 panalStyle={styles.fieldGroup}
                 selectedColor={selectedColor}
                 onSelect={setSelectedColor}
+                currentColor={editingLabel?.colorId ?? undefined}
             />
 
             <IconField 
@@ -75,6 +75,7 @@ const LabelForm = ({onCancel}: {
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}
                 selectedColor={selectedColor}
+                currentIcon={editingLabel?.iconId ?? undefined}
             />
             <TouchableOpacity style={common.button} onPress={handleSave}>
                 <Text style={common.buttonText}>{editingLabel ? 'Update label' : 'Save label'}</Text>

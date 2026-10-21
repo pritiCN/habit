@@ -3,7 +3,7 @@ export type Habit = {
     name: string;
     colorId: string;
     description?: string;
-    icon: string;
+    iconId: string;
     completedDates: string[]
-    labelids?: string[]
+    labelIds?: string[]
 };
