@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { common } from '../styles/common'
-import { inputStyles } from '../styles/input.styles'
-import { colors } from '../styles/theme'
-import { styles } from '../styles/form.styles'
-import IconField from './IconField'
-import { ColorsSet } from '../constants/colorset'
-import ColorField from './ColorField'
-import { IconsSet } from '../constants/iconset'
-import { useLabel } from '../context/LabelContext'
+import { common } from '../../styles/common'
+import { inputStyles } from '../../styles/input.styles'
+import { colors } from '../../styles/theme'
+import { styles } from '../../styles/form.styles'
+import IconField from '../IconField'
+import { ColorsSet } from '../../constants/colorset'
+import ColorField from '../ColorField'
+import { IconsSet } from '../../constants/iconset'
+import { useLabel } from '../../context/LabelContext'
 
 const LabelForm = ({onCancel}: {
     onCancel: () => void;
@@ -39,17 +39,17 @@ const LabelForm = ({onCancel}: {
         <View style={{ backgroundColor: colors.background }}>
             <View style={[common.buttonRow, { justifyContent: 'space-between' }]}>
                 <TouchableOpacity onPress={handleCancel} hitSlop={10}>
-                    <Ionicons name="arrow-back" size={24} color={colors.primary} />
+                    <Ionicons name="arrow-back" size={24} />
                 </TouchableOpacity>
             </View>
 
             <View style={styles.header}>
-            <Text style={[common.title, styles.title]}>
-                {
-                    editingLabel ? 'Update Label' : 'Create New Label'
-                }
-            </Text>
-            <Text style={[common.subtitle, styles.subtitle]}>Customize your label to organize your habits.</Text>
+                <Text style={[common.title, styles.title]}>
+                    {
+                        editingLabel ? 'Update Label' : 'Create New Label'
+                    }
+                </Text>
+                <Text style={[common.subtitle, styles.subtitle]}>Customize your label to organize your habits.</Text>
             </View>
 
             <View style={[common.panel, styles.fieldGroup]}>

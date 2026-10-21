@@ -112,4 +112,66 @@ export const common = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.border,
   },
+  // Settings-style row: [icon][title/subtitle] ........ [badge][chevron]
+  // Combine rowMain with buttonRow so the text side takes the free space
+  rowMain: {
+    flex: 1,
+  },
+  // Fixed width so text lines up across rows whatever the icon's width
+  rowIcon: {
+    width: 28,
+    alignItems: 'center',
+  },
+  rowTitle: {
+    marginBottom: 2,
+  },
+  badge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.inputBackground,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.pill,
+    gap: spacing.xs,
+  },
+  badgeText: {
+    fontSize: 13,
+    color: colors.textMuted,
+  },
+  // Section heading text inside a panel/sheet
+  heading: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.text,
+  },
+  // Spacing around a section - put on a heading <Text>, or on a <View> wrapping heading + subtitle
+  section: {
+    marginTop: spacing.lg,
+    marginBottom: spacing.md,
+  },
+  // Text color helpers - combine with label/bodyText, e.g. [common.label, common.textPrimary]
+  textPrimary: {
+    color: colors.primary,
+  },
+  textSuccess: {
+    color: colors.success,
+  },
+  // Bottom sheet modal: sheetOverlay > [panel, sheet] > sheetHandle + content
+  sheetOverlay: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.4)',
+  },
+  sheet: {
+    margin: spacing.md,
+    maxHeight: '90%',
+  },
+  sheetHandle: {
+    width: 40,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: colors.border,
+    alignSelf: 'center',
+    marginBottom: spacing.sm,
+  },
 });

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { spacing, colors, radius } from './theme';
+import { spacing, colors } from './theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -33,10 +33,6 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.primary,
   },
-  iconEmoji: {
-    fontSize: 20,
-    fontFamily: 'Segoe UI Emoji, Apple Color Emoji, Noto Color Emoji, sans-serif',
-  },
   moreButton: {
     backgroundColor: colors.inputBackground,
   },
@@ -55,26 +51,6 @@ export const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     marginTop: spacing.xs,
     fontSize: 12,
-    color: colors.textMuted,
-  },
-  labelsTextGroup: {
-    flex: 1,
-  },
-  labelsBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.inputBackground,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: radius.pill,
-    gap: spacing.xs,
-  },
-  labelsBadgeText: {
-    fontSize: 13,
-    color: colors.textMuted,
-  },
-  labelsChevron: {
-    fontSize: 25,
     color: colors.textMuted,
   },
 });

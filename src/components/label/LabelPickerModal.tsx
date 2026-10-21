@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { common } from '../styles/common'
-import { colors } from '../styles/theme'
-import { styles } from '../styles/LabelPickerModal.styles'
-import { inputStyles } from '../styles/input.styles'
-import { IconComponent } from './AppIcon'
-import { useHabits } from '../context/HabitsContext'
+import { common } from '../../styles/common'
+import { colors } from '../../styles/theme'
+import { styles } from '../../styles/LabelPickerModal.styles'
+import { inputStyles } from '../../styles/input.styles'
+import { IconComponent } from '../AppIcon'
+import { useHabits } from '../../context/HabitsContext'
 import LabelForm from './LabelForm'
-import { useLabel } from '../context/LabelContext'
+import { useLabel } from '../../context/LabelContext'
 import LabelActionPopup from './LabelActionPopup'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -46,9 +46,9 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
       transparent={true}
       onRequestClose={onClose}
     >
-      <View style={[styles.overlay, { paddingBottom: insets.bottom, paddingTop: insets.top }]}>
-        <View style={[common.panel, styles.sheet]}>
-            <View style={styles.handle} />
+      <View style={[common.sheetOverlay, { paddingBottom: insets.bottom, paddingTop: insets.top }]}>
+        <View style={[common.panel, common.sheet]}>
+            <View style={common.sheetHandle} />
             <ScrollView
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
@@ -62,11 +62,11 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                 <>
                   <View style={common.buttonRow}>
                     <TouchableOpacity onPress={onClose}>
-                      <Text style={[common.label, { color: colors.primary }]}>Cancel</Text>
+                      <Ionicons name="arrow-back" size={22} color={colors.text} />
                     </TouchableOpacity>
                     <Text style={[common.label, common.headerTitle]}>Select Labels</Text>
                     <TouchableOpacity onPress={() => onDone(selectedIds)}>
-                      <Text style={[common.label, { color: colors.success }]}>Done ({selectedIds.length})</Text>
+                      <Text style={[common.label, common.textSuccess]}>Done ({selectedIds.length})</Text>
                     </TouchableOpacity>
                   </View>
 
@@ -81,7 +81,11 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                     />
                   </View>
 
-                  <Text style={styles.sectionTitle}>All Labels</Text>
+                  {/* <Text style={[common.heading, common.section]}>Recently Used</Text>
+                  <View style={styles.chipGrid}>
+
+                  </View> */}
+                  <Text style={[common.heading, common.section]}>All Labels</Text>
                   <View style={styles.chipGrid}>
                     {
                       filteredLabels.map((label) => {
@@ -99,7 +103,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                             onPress={() => toggleLabel(label.id)}
                             onLongPress={() => SetActionLabel(label.id)}
                           >
-                            <IconComponent  icon={label.icon} color={colorCode}/>
+                            <IconComponent  icon={label.iconId} color={colorCode}/>
                             <Text style={[styles.chipText, { color: getColor(label.colorId, true) }]}>{label.name}</Text>
                             {isSelected && (
                               <View style={styles.checkBadge}>

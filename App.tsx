@@ -17,8 +17,8 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} />
-            <Stack.Screen name='CreateHabit' component={CreateHabitScreen} />
-            <Stack.Screen name='EditHabit' component={EditHabitScreen} />
+            <Stack.Screen name='CreateHabit' component={CreateHabitScreen} options={{ title: '' }} />
+            <Stack.Screen name='EditHabit' component={EditHabitScreen} options={{ title: '' }} />
           </Stack.Navigator>
         </NavigationContainer>
       </HabitsProvider>

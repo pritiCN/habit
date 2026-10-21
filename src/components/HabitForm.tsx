@@ -4,7 +4,7 @@ import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
 import { styles } from '../styles/form.styles'
 import { colors } from '../styles/theme'
-import LabelPickerModal from './LabelPickerModal'
+import LabelPickerModal from './label/LabelPickerModal'
 import { Habit } from '../types/habit'
 import ColorField from './ColorField'
 import { ColorsSet } from '../constants/colorset'
@@ -12,6 +12,9 @@ import IconField from './IconField'
 import { IconsSet } from '../constants/iconset'
 import { LabelProvider } from '../context/LabelContext'
 import { useHabits } from '../context/HabitsContext'
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FrequencyPickerModal from './frequency/FrequencyPickerModal'
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         onSave: (habit: Habit) => void;
@@ -23,6 +26,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const [selectedIcon, setSeletedIcon] = useState(initialHabit?.iconId ?? IconsSet[0].id)
     const [selectedColor, setSelectedColor] = useState(initialHabit?.colorId ?? ColorsSet[0].id)
     const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
+    const [isFrequencyModalVisible, setIsFrequencyModalVisible] = useState(false)
     const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelIds ?? []);
     const {setCurrentHabit} = useHabits()
     
@@ -52,7 +56,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
     return (
         <View>
-            {/* Habit name (required) - handleSave ignores the save if it's empty after trimming */}
+            {/* Habit name (required) */}
             <View style={[common.panel, styles.fieldGroup]}>
                 <Text style={[common.label, styles.label]}>Habit Name</Text>
                 <TextInput
@@ -63,13 +67,16 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     onChangeText={setName}
                 />
             </View>
-            
-            <ColorField 
+
+            {/* Color picker */}
+            <ColorField
                 panalStyle={[styles.fieldGroup]}
                 selectedColor={selectedColor}
                 currentColor={initialHabit?.colorId ?? undefined}
                 onSelect={setSelectedColor}
             />
+
+            {/* Icon picker */}
 
             <IconField 
                 panalStyle={[common.panel, styles.iconSection]}
@@ -78,6 +85,8 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 selectedColor={selectedColor}
                 currentIcon={initialHabit?.iconId ?? undefined}
             />
+
+            {/* Description */}
             
             <View style={[common.panel, styles.fieldGroup]}>
                 <Text style={[common.label, styles.label]}>Description (Optional)</Text>
@@ -93,23 +102,51 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 <Text style={styles.charCount}>{description.length}/100</Text>
             </View>
 
+            {/* Labels */}
+
             <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setIsLabelModalVisible(true)}>
                 <View style={common.buttonRow}>
-                    <View style={[common.buttonRow, styles.labelsTextGroup]}>
-                        <Text style={styles.iconEmoji}>🔖</Text>
+                    <View style={[common.buttonRow, common.rowMain]}>
+                        <View style={common.rowIcon}>
+                            <FontAwesome name="tag" size={22} color={colors.text} />
+                        </View>
                         <View>
-                            <Text style={[common.label, styles.label]}>Add Labels</Text>
-                            <Text style={[common.subtitle, styles.subtitle]}>Organize your habit with labels</Text>
+                            <Text style={[common.label, common.rowTitle]}>Labels</Text>
+                            <Text style={common.subtitle}>Organize your habit with labels</Text>
                         </View>
                     </View>
                     <View style={common.buttonRow}>
-                        <View style={styles.labelsBadge}>
-                            <Text style={styles.labelsBadgeText}>{labelIds.length} Labels</Text>
+                        <View style={common.badge}>
+                            <Text style={common.badgeText}>{labelIds.length} Labels</Text>
                         </View>
-                        <Text style={styles.labelsChevron}>›</Text>
+                        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                     </View>
                 </View>
             </TouchableOpacity>
+
+            {/* Frequency */}
+
+            <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setIsFrequencyModalVisible(true)}>
+                <View style={common.buttonRow}>
+                    <View style={[common.buttonRow, common.rowMain]}>
+                        <View style={common.rowIcon}>
+                            <FontAwesome name="calendar" size={22} color={colors.text} />
+                        </View>
+                        <View>
+                            <Text style={[common.label, common.rowTitle]}>Frequency</Text>
+                            <Text style={common.subtitle}>How often to repeat this habit</Text>
+                        </View>
+                    </View>
+                    <View style={common.buttonRow}>
+                        <View style={common.badge}>
+                            <Text style={common.badgeText}>Not Set</Text>
+                        </View>
+                        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+                    </View>
+                </View>
+            </TouchableOpacity>
+
+            {/* Label Modal */}
             
             {
                 isLabelModalVisible && (
@@ -123,6 +160,14 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                             selectedLabels = {labelIds}
                         />
                     </LabelProvider>
+                )
+            }
+
+            {
+                isFrequencyModalVisible && (
+                    <FrequencyPickerModal 
+                        onClose={() => setIsFrequencyModalVisible(false)}
+                    />
                 )
             }
             

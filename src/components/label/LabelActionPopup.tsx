@@ -1,9 +1,9 @@
 import React from 'react'
 import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { common } from '../styles/common'
-import { colors } from '../styles/theme'
-import { useLabel } from '../context/LabelContext'
+import { common } from '../../styles/common'
+import { colors } from '../../styles/theme'
+import { useLabel } from '../../context/LabelContext'
 
 const LabelActionPopup = ({closePopup, labelId, updateLabel}: {
     closePopup: ()=>void
