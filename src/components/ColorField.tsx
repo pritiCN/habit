@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
-import { Color, ColorsSet } from '../constants/colorset'
+import { ColorsSet } from '../constants/colorset'
 import { common } from '../styles/common';
 import { styles } from '../styles/form.styles';
+import { useHabits } from '../context/HabitsContext';
 
 const ColorField = ({panalStyle, onSelect, selectedColor}: {
   panalStyle?: StyleProp<ViewStyle>
@@ -10,9 +11,11 @@ const ColorField = ({panalStyle, onSelect, selectedColor}: {
   selectedColor?: string
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const displayColor = expanded
-    ? ColorsSet
-    : ColorsSet.slice(0, 6);
+  const {currentHabit} = useHabits()
+  const current = ColorsSet.find((c) => c.id === currentHabit?.colorId);
+  const otherColor = ColorsSet.filter((c) => c.id !== currentHabit?.colorId)
+  const ordered = current ? [current, ...otherColor] : ColorsSet
+  const displayColor = expanded ? ordered : ordered.slice(0, 6);
   
   return (
     <View style={panalStyle}>

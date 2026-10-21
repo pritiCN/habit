@@ -14,6 +14,8 @@ type HabitsContextType = {
     deleteHabit: (id: string) => void;
     toggleToday: (id: string) => void;
     getColor: (colorId: string, text?: boolean) => string;
+    currentHabit: Habit | undefined
+    setCurrentHabit: (habit:Habit | undefined) => void
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined)
@@ -21,6 +23,7 @@ const HabitsContext = createContext<HabitsContextType | undefined>(undefined)
 export function HabitsProvider({ children }: { children: ReactNode }) {
     const [habits, setHabits] = useState<Habit[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
+    const [currentHabit, setCurrentHabit] = useState<Habit | undefined>(undefined)
 
     useEffect(() => {
         (async ()=> {
@@ -78,7 +81,9 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             updateHabit, 
             deleteHabit,
             toggleToday,
-            getColor
+            getColor,
+            currentHabit,
+            setCurrentHabit
         }}>
             {children}
         </HabitsContext.Provider>

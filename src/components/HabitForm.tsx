@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
@@ -11,6 +11,7 @@ import { ColorsSet } from '../constants/colorset'
 import IconField from './IconField'
 import { IconsSet } from '../constants/iconset'
 import { LabelProvider } from '../context/LabelContext'
+import { useHabits } from '../context/HabitsContext'
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         onSave: (habit: Habit) => void;
@@ -23,6 +24,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const [selectedColor, setSelectedColor] = useState(initialHabit?.colorId ?? ColorsSet[0].id)
     const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
     const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelids ?? []);
+    const {setCurrentHabit} = useHabits()
     
     const handleSave = () => {
         const trimmed = name.trim();
@@ -40,6 +42,13 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
         onSave(newHabit)
     }
+
+    useEffect(() => {
+        setCurrentHabit(initialHabit)
+
+        return () => setCurrentHabit(initialHabit)
+    }, [initialHabit])
+    
 
     return (
         <View>

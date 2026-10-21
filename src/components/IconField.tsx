@@ -24,9 +24,11 @@ const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor}: {
         return icon.name.toLowerCase().includes(search.trim().toLowerCase())
     })    
 
-    const displayIcon = expanded
-        ? filteredIcon
-        : filteredIcon.slice(0, 6)
+    const {currentHabit} = useHabits();
+    const current = filteredIcon.find((i) => i.id === currentHabit?.icon);
+    const otherIcon = filteredIcon.filter((i) => i.id !== currentHabit?.icon);
+    const ordered = current ? [current, ...otherIcon] : otherIcon   
+    const displayIcon = expanded ? ordered : ordered.slice(0, 6)
     
     return (
         <View style={panalStyle}>
