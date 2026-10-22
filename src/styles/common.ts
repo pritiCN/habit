@@ -174,4 +174,78 @@ export const common = StyleSheet.create({
     alignSelf: 'center',
     marginBottom: spacing.sm,
   },
+  // Wrapping grid; give children common.gridHalf for two columns
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    rowGap: spacing.md,
+  },
+  gridHalf: {
+    width: '48%',
+  },
+  // Selectable option card: [icon] / title / subtitle, centered
+  // Add common.tileActive for the selected state
+  tile: {
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.lg,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.md,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+    elevation: 1,
+    shadowColor: colors.shadow,
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  tileActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.primarySoft,
+  },
+  textCenter: {
+    textAlign: 'center',
+  },
+  textOnPrimary: {
+    color: colors.onPrimary,
+  },
+  // Row of equal-size round toggles that share the full width (e.g. weekdays)
+  // circleRow > [circle, circleActive?] > Text
+  circleRow: {
+    flexDirection: 'row',
+    gap: spacing.xs,
+  },
+  circle: {
+    flex: 1,
+    aspectRatio: 1,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.inputBackground,
+  },
+  circleActive: {
+    backgroundColor: colors.primary,
+  },
+  // Number stepper: [stepperButton -] [stepperValue] [stepperButton +]
+  stepperButton: {
+    width: 36,
+    height: 36,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.inputBackground,
+  },
+  stepperValue: {
+    minWidth: 44,
+    height: 36,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface,
+  },
 });
