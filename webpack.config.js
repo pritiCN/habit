@@ -20,7 +20,7 @@ module.exports = {
     rules: [
       {
         test: /\.[jt]sx?$/,
-        exclude: /node_modules[\\/](?!(react-native-web|@react-native|react-native-vector-icons)[\\/])/,
+        exclude: /node_modules[\\/](?!(react-native-web|@react-native|react-native-vector-icons|react-native-calendars|react-native-swipe-gestures)[\\/])/,
         use: {
           loader: 'babel-loader',
           options: {

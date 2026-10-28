@@ -248,4 +248,63 @@ export const common = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.surface,
   },
+  // Dropdown-style trigger: [selectText] ........ [chevron-down]
+  // Takes the free space in a row; pair with common.rowMain on the label
+  select: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    height: 44,
+    paddingHorizontal: spacing.md,
+    borderRadius: radius.sm,
+    backgroundColor: colors.inputBackground,
+  },
+  // Second sheet stacked over an already-open sheet
+  // [sheetOverlay, sheetStacked] > [panel, sheet]
+  sheetStacked: {
+    ...StyleSheet.absoluteFill,
+  },
+  // Round icon-only button (close, back, etc.)
+  iconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 999,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.inputBackground,
+  },
+  // Selectable list row: [icon][rowMain: title/subtitle] ........ [radio]
+  // Add common.tileActive for the selected state
+  optionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.md,
+    marginBottom: spacing.sm,
+    borderRadius: radius.md,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    backgroundColor: colors.surface,
+  },
+  // Radio indicator: [radio, radioActive?] > radioDot (only when active)
+  radio: {
+    width: 22,
+    height: 22,
+    borderRadius: 999,
+    borderWidth: 1.5,
+    borderColor: colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioActive: {
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
+  },
+  radioDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 999,
+    backgroundColor: colors.onPrimary,
+  },
 });

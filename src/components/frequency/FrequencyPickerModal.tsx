@@ -4,7 +4,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../../styles/common'
 import { colors } from '../../styles/theme'
-import { FrequencyDaysSet, FrequencyTypeSet } from '../../constants/frequencyTypeSet'
+import { FrequencyDaysSet, FrequencyTypeSet, StartOptions } from '../../constants/frequencyTypeSet'
+import StartForm from './StartForm'
+import CalenderPicker from './CalenderPicker'
 
 const FrequencyPickerModal = ({onClose}: {
     onClose: ()=> void
@@ -13,7 +15,23 @@ const FrequencyPickerModal = ({onClose}: {
     const [selectedType, setSelectedType] = useState<string>('daily')
     const [selectedDays, setSelectedDays] = useState<string[]>([])
     const [selectWeedRepeat, setSelectWeekRepeat] = useState<number>(1)
-    
+    const [actionStartFrom, setActionStartForm] = useState<'start' | 'calender' | ''>('')
+    const [startFrom, setStartFrom] = useState<string>('today')
+    const [startDate, setStartDate] = useState<string>('')
+
+    const handleStartSelect = (id: string) => {
+        setStartFrom(id)
+        setActionStartForm(id === 'custom' ? 'calender' : '')
+    }
+
+    const handleDateSelect = (date: string) => {
+        setStartDate(date)
+        setActionStartForm('')
+    }
+
+    const startLabel = startFrom === 'custom' && startDate
+        ? startDate
+        : StartOptions.find((o) => o.id === startFrom)?.name
     return (
         <Modal
             animationType="slide"
@@ -91,38 +109,75 @@ const FrequencyPickerModal = ({onClose}: {
                             }
                         </View>
 
-                        <View style={[common.buttonRow, common.section]}>
-                            <View style={common.rowIcon}>
-                                <Ionicons name="repeat-outline" size={22} color={colors.text} />
-                            </View>
-                            <Text style={[common.bodyText, common.rowMain]}>Repeat every</Text>
+                        <View style={common.section}>
+                            <View style={[common.card, common.buttonRow]}>
+                                <View style={common.rowIcon}>
+                                    <Ionicons name="repeat-outline" size={22} color={colors.text} />
+                                </View>
+                                <Text style={[common.bodyText, common.rowMain]}>Repeat every</Text>
 
-                            <TouchableOpacity 
-                                activeOpacity={0.8} 
-                                style={common.stepperButton}
-                                onPress={() => setSelectWeekRepeat(
-                                    (selectWeedRepeat === 1) ? selectWeedRepeat : selectWeedRepeat - 1
-                                )}
-                            >
-                                <Ionicons name="remove" size={20} color={colors.text} />
-                            </TouchableOpacity>
-                            <View style={common.stepperValue}>
-                                <Text style={common.label}>{selectWeedRepeat}</Text>
-                            </View>
-                            <TouchableOpacity 
-                                activeOpacity={0.8} 
-                                style={common.stepperButton}
-                                onPress={() => setSelectWeekRepeat(
-                                    (selectWeedRepeat === 4) ? selectWeedRepeat : selectWeedRepeat + 1
-                                )}
-                            >
-                                <Ionicons name="add" size={20} color={colors.text} />
-                            </TouchableOpacity>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    style={common.stepperButton}
+                                    onPress={() => setSelectWeekRepeat(
+                                        (selectWeedRepeat === 1) ? selectWeedRepeat : selectWeedRepeat - 1
+                                    )}
+                                >
+                                    <Ionicons name="remove" size={20} color={colors.text} />
+                                </TouchableOpacity>
+                                <View style={common.stepperValue}>
+                                    <Text style={common.label}>{selectWeedRepeat}</Text>
+                                </View>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    style={common.stepperButton}
+                                    onPress={() => setSelectWeekRepeat(
+                                        (selectWeedRepeat === 4) ? selectWeedRepeat : selectWeedRepeat + 1
+                                    )}
+                                >
+                                    <Ionicons name="add" size={20} color={colors.text} />
+                                </TouchableOpacity>
 
-                            <Text style={common.subtitle}>week</Text>
+                                <Text style={common.subtitle}>week</Text>
+                            </View>
+
+                            <View style={[common.card, common.buttonRow]}>
+                                <View style={common.rowIcon}>
+                                    <Ionicons name="calendar-outline" size={22} color={colors.text} />
+                                </View>
+                                <Text style={[common.bodyText, common.rowMain]}>Start from</Text>
+
+                                <TouchableOpacity 
+                                    activeOpacity={0.8} 
+                                    style={common.select}
+                                    onPress={() => setActionStartForm('start')}
+                                >
+                                    <Text style={common.bodyText}>{startLabel}</Text>
+                                    <Ionicons name="chevron-down" size={20} color={colors.text} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </ScrollView>
                 </View>
+                {
+                    actionStartFrom === 'start' && (
+                        <StartForm
+                            selected={startFrom}
+                            onclose={() => setActionStartForm('')}
+                            onSelect={handleStartSelect}
+                        />
+                    )
+                }
+
+                {
+                    actionStartFrom === 'calender' && (
+                        <CalenderPicker
+                            selected={startDate}
+                            onclose={() => setActionStartForm('start')}
+                            onSelect={handleDateSelect}
+                        />
+                    )
+                }
             </View>
         </Modal>
     )
