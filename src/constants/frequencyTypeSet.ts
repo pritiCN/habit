@@ -2,7 +2,7 @@ export const FrequencyTypeSet = [
     {id: 'daily', name: 'Daily', text: 'Every day', icon: 'calendar-outline'},
     {id: 'weekly', name: 'Weekly', text: 'Selected days', icon: 'calendar-outline'},
     {id: 'custom', name: 'Custom', text: 'Specific pattern', icon: 'calendar-number-outline'},
-    {id: 'flexible', name: 'Flexible', text: 'Set a target per week', icon: 'sync-outline'}
+    // {id: 'flexible', name: 'Flexible', text: 'Set a target per week', icon: 'sync-outline'}
 ]
 
 export const FrequencyDaysSet = [

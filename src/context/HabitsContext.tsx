@@ -16,6 +16,8 @@ type HabitsContextType = {
     getColor: (colorId: string, text?: boolean) => string;
     currentHabit: Habit | undefined
     setCurrentHabit: (habit:Habit | undefined) => void
+    toMilliSec: (date: string) => number
+    milliSecToSring: (date: number) => string
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined)
@@ -73,6 +75,19 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         
         return colorObj ? colorObj.color : '#000000'; // default to black if not found
     }
+
+    const toMilliSec = (date: string) => {
+        const [year, month, day] = date.split('-').map(Number)
+        return new Date(year, month - 1, day).getTime()
+    }
+
+    const milliSecToSring = (date: number) => {
+        const d = new Date(date)
+        const year = d.getFullYear()
+        const month = String(d.getMonth() + 1).padStart(2, '0')
+        const day = String(d.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
+    }
     
     return (
         <HabitsContext.Provider value={{
@@ -83,7 +98,9 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             toggleToday,
             getColor,
             currentHabit,
-            setCurrentHabit
+            setCurrentHabit,
+            toMilliSec,
+            milliSecToSring
         }}>
             {children}
         </HabitsContext.Provider>

@@ -6,4 +6,5 @@ export type Habit = {
     iconId: string;
     completedDates: string[]
     labelIds?: string[]
+    startDate?: number
 };

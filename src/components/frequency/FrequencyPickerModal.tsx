@@ -4,9 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../../styles/common'
 import { colors } from '../../styles/theme'
-import { FrequencyDaysSet, FrequencyTypeSet, StartOptions } from '../../constants/frequencyTypeSet'
-import StartForm from './StartForm'
-import CalenderPicker from './CalenderPicker'
+import { FrequencyDaysSet, FrequencyTypeSet } from '../../constants/frequencyTypeSet'
+import OptionRow from '../OptionRow'
 
 const FrequencyPickerModal = ({onClose}: {
     onClose: ()=> void
@@ -15,23 +14,7 @@ const FrequencyPickerModal = ({onClose}: {
     const [selectedType, setSelectedType] = useState<string>('daily')
     const [selectedDays, setSelectedDays] = useState<string[]>([])
     const [selectWeedRepeat, setSelectWeekRepeat] = useState<number>(1)
-    const [actionStartFrom, setActionStartForm] = useState<'start' | 'calender' | ''>('')
-    const [startFrom, setStartFrom] = useState<string>('today')
-    const [startDate, setStartDate] = useState<string>('')
 
-    const handleStartSelect = (id: string) => {
-        setStartFrom(id)
-        setActionStartForm(id === 'custom' ? 'calender' : '')
-    }
-
-    const handleDateSelect = (date: string) => {
-        setStartDate(date)
-        setActionStartForm('')
-    }
-
-    const startLabel = startFrom === 'custom' && startDate
-        ? startDate
-        : StartOptions.find((o) => o.id === startFrom)?.name
     return (
         <Modal
             animationType="slide"
@@ -60,27 +43,18 @@ const FrequencyPickerModal = ({onClose}: {
                             <Text style={common.subtitle}>How often do you want to do this habit?</Text>
                         </View>
 
-                        <View style={common.grid}>
+                        <View>
                             {
-                                FrequencyTypeSet.map((item) => {
-                                    const isActive = selectedType === item.id
-                                    return (
-                                        <TouchableOpacity
-                                            key={item.id}
-                                            activeOpacity={0.8}
-                                            onPress={() => setSelectedType(item.id)}
-                                            style={[common.gridHalf, common.tile, isActive && common.tileActive]}
-                                        >
-                                            <Ionicons
-                                                name={item.icon}
-                                                size={28}
-                                                color={isActive ? colors.primary : colors.text}
-                                            />
-                                            <Text style={common.heading}>{item.name}</Text>
-                                            <Text style={[common.subtitle, common.textCenter]}>{item.text}</Text>
-                                        </TouchableOpacity>
-                                    )
-                                })
+                                FrequencyTypeSet.map((item) => (
+                                    <OptionRow
+                                        key={item.id}
+                                        icon={item.icon}
+                                        name={item.name}
+                                        text={item.text}
+                                        isActive={selectedType === item.id}
+                                        onPress={() => setSelectedType(item.id)}
+                                    />
+                                ))
                             }
                         </View>
 
@@ -109,7 +83,7 @@ const FrequencyPickerModal = ({onClose}: {
                             }
                         </View>
 
-                        <View style={common.section}>
+                        {/* <View style={common.section}>
                             <View style={[common.card, common.buttonRow]}>
                                 <View style={common.rowIcon}>
                                     <Ionicons name="repeat-outline" size={22} color={colors.text} />
@@ -140,44 +114,9 @@ const FrequencyPickerModal = ({onClose}: {
 
                                 <Text style={common.subtitle}>week</Text>
                             </View>
-
-                            <View style={[common.card, common.buttonRow]}>
-                                <View style={common.rowIcon}>
-                                    <Ionicons name="calendar-outline" size={22} color={colors.text} />
-                                </View>
-                                <Text style={[common.bodyText, common.rowMain]}>Start from</Text>
-
-                                <TouchableOpacity 
-                                    activeOpacity={0.8} 
-                                    style={common.select}
-                                    onPress={() => setActionStartForm('start')}
-                                >
-                                    <Text style={common.bodyText}>{startLabel}</Text>
-                                    <Ionicons name="chevron-down" size={20} color={colors.text} />
-                                </TouchableOpacity>
-                            </View>
-                        </View>
+                        </View> */}
                     </ScrollView>
                 </View>
-                {
-                    actionStartFrom === 'start' && (
-                        <StartForm
-                            selected={startFrom}
-                            onclose={() => setActionStartForm('')}
-                            onSelect={handleStartSelect}
-                        />
-                    )
-                }
-
-                {
-                    actionStartFrom === 'calender' && (
-                        <CalenderPicker
-                            selected={startDate}
-                            onclose={() => setActionStartForm('start')}
-                            onSelect={handleDateSelect}
-                        />
-                    )
-                }
             </View>
         </Modal>
     )
