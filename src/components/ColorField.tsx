@@ -14,23 +14,27 @@ const ColorField = ({panalStyle, onSelect, selectedColor, currentColor}: {
   const current = ColorsSet.find((c) => c.id === currentColor);
   const otherColor = ColorsSet.filter((c) => c.id !== currentColor)
   const ordered = current ? [current, ...otherColor] : ColorsSet
-  const displayColor = expanded ? ordered : ordered.slice(0, 6);
-  
+  // Collapsed: first row only, last slot is the "more" button
+  const showMore = !expanded && ordered.length > 6
+  const displayColor = showMore ? ordered.slice(0, 5) : ordered;
+
   return (
     <View style={panalStyle}>
       <Text style={[common.label, styles.label]}>Choose a Color</Text>
-      <View style={styles.iconRow}>
+      <View style={common.gridSix}>
         {
           displayColor.map((option) => {
             const isSeleted = option.id === selectedColor
             return(
               <TouchableOpacity
                 key={option.id}
+                style={common.gridSixCell}
                 onPress={() => onSelect?.(option.id)}
               >
-                <View 
+                <View
                   style={[
                     common.iconSquare,
+                    common.squareFill,
                     {backgroundColor: option.color},
                     isSeleted && styles.iconSelected
                   ]}></View>
@@ -39,13 +43,15 @@ const ColorField = ({panalStyle, onSelect, selectedColor, currentColor}: {
           })
         }
         {
-            !expanded &&
+            showMore &&
             (
                 <TouchableOpacity
-                    style={[common.iconSquare, styles.moreButton]}
+                    style={common.gridSixCell}
                     onPress={()=>setExpanded(true)}
                 >
-                    <Text style={styles.moreButtonText}>•••</Text>
+                    <View style={[common.iconSquare, common.squareFill, styles.moreButton]}>
+                        <Text style={styles.moreButtonText}>•••</Text>
+                    </View>
                 </TouchableOpacity>
             )
         }

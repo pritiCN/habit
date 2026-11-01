@@ -28,7 +28,9 @@ const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor, currentIc
     const current = filteredIcon.find((i) => i.id === currentIcon);
     const otherIcon = filteredIcon.filter((i) => i.id !== currentIcon);
     const ordered = current ? [current, ...otherIcon] : otherIcon   
-    const displayIcon = expanded ? ordered : ordered.slice(0, 6)
+    // Collapsed: first row only, last slot is the "more" button
+    const showMore = !expanded && ordered.length > 6
+    const displayIcon = showMore ? ordered.slice(0, 5) : ordered
     
     return (
         <View style={panalStyle}>
@@ -44,17 +46,19 @@ const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor, currentIc
                 onChangeText={setSearch}
               />
             </View>
-            <View style={styles.iconRow}>
+            <View style={common.gridSix}>
                 {
-                    displayIcon.map((option) => {      
-                        const isSelect = selectedIcon === option.id   
+                    displayIcon.map((option) => {
+                        const isSelect = selectedIcon === option.id
                         return(
                             <TouchableOpacity
                                 key={option.id}
+                                style={common.gridSixCell}
                                 onPress={() => onSelect?.(option.id)}
                             >
                                 <View style={[
                                     common.iconSquare,
+                                    common.squareFill,
                                     isSelect && styles.iconSelected,
                                     {backgroundColor: `${colorCode}1A`, borderColor: `${colorCode}4D`}
                                 ]}>
@@ -68,13 +72,15 @@ const IconField = ({panalStyle, selectedIcon, onSelect, selectedColor, currentIc
                     })
                 }
                 {
-                    !expanded && filteredIcon.length > 6 &&
+                    showMore &&
                     (
                         <TouchableOpacity
-                            style={[common.iconSquare, styles.moreButton]}
+                            style={common.gridSixCell}
                             onPress={()=>setExpanded(true)}
                         >
-                            <Text style={styles.moreButtonText}>•••</Text>
+                            <View style={[common.iconSquare, common.squareFill, styles.moreButton]}>
+                                <Text style={styles.moreButtonText}>•••</Text>
+                            </View>
                         </TouchableOpacity>
                     )
                 }

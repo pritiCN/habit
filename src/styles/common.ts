@@ -156,6 +156,11 @@ export const common = StyleSheet.create({
   textSuccess: {
     color: colors.success,
   },
+  // Non-bold part inside a bold label, e.g. <Text style={common.label}>Title <Text style={common.textRegular}>(Optional)</Text></Text>
+  textRegular: {
+    fontWeight: '400',
+    color: colors.textMuted,
+  },
   // Bottom sheet modal: sheetOverlay > [panel, sheet] > sheetHandle + content
   sheetOverlay: {
     flex: 1,
@@ -183,6 +188,23 @@ export const common = StyleSheet.create({
   },
   gridHalf: {
     width: '48%',
+  },
+  // Fixed 6-per-row grid at any screen width (pickers)
+  // gridSix > gridSixCell > [iconSquare, squareFill]
+  gridSix: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: -spacing.xs,
+  },
+  gridSixCell: {
+    width: `${100 / 6}%`,
+    padding: spacing.xs,
+  },
+  // Stretch a fixed-size square (e.g. iconSquare) to fill its cell
+  squareFill: {
+    width: '100%',
+    height: 'auto',
+    aspectRatio: 1,
   },
   // Selectable option card: [icon] / title / subtitle, centered
   // Add common.tileActive for the selected state

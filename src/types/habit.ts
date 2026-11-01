@@ -1,3 +1,8 @@
+export type Reminder = {
+    status: boolean;
+    time: string;
+}
+
 export type Habit = {
     id: string;
     name: string;
@@ -6,5 +11,6 @@ export type Habit = {
     iconId: string;
     completedDates: string[]
     labelIds?: string[]
+    reminder?: Reminder
     startDate?: number
 };

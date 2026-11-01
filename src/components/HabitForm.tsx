@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
 import { styles } from '../styles/form.styles'
 import { colors } from '../styles/theme'
 import LabelPickerModal from './label/LabelPickerModal'
-import { Habit } from '../types/habit'
+import { Habit, Reminder } from '../types/habit'
 import ColorField from './ColorField'
 import { ColorsSet } from '../constants/colorset'
 import IconField from './IconField'
@@ -15,7 +15,6 @@ import { useHabits } from '../context/HabitsContext'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FrequencyPickerModal from './frequency/FrequencyPickerModal'
-import StartForm from './StartDateModal'
 import StartDateModal from './StartDateModal'
 import CalenderPicker from './frequency/CalenderPicker'
 import { StartOptions } from '../constants/frequencyTypeSet'
@@ -36,6 +35,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const [startFromStatus, setStartFromStatus] = useState<string>('today')
     const [startDate, setStartDate] = useState<string | undefined>(undefined)
     const {setCurrentHabit, toMilliSec, milliSecToSring} = useHabits()
+    const [reminder, setReminder] = useState<Reminder>({status: false, time: '09:00'})
 
     const startLabel = startFromStatus === 'custom' && startDate
         ? startDate
@@ -130,7 +130,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             {/* Description */}
             
             <View style={[common.panel, styles.fieldGroup]}>
-                <Text style={[common.label, styles.label]}>Description (Optional)</Text>
+                <Text style={[common.label, styles.label]}>Description <Text style={common.textRegular}>(Optional)</Text></Text>
                 <TextInput
                     style={[inputStyles.input, inputStyles.textArea]}
                     placeholderTextColor={colors.textMuted}
@@ -187,6 +187,28 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 </View>
             </TouchableOpacity>
 
+            {/* Reminder */}
+
+            <View style={[common.panel, styles.fieldGroup]}>
+                <View style={common.buttonRow}>
+                    <View style={[common.buttonRow, common.rowMain]}>
+                        <View style={common.rowIcon}>
+                            <Ionicons name="notifications-outline" size={22} color={colors.text} />
+                        </View>
+                        <View>
+                            <Text style={[common.label, common.rowTitle]}>Reminder <Text style={common.textRegular}>(Optional)</Text></Text>
+                            <Text style={common.subtitle}>How often to repeat this habit</Text>
+                        </View>
+                    </View>
+                    <View style={common.buttonRow}>
+                        <Switch 
+                            value={reminder.status}
+                            onValueChange={(value)=> setReminder({...reminder, status: value})}
+                        />
+                    </View>
+                </View>
+            </View>
+
             {/* Start From */}
 
             <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setActionStartForm('start')}>
@@ -197,7 +219,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                         </View>
                         <View>
                             <Text style={[common.label, common.rowTitle]}>Start Date</Text>
-                            <Text style={common.subtitle}>How often to repeat this habit</Text>
+                            <Text style={common.subtitle}>When to begin tracking this habit</Text>
                         </View>
                     </View>
                     <View style={common.buttonRow}>
