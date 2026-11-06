@@ -18,6 +18,7 @@ type HabitsContextType = {
     setCurrentHabit: (habit:Habit | undefined) => void
     toMilliSec: (date: string) => number
     milliSecToSring: (date: number) => string
+    to12Hour: (time: string) => { hour: string; minute: string; period: string }
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined)
@@ -88,6 +89,16 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         const day = String(d.getDate()).padStart(2, '0')
         return `${year}-${month}-${day}`
     }
+
+    const to12Hour = (time: string) => {
+        const [h, m] = time.split(':').map(Number);
+        
+        return {
+            hour: String(h % 12 || 12).padStart(2, '0'),
+            minute: String(m).padStart(2, '0'),
+            period: h >= 12  ? 'PM' : 'AM'
+        }
+    }
     
     return (
         <HabitsContext.Provider value={{
@@ -100,7 +111,8 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             currentHabit,
             setCurrentHabit,
             toMilliSec,
-            milliSecToSring
+            milliSecToSring,
+            to12Hour
         }}>
             {children}
         </HabitsContext.Provider>

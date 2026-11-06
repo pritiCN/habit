@@ -18,6 +18,14 @@ import FrequencyPickerModal from './frequency/FrequencyPickerModal'
 import StartDateModal from './StartDateModal'
 import CalenderPicker from './frequency/CalenderPicker'
 import { StartOptions } from '../constants/frequencyTypeSet'
+import TimePicker from './picker/TimePicker'
+
+const getCurrentTime = () => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0')
+    const mm = String(now.getMinutes()).padStart(2, '0')
+    return `${hh}:${mm}`
+}
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         onSave: (habit: Habit) => void;
@@ -34,8 +42,9 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const [actionStartFrom, setActionStartForm] = useState<'start' | 'calender' | ''>('')
     const [startFromStatus, setStartFromStatus] = useState<string>('today')
     const [startDate, setStartDate] = useState<string | undefined>(undefined)
-    const {setCurrentHabit, toMilliSec, milliSecToSring} = useHabits()
-    const [reminder, setReminder] = useState<Reminder>({status: false, time: '09:00'})
+    const {setCurrentHabit, toMilliSec, milliSecToSring, to12Hour} = useHabits()
+    const [reminder, setReminder] = useState<Reminder>(() => (initialHabit?.reminder || {status: false, time: getCurrentTime()}))
+    const [timePickerVisibility, setTimepickerVisibility] = useState(false)
 
     const startLabel = startFromStatus === 'custom' && startDate
         ? startDate
@@ -62,7 +71,8 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             iconId: selectedIcon,
             completedDates: initialHabit?.completedDates ??  [],
             labelIds: labelIds,
-            startDate: getStartDateMs()
+            startDate: getStartDateMs(),
+            reminder: reminder
         }
 
         onSave(newHabit)
@@ -94,6 +104,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         setValueofStartDate(initialHabit)
         return () => setCurrentHabit(initialHabit)
     }, [initialHabit])
+    
     
     return (
         <View>
@@ -197,10 +208,20 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                         </View>
                         <View>
                             <Text style={[common.label, common.rowTitle]}>Reminder <Text style={common.textRegular}>(Optional)</Text></Text>
-                            <Text style={common.subtitle}>How often to repeat this habit</Text>
+                            <Text style={common.subtitle}>Get a daily nudge to stay on track</Text>
                         </View>
                     </View>
                     <View style={common.buttonRow}>
+                        {
+                            reminder.status && (() => {
+                                const formattedTime = to12Hour(reminder.time)
+                                return (
+                                    <TouchableOpacity onPress={() => setTimepickerVisibility(true)}>
+                                        <Text>{`${formattedTime.hour}:${formattedTime.minute} ${formattedTime.period}`}</Text>
+                                    </TouchableOpacity>
+                                )
+                            })()
+                        }
                         <Switch 
                             value={reminder.status}
                             onValueChange={(value)=> setReminder({...reminder, status: value})}
@@ -270,12 +291,29 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 )
             }
 
+            {/* Calender Picker */}
+
             {
                 actionStartFrom === 'calender' && (
                     <CalenderPicker
                         selected={startDate}
                         onclose={() => setActionStartForm('')}
                         onSelect={handleDateSelect}
+                    />
+                )
+            }
+
+            {/* Timer Picker */}
+
+            {
+                timePickerVisibility && (
+                    <TimePicker
+                        onClose={() => setTimepickerVisibility(false)}
+                        time={reminder.time}
+                        onSelecte={(time) => {
+                            setReminder({...reminder, time})
+                            setTimepickerVisibility(false)
+                        }}
                     />
                 )
             }

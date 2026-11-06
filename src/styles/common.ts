@@ -270,6 +270,25 @@ export const common = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.surface,
   },
+  // Centered horizontal row, e.g. time picker columns
+  centerRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  // Vertical stepper: [stepperButton ▲] / bigValue / [stepperButton ▼]
+  stepperColumn: {
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  bigValue: {
+    fontSize: 32,
+    fontWeight: '700',
+    color: colors.text,
+    minWidth: 56,
+    textAlign: 'center',
+  },
   // Dropdown-style trigger: [selectText] ........ [chevron-down]
   // Takes the free space in a row; pair with common.rowMain on the label
   select: {
