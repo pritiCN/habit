@@ -45,9 +45,8 @@ const TimePicker = ({onClose, time, onSelecte}: {
     const minuteDown = useRepeatPress(() => changeMinutes(-1))
 
     const handleDone = () => {
-        let hour24 = hour
-        if(period === 'PM') hour24 = hour + 12
-        onSelecte(`${hour24}:${minute}`)        
+        const hour24 = (hour % 12) + (period === 'PM' ? 12 : 0)
+        onSelecte(`${String(hour24).padStart(2, '0')}:${String(minute).padStart(2, '0')}`)       
     }
   
   return (

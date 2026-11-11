@@ -5,7 +5,7 @@ import { inputStyles } from '../styles/input.styles'
 import { styles } from '../styles/form.styles'
 import { colors } from '../styles/theme'
 import LabelPickerModal from './label/LabelPickerModal'
-import { Habit, Reminder } from '../types/habit'
+import { Frequecny, Habit, Reminder } from '../types/habit'
 import ColorField from './ColorField'
 import { ColorsSet } from '../constants/colorset'
 import IconField from './IconField'
@@ -45,7 +45,8 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const {setCurrentHabit, toMilliSec, milliSecToSring, to12Hour} = useHabits()
     const [reminder, setReminder] = useState<Reminder>(() => (initialHabit?.reminder || {status: false, time: getCurrentTime()}))
     const [timePickerVisibility, setTimepickerVisibility] = useState(false)
-
+    const [selectedFrequecny, setSelectedFrequency] = useState<Frequecny | undefined>(initialHabit?.frequency)
+    
     const startLabel = startFromStatus === 'custom' && startDate
         ? startDate
         : StartOptions.find((o) => o.id === startFromStatus)?.name
@@ -71,6 +72,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             iconId: selectedIcon,
             completedDates: initialHabit?.completedDates ??  [],
             labelIds: labelIds,
+            frequency: selectedFrequecny,
             startDate: getStartDateMs(),
             reminder: reminder
         }
@@ -191,7 +193,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     </View>
                     <View style={common.buttonRow}>
                         <View style={common.badge}>
-                            <Text style={common.badgeText}>Not Set</Text>
+                            <Text style={common.badgeText}>{`${selectedFrequecny?.type ? selectedFrequecny.type : 'Not Set'}`}</Text>
                         </View>
                         <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                     </View>
@@ -274,7 +276,12 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             {
                 isFrequencyModalVisible && (
                     <FrequencyPickerModal 
+                        selectedFrequecny={selectedFrequecny}
                         onClose={() => setIsFrequencyModalVisible(false)}
+                        onDone={(freq) => {
+                            setSelectedFrequency(freq)
+                            setIsFrequencyModalVisible(false)
+                        }}
                     />
                 )
             }

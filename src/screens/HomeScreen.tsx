@@ -5,7 +5,7 @@ import type { RootStackParamList } from '../types/navigation'
 import { common } from '../styles/common'
 import { styles } from '../styles/HomeScreen.styles'
 import { colors } from '../styles/theme'
-import { getTodayString } from '../utils/date'
+import { getTodayMillis } from '../utils/date'
 import { useHabits } from '../context/HabitsContext'
 import { Habit } from '../types/habit'
 import { IconComponent } from '../components/AppIcon'
@@ -22,9 +22,9 @@ function HabitItem({
     onPress: () => void;
     onToggle: () => void;
   }) {
-    const today = getTodayString();
-    const isDoneToday = habit.completedDates.includes(today);
     const { getColor } = useHabits();
+    const today = getTodayMillis()
+    const isDoneToday = habit.completedDates.includes(today);
     const habitColor = getColor(habit.colorId);
     
   return (

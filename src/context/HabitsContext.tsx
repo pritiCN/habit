@@ -1,6 +1,6 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { loadHabits, saveHabits } from "../storage/habitStorage";
-import { getTodayString } from "../utils/date";
+import { getTodayMillis } from "../utils/date";
 import { Habit } from "../types/habit";
 import { Habits } from "../constants/habit";
 import { ColorsSet } from "../constants/colorset";
@@ -55,7 +55,8 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     }
 
     const toggleToday = (habitId: string) => {
-        const today = getTodayString();
+        const today = getTodayMillis();
+        
         setHabits((prev) => 
             prev.map((habit) => {
                 if(habit.id !== habitId) return habit;

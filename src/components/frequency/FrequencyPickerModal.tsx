@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -6,14 +6,45 @@ import { common } from '../../styles/common'
 import { colors } from '../../styles/theme'
 import { FrequencyDaysSet, FrequencyTypeSet } from '../../constants/frequencyTypeSet'
 import OptionRow from '../OptionRow'
+import { Calendar, DateData } from 'react-native-calendars'
+import { Frequecny } from '../../types/habit'
 
-const FrequencyPickerModal = ({onClose}: {
+const FrequencyPickerModal = ({onClose, onDone, selectedFrequecny}: {
     onClose: ()=> void
-}) => {
+    onDone: (frequecny: Frequecny) => void
+    selectedFrequecny?: Frequecny
+}) => {    
     const insets = useSafeAreaInsets()
-    const [selectedType, setSelectedType] = useState<string>('daily')
-    const [selectedDays, setSelectedDays] = useState<string[]>([])
-    const [selectWeedRepeat, setSelectWeekRepeat] = useState<number>(1)
+    const [selectedType, setSelectedType] = useState<string>(selectedFrequecny?.type || 'daily')
+    const [selectedDays, setSelectedDays] = useState<string[]>(selectedFrequecny?.days || [])
+    const [onSelectedDates, setOnSelectedDates] = useState<number[]>(selectedFrequecny?.dates || [])
+
+    const handleDaysSelection = (day: DateData) => {
+        setOnSelectedDates((prev) => 
+            prev.includes(day.timestamp) 
+                ? prev.filter((d) => d !== day.timestamp)
+                : [...prev, day.timestamp]
+        )
+    }
+
+    // Convert the array into the shape <Calendar> expects
+    const markedDates = useMemo(
+        () =>
+            onSelectedDates.reduce<Record<string, { selected: boolean }>>((acc, ms) => {
+                const key = new Date(ms).toISOString().split('T')[0]
+                acc[key] = { selected: true }
+                return acc
+            }, {}),
+        [onSelectedDates]
+    )
+
+    const handleDone = () => {
+        if(selectedType === 'weekly') return onDone({type: selectedType, days: selectedDays})
+        if(selectedType === 'custom') return onDone({type: selectedType, dates: [...onSelectedDates].sort((a, b) => a - b)})
+        onDone({type: selectedType})
+    }
+
+
 
     return (
         <Modal
@@ -33,7 +64,7 @@ const FrequencyPickerModal = ({onClose}: {
                                 <Ionicons name="arrow-back" size={22} color={colors.text} />
                             </TouchableOpacity>
                             <Text style={[common.label, common.headerTitle]}>Frequency</Text>
-                            <TouchableOpacity onPress={onClose}>
+                            <TouchableOpacity onPress={handleDone}>
                                 <Text style={[common.label, common.textSuccess]}>Done</Text>
                             </TouchableOpacity>
                         </View>
@@ -57,64 +88,68 @@ const FrequencyPickerModal = ({onClose}: {
                                 ))
                             }
                         </View>
-
-                        <Text style={[common.heading, common.section]}>Select Days</Text>
-                        <View style={common.circleRow}>
-                            {
-                                FrequencyDaysSet.map((item) => {
-                                    const isActive = selectedDays.includes(item.id)
-                                    return (
-                                        <TouchableOpacity
-                                            key={item.id}
-                                            activeOpacity={0.8}
-                                            onPress={() => 
-                                                setSelectedDays((prev) => 
-                                                    prev.includes(item.id)
-                                                        ? prev.filter((d) => d !== item.id)
-                                                        : [...prev, item.id] 
+                        {
+                            selectedType === 'weekly' && (                                
+                                <>
+                                    <Text style={[common.heading, common.section]}>Select Days</Text>
+                                    <View style={common.circleRow}>
+                                        {
+                                            FrequencyDaysSet.map((item) => {
+                                                const isActive = selectedDays.includes(item.id)
+                                                return (
+                                                    <TouchableOpacity
+                                                        key={item.id}
+                                                        activeOpacity={0.8}
+                                                        onPress={() => 
+                                                            setSelectedDays((prev) => 
+                                                                prev.includes(item.id)
+                                                                    ? prev.filter((d) => d !== item.id)
+                                                                    : [...prev, item.id] 
+                                                            )
+                                                        }
+                                                        style={[common.circle, isActive && common.circleActive]}
+                                                    >
+                                                        <Text style={[common.label, isActive && common.textOnPrimary]}>{item.short}</Text>
+                                                    </TouchableOpacity>
                                                 )
-                                            }
-                                            style={[common.circle, isActive && common.circleActive]}
-                                        >
-                                            <Text style={[common.label, isActive && common.textOnPrimary]}>{item.short}</Text>
-                                        </TouchableOpacity>
-                                    )
-                                })
-                            }
-                        </View>
+                                            })
+                                        }
+                                    </View>
+                                </>
+                            )
+                        }
 
-                        {/* <View style={common.section}>
-                            <View style={[common.card, common.buttonRow]}>
-                                <View style={common.rowIcon}>
-                                    <Ionicons name="repeat-outline" size={22} color={colors.text} />
-                                </View>
-                                <Text style={[common.bodyText, common.rowMain]}>Repeat every</Text>
-
-                                <TouchableOpacity
-                                    activeOpacity={0.8}
-                                    style={common.stepperButton}
-                                    onPress={() => setSelectWeekRepeat(
-                                        (selectWeedRepeat === 1) ? selectWeedRepeat : selectWeedRepeat - 1
+                        {
+                            selectedType === 'custom' && (
+                                <Calendar
+                                    onDayPress={handleDaysSelection}
+                                    minDate={new Date().toISOString().split('T')[0]} 
+                                    renderArrow={(direction) => (
+                                        <Ionicons
+                                            name={direction === 'left' ? 'chevron-back' : 'chevron-forward'}
+                                            size={20}
+                                            color={colors.text}
+                                        />
                                     )}
-                                >
-                                    <Ionicons name="remove" size={20} color={colors.text} />
-                                </TouchableOpacity>
-                                <View style={common.stepperValue}>
-                                    <Text style={common.label}>{selectWeedRepeat}</Text>
-                                </View>
-                                <TouchableOpacity
-                                    activeOpacity={0.8}
-                                    style={common.stepperButton}
-                                    onPress={() => setSelectWeekRepeat(
-                                        (selectWeedRepeat === 4) ? selectWeedRepeat : selectWeedRepeat + 1
-                                    )}
-                                >
-                                    <Ionicons name="add" size={20} color={colors.text} />
-                                </TouchableOpacity>
-
-                                <Text style={common.subtitle}>week</Text>
-                            </View>
-                        </View> */}
+                                    markedDates={markedDates}
+                                    theme={{
+                                        calendarBackground: colors.surface,
+                                        monthTextColor: colors.text,
+                                        textMonthFontWeight: '700',
+                                        textSectionTitleColor: colors.textMuted,
+                                        dayTextColor: colors.text,
+                                        textDisabledColor: colors.border,
+                                        todayTextColor: colors.primary,
+                                        selectedDayBackgroundColor: colors.primary,
+                                        selectedDayTextColor: colors.onPrimary,
+                                    }}
+                                />
+                            )
+                        }
+                        
+                        <TouchableOpacity style={common.button} onPress={handleDone}>
+                            <Text style={common.buttonText}>Done</Text>
+                        </TouchableOpacity>
                     </ScrollView>
                 </View>
             </View>

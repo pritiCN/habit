@@ -1,3 +1,5 @@
-export function getTodayString(): string {
-    return new Date().toISOString().split('T')[0]
+export function getTodayMillis(): number {
+    const d = new Date()
+    d.setHours(0, 0, 0, 0)
+    return d.getTime();
 }
