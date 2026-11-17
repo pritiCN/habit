@@ -1,5 +1,7 @@
 import React from 'react'
-import { Text, View, SafeAreaView, ScrollView } from 'react-native'
+import { Text, View, ScrollView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import BackButton from '../components/BackButton'
 import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -17,6 +19,7 @@ const CreateHabitScreen = ({navigation}: Props) => {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
+        <BackButton />
         <View style={styles.header}>
           <Text style={[common.title, styles.title]}>Create New Habit</Text>
           <Text style={[common.subtitle, styles.subtitle]}>Small step. Big changes.</Text>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Switch, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
+import Toggle from './Toggle'
 import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
 import { styles } from '../styles/form.styles'
@@ -12,19 +13,50 @@ import IconField from './IconField'
 import { IconsSet } from '../constants/iconset'
 import { LabelProvider } from '../context/LabelContext'
 import { useHabits } from '../context/HabitsContext'
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FrequencyPickerModal from './frequency/FrequencyPickerModal'
 import StartDateModal from './StartDateModal'
 import CalenderPicker from './frequency/CalenderPicker'
-import { StartOptions } from '../constants/frequencyTypeSet'
+import { FrequencyDaysSet, StartOptions } from '../constants/frequencyTypeSet'
 import TimePicker from './picker/TimePicker'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { IconComponent } from './AppIcon'
+import { Labels } from '../constants/labelset'
 
 const getCurrentTime = () => {
     const now = new Date();
     const hh = String(now.getHours()).padStart(2, '0')
     const mm = String(now.getMinutes()).padStart(2, '0')
     return `${hh}:${mm}`
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+// e.g. 16 Nov 2026
+const formatDate = (ms: number) => {
+    const d = new Date(ms)
+    return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`
+}
+
+// Title + subtitle shown in the Frequency panel
+const getFrequencySummary = (freq?: Frequecny) => {
+    switch (freq?.type) {
+        case 'daily':
+            return { title: 'Every day', subtitle: 'Repeats daily' }
+        case 'weekly': {
+            const days = FrequencyDaysSet
+                .filter((d) => freq.days?.includes(d.id))
+                .map((d) => d.short)
+                .join(', ')
+            return { title: 'Selected days', subtitle: days || 'No days selected' }
+        }
+        case 'custom': {
+            const count = freq.dates?.length ?? 0
+            return { title: 'Specific dates', subtitle: `${count} ${count === 1 ? 'date' : 'dates'} selected` }
+        }
+        default:
+            return { title: 'Not set', subtitle: 'Tap to choose how often' }
+    }
 }
 
 const HabitForm = ({onSave, initialHabit, secondaryAction}: {
@@ -42,7 +74,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const [actionStartFrom, setActionStartForm] = useState<'start' | 'calender' | ''>('')
     const [startFromStatus, setStartFromStatus] = useState<string>('today')
     const [startDate, setStartDate] = useState<string | undefined>(undefined)
-    const {setCurrentHabit, toMilliSec, milliSecToSring, to12Hour} = useHabits()
+    const {setCurrentHabit, toMilliSec, milliSecToSring, to12Hour, labels, getColor} = useHabits()
     const [reminder, setReminder] = useState<Reminder>(() => (initialHabit?.reminder || {status: false, time: getCurrentTime()}))
     const [timePickerVisibility, setTimepickerVisibility] = useState(false)
     const [selectedFrequecny, setSelectedFrequency] = useState<Frequecny | undefined>(initialHabit?.frequency)
@@ -50,6 +82,15 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
     const startLabel = startFromStatus === 'custom' && startDate
         ? startDate
         : StartOptions.find((o) => o.id === startFromStatus)?.name
+
+    // Selected labels in order, skipping ids whose label was deleted
+    const selectedLabels = labelIds
+        .map((id) => labels.find((item) => item.id === id))
+        .filter((label): label is NonNullable<typeof label> => !!label)
+    const habitColor = getColor(selectedColor)
+    // Text colour that stays readable on top of the habit colour
+    const onHabitColor = ColorsSet.find((c) => c.id === selectedColor)?.blackColor ? '#000000' : colors.onPrimary
+    const frequencySummary = getFrequencySummary(selectedFrequecny)
 
     const getStartDateMs = () => {
         if(startFromStatus === 'custom' && startDate) return toMilliSec(startDate)
@@ -59,6 +100,11 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         if(startFromStatus === 'tomorrow') date.setDate(date.getDate() + 1)
         return date.getTime()
     }
+
+    // e.g. "Today, 16 Nov 2026" or "20 Nov 2026" for a picked date
+    const startText = startFromStatus === 'custom'
+        ? (startDate ? formatDate(toMilliSec(startDate)) : startLabel)
+        : `${startLabel}, ${formatDate(getStartDateMs())}`
     
     const handleSave = () => {
         const trimmed = name.trim();
@@ -107,12 +153,18 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         return () => setCurrentHabit(initialHabit)
     }, [initialHabit])
     
+    console.log(labels);
     
     return (
         <View>
             {/* Habit name (required) */}
             <View style={[common.panel, styles.fieldGroup]}>
-                <Text style={[common.label, styles.label]}>Habit Name</Text>
+                <View style={common.fieldHeader}>
+                    <View style={common.rowIcon}>
+                        <MaterialCommunityIcons name="alpha-t-box-outline" size={22} color={colors.text} />
+                    </View>
+                    <Text style={common.label}>Habit Name</Text>
+                </View>
                 <TextInput
                     style={inputStyles.input}
                     placeholderTextColor={colors.textMuted}
@@ -143,7 +195,12 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
             {/* Description */}
             
             <View style={[common.panel, styles.fieldGroup]}>
-                <Text style={[common.label, styles.label]}>Description <Text style={common.textRegular}>(Optional)</Text></Text>
+                <View style={common.fieldHeader}>
+                    <View style={common.rowIcon}>
+                        <MaterialCommunityIcons name="file-document-outline" size={22} color={colors.text} />
+                    </View>
+                    <Text style={common.label}>Description <Text style={common.textRegular}>(Optional)</Text></Text>
+                </View>
                 <TextInput
                     style={[inputStyles.input, inputStyles.textArea]}
                     placeholderTextColor={colors.textMuted}
@@ -158,45 +215,63 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
             {/* Labels */}
 
-            <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setIsLabelModalVisible(true)}>
-                <View style={common.buttonRow}>
-                    <View style={[common.buttonRow, common.rowMain]}>
-                        <View style={common.rowIcon}>
-                            <FontAwesome name="tag" size={22} color={colors.text} />
-                        </View>
-                        <View>
-                            <Text style={[common.label, common.rowTitle]}>Labels</Text>
-                            <Text style={common.subtitle}>Organize your habit with labels</Text>
-                        </View>
+            <View style={[common.panel, styles.fieldGroup]}>
+                <View style={common.fieldHeader}>
+                    <View style={common.rowIcon}>
+                        <MaterialCommunityIcons name="tag-outline" size={22} color={colors.text} />
                     </View>
-                    <View style={common.buttonRow}>
-                        <View style={common.badge}>
-                            <Text style={common.badgeText}>{labelIds.length} Labels</Text>
-                        </View>
-                        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-                    </View>
+                    <Text style={common.label}>Labels</Text>
                 </View>
-            </TouchableOpacity>
+
+                <View style={common.buttonRow}>
+                    <View style={[common.chipWrap, common.rowMain]}>
+                        {
+                            selectedLabels.length === 0 ? (
+                                <Text style={common.subtitle}>Organize your habit with labels</Text>
+                            ) : (
+                                selectedLabels.map((label) => {
+                                    const labelColor = getColor(label.colorId)
+                                    return (
+                                        <View key={label.id} style={[common.chip, {backgroundColor: `${labelColor}1A`}]}>
+                                            <IconComponent icon={label.iconId} color={labelColor} size={16} />
+                                            <Text style={[common.chipText, {color: labelColor}]}>{label.name}</Text>
+                                            <TouchableOpacity
+                                                hitSlop={8}
+                                                onPress={() => setLabelIds(labelIds.filter((i) => i !== label.id))}
+                                            >
+                                                <Ionicons name="close" size={16} color={labelColor} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    )
+                                })
+                            )
+                        }
+                    </View>
+                    <TouchableOpacity
+                        style={[common.chip, {backgroundColor: `${habitColor}1A`}]}
+                        onPress={() => setIsLabelModalVisible(true)}
+                    >
+                        <Ionicons name="add" size={16} color={habitColor} />
+                        <Text style={[common.chipText, {color: habitColor}]}>
+                            {selectedLabels.length === 0 ? 'Add Labels' : 'Edit Labels'}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
 
             {/* Frequency */}
 
             <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setIsFrequencyModalVisible(true)}>
                 <View style={common.buttonRow}>
-                    <View style={[common.buttonRow, common.rowMain]}>
-                        <View style={common.rowIcon}>
-                            <FontAwesome name="calendar" size={22} color={colors.text} />
-                        </View>
-                        <View>
-                            <Text style={[common.label, common.rowTitle]}>Frequency</Text>
-                            <Text style={common.subtitle}>How often to repeat this habit</Text>
-                        </View>
+                    <View style={[common.rowIcon, common.alignTop]}>
+                        <MaterialCommunityIcons name="calendar-clock-outline" size={22} color={colors.text} />
                     </View>
-                    <View style={common.buttonRow}>
-                        <View style={common.badge}>
-                            <Text style={common.badgeText}>{`${selectedFrequecny?.type ? selectedFrequecny.type : 'Not Set'}`}</Text>
-                        </View>
-                        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+                    <View style={common.rowMain}>
+                        <Text style={[common.label, common.rowTitle]}>Frequency</Text>
+                        <Text style={common.valueLarge}>{frequencySummary.title}</Text>
+                        <Text style={common.subtitle}>{frequencySummary.subtitle}</Text>
                     </View>
+                    <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                 </View>
             </TouchableOpacity>
 
@@ -204,31 +279,40 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
             <View style={[common.panel, styles.fieldGroup]}>
                 <View style={common.buttonRow}>
-                    <View style={[common.buttonRow, common.rowMain]}>
-                        <View style={common.rowIcon}>
-                            <Ionicons name="notifications-outline" size={22} color={colors.text} />
-                        </View>
-                        <View>
-                            <Text style={[common.label, common.rowTitle]}>Reminder <Text style={common.textRegular}>(Optional)</Text></Text>
-                            <Text style={common.subtitle}>Get a daily nudge to stay on track</Text>
-                        </View>
+                    <View style={[common.rowIcon, common.alignTop]}>
+                        <Ionicons name="notifications-outline" size={22} color={colors.text} />
                     </View>
-                    <View style={common.buttonRow}>
-                        {
-                            reminder.status && (() => {
-                                const formattedTime = to12Hour(reminder.time)
-                                return (
-                                    <TouchableOpacity onPress={() => setTimepickerVisibility(true)}>
-                                        <Text>{`${formattedTime.hour}:${formattedTime.minute} ${formattedTime.period}`}</Text>
-                                    </TouchableOpacity>
+                    <View style={common.rowMain}>
+                        <Text style={[common.label, common.rowTitle]}>Reminder</Text>
+                        <TouchableOpacity
+                            style={common.valueField}
+                            disabled={!reminder.status}
+                            onPress={() => setTimepickerVisibility(true)}
+                        >
+                            {
+                                reminder.status ? (() => {
+                                    const t = to12Hour(reminder.time)
+                                    return <Text style={common.valueText}>{`${t.hour}:${t.minute} ${t.period}`}</Text>
+                                })() : (
+                                    <Text style={[common.valueText, common.textRegular]}>Off</Text>
                                 )
-                            })()
-                        }
-                        <Switch 
+                            }
+                        </TouchableOpacity>
+                    </View>
+                    <View style={common.alignTop}>
+                        <Toggle
                             value={reminder.status}
-                            onValueChange={(value)=> setReminder({...reminder, status: value})}
+                            onValueChange={(value) => setReminder({...reminder, status: value})}
+                            activeColor={habitColor}
                         />
                     </View>
+                    <TouchableOpacity
+                        hitSlop={8}
+                        disabled={!reminder.status}
+                        onPress={() => setTimepickerVisibility(true)}
+                    >
+                        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -236,21 +320,16 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
             <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setActionStartForm('start')}>
                 <View style={common.buttonRow}>
-                    <View style={[common.buttonRow, common.rowMain]}>
-                        <View style={common.rowIcon}>
-                            <Ionicons name="calendar-outline" size={22} color={colors.text} />
-                        </View>
-                        <View>
-                            <Text style={[common.label, common.rowTitle]}>Start Date</Text>
-                            <Text style={common.subtitle}>When to begin tracking this habit</Text>
+                    <View style={[common.rowIcon, common.alignTop]}>
+                        <MaterialCommunityIcons name="calendar-month-outline" size={22} color={colors.text} />
+                    </View>
+                    <View style={common.rowMain}>
+                        <Text style={[common.label, common.rowTitle]}>Start Date</Text>
+                        <View style={common.valueField}>
+                            <Text style={common.valueText}>{startText}</Text>
                         </View>
                     </View>
-                    <View style={common.buttonRow}>
-                        <View style={common.badge}>
-                            <Text style={common.badgeText}>{startLabel}</Text>
-                        </View>
-                        <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-                    </View>
+                    <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                 </View>
             </TouchableOpacity>
 
@@ -325,22 +404,23 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                 )
             }
             
-            {
-                secondaryAction ? (
-                    <View style={common.buttonRow}>
-                        <TouchableOpacity style={[common.button, styles.primaryInRow]} onPress={handleSave}>
-                            <Text style={common.buttonText}>{initialHabit ? 'Save Change' : 'Save Habit'}</Text>
+            <View style={common.buttonStack}>
+                <TouchableOpacity
+                    style={[common.button, common.buttonLg, {backgroundColor: habitColor}]}
+                    onPress={handleSave}
+                >
+                    <Text style={[common.buttonText, common.buttonLgText, {color: onHabitColor}]}>
+                        {initialHabit ? 'Save Changes' : 'Save Habit'}
+                    </Text>
+                </TouchableOpacity>
+                {
+                    secondaryAction && (
+                        <TouchableOpacity style={[common.buttonDanger, common.buttonLg]} onPress={secondaryAction.onPress}>
+                            <Text style={[common.buttonDangerText, common.buttonLgText]}>{secondaryAction.label}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={common.buttonDanger} onPress={secondaryAction.onPress}>
-                            <Text style={common.buttonDangerText}>{secondaryAction.label}</Text>
-                        </TouchableOpacity>
-                    </View>
-                ) : (
-                    <TouchableOpacity style={common.button} onPress={handleSave}>
-                        <Text style={common.buttonText}>{initialHabit ? 'Save Change' : 'Save Habit'}</Text>
-                    </TouchableOpacity>
-                )
-            }
+                    )
+                }
+            </View>
         </View>
     )
 }

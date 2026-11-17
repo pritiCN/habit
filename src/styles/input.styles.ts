@@ -24,6 +24,12 @@ export const inputStyles = StyleSheet.create({
     borderRadius: radius.sm,
     backgroundColor: colors.inputBackground,
   },
+  // Search bar inside a form panel (under a fieldHeader, above a grid)
+  // [searchBar, searchBarInField]
+  searchBarInField: {
+    marginTop: 0,
+    marginBottom: spacing.md,
+  },
   searchInput: {
     flex: 1,
     paddingVertical: spacing.sm,

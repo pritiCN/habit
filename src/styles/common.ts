@@ -125,6 +125,68 @@ export const common = StyleSheet.create({
   rowTitle: {
     marginBottom: 2,
   },
+  // On/off toggle (see components/Toggle): toggleTrack > toggleThumb
+  // If you change these sizes, update THUMB_TRAVEL in Toggle.tsx
+  toggleTrack: {
+    width: 44,
+    height: 26,
+    borderRadius: 13,
+    padding: 3,
+    justifyContent: 'center',
+  },
+  toggleThumb: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: colors.surface,
+    elevation: 2,
+    shadowColor: colors.shadow,
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 1 },
+  },
+  // Keep a row's icon at the top when the row is taller than the icon
+  alignTop: {
+    alignSelf: 'flex-start',
+  },
+  // Grey box showing a picked value under a row title (time, date, ...)
+  // valueField > valueText
+  valueField: {
+    marginTop: spacing.xs,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.md,
+    backgroundColor: colors.inputBackground,
+  },
+  valueText: {
+    fontSize: 16,
+    color: colors.text,
+  },
+  // Prominent value under a row title, e.g. "Every day"
+  valueLarge: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  // Full-width buttons stacked vertically: buttonStack > [button, buttonLg]
+  buttonStack: {
+    gap: spacing.sm,
+    marginTop: spacing.sm,
+  },
+  buttonLg: {
+    paddingVertical: spacing.md,
+  },
+  buttonLgText: {
+    fontSize: 17,
+  },
+  // Form field header: [icon] Label, sits above an input
+  // fieldHeader > [rowIcon > Icon] + [label]
+  fieldHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
   badge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -137,6 +199,26 @@ export const common = StyleSheet.create({
   badgeText: {
     fontSize: 13,
     color: colors.textMuted,
+  },
+  // Wrapping row of chips; combine with rowMain to take the free space
+  chipWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  // Tinted pill tag: [icon] Text [x]
+  // Set backgroundColor (tint) inline, e.g. {backgroundColor: `${color}1A`}
+  chip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingHorizontal: spacing.sm + 2,
+    paddingVertical: 6,
+    borderRadius: radius.pill,
+  },
+  chipText: {
+    fontSize: 13,
+    fontWeight: '500',
   },
   // Section heading text inside a panel/sheet
   heading: {
@@ -199,6 +281,14 @@ export const common = StyleSheet.create({
   gridSixCell: {
     width: `${100 / 6}%`,
     padding: spacing.xs,
+  },
+  // Squares that share a row's width equally (e.g. a single row of swatches)
+  // [buttonRow, rowMain] > [iconSquare, squareFlex]
+  squareFlex: {
+    flex: 1,
+    width: 'auto',
+    height: 'auto',
+    aspectRatio: 1,
   },
   // Stretch a fixed-size square (e.g. iconSquare) to fill its cell
   squareFill: {
@@ -305,6 +395,11 @@ export const common = StyleSheet.create({
   // [sheetOverlay, sheetStacked] > [panel, sheet]
   sheetStacked: {
     ...StyleSheet.absoluteFill,
+  },
+  // Plain back arrow at the top of a screen, above the title
+  backButton: {
+    alignSelf: 'flex-start',
+    marginBottom: spacing.md,
   },
   // Round icon-only button (close, back, etc.)
   iconButton: {

@@ -1,10 +1,11 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import React, { createContext, ReactNode, useContext, useState } from 'react'
 import { Label } from '../types/label';
-import { Labels } from '../constants/labelset';
-import { loadLabels, saveLabels } from '../storage/labelStorage';
+import { useHabits } from './HabitsContext';
 
+// UI state for the label picker only (selection + editing).
+// Label data, loading and saving live in HabitsContext.
 type LabelContextType = {
-    // data
+    // data (from HabitsContext)
     labels: Label[];
     searchLabels: (query: string) => Label[];
     addLabel: (label: Label) => void;
@@ -25,46 +26,13 @@ type LabelContextType = {
 const LabelContext = createContext<LabelContextType | undefined>(undefined);
 
 export function LabelProvider({children}: {children: ReactNode}) {
-    const [labels, setLabels] = useState<Label[]>([])
-    const [isLoaded, setIsLoaded] = useState(false);
+    const { labels, searchLabels, addLabel, updateLabel, deleteLabel: removeLabel } = useHabits()
     const [selectedIds, setSelectedIds] = useState<string[]>([])
     const [editingLabel, setEditingLabel] = useState<Label | null>(null)
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const stored = await loadLabels();
-                setLabels(stored ?? Labels)
-            } catch (e) {
-                console.warn('Failed to load labels', e)
-                setLabels(Labels)
-            } finally {
-                setIsLoaded(true)
-            }
-        })()
-    }, []);
-
-    useEffect(() => {
-        if (isLoaded) {
-            saveLabels(labels);
-        }
-    }, [isLoaded, labels])
-
-    const searchLabels = (query: string) => {
-        const q = query.trim().toLowerCase();
-        return labels.filter((label) => label.name.toLowerCase().includes(q))
-    }
-
-    const addLabel = (label: Label) => {
-        setLabels((prev) => [...prev, label])
-    }
-
-    const updateLabel = (updated: Label) => {
-        setLabels((prev) => prev.map((l) => (l.id === updated.id ? updated : l)))
-    }
-
+    // Also clear the deleted label from the picker's UI state
     const deleteLabel = (id: string) => {
-        setLabels((prev) => prev.filter((l) => l.id !== id))
+        removeLabel(id)
         setSelectedIds((prev) => prev.filter((x) => x !== id))
         setEditingLabel((prev) => (prev?.id === id ? null : prev))
     }

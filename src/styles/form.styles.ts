@@ -33,19 +33,8 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.primary,
   },
-  moreButton: {
-    backgroundColor: colors.inputBackground,
-  },
-  moreButtonText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: colors.textMuted,
-  },
   deleteButton: {
     marginTop: spacing.sm,
-  },
-  primaryInRow: {
-    flex: 1,
   },
   charCount: {
     alignSelf: 'flex-end',

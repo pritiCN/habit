@@ -1,5 +1,7 @@
 import React from 'react'
-import { Alert, Platform, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { Alert, Platform, ScrollView, Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import BackButton from '../components/BackButton'
 import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -17,6 +19,7 @@ const EditHabitScreen = ({ navigation, route }: Props) => {
   if (!habit) {
     return (
       <SafeAreaView style={[common.screen, styles.container]}>
+        <BackButton />
         <Text style={common.bodyText}>Habit not found.</Text>
       </SafeAreaView>
     )
@@ -53,6 +56,7 @@ const EditHabitScreen = ({ navigation, route }: Props) => {
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
       >
+        <BackButton />
         <View style={styles.header}>
           <Text style={[common.title, styles.title]}>Edit Habit</Text>
           <Text style={[common.subtitle, styles.subtitle]}>Update or remove this habit.</Text>
@@ -64,7 +68,7 @@ const EditHabitScreen = ({ navigation, route }: Props) => {
             updateHabit(updated)
             navigation.goBack();
           }}
-          secondaryAction={{ label: 'Delete', onPress: handleDelete }}
+          secondaryAction={{ label: 'Delete Habit', onPress: handleDelete }}
         />
       </ScrollView>
     </SafeAreaView>
