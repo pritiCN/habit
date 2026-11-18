@@ -15,6 +15,15 @@ export const inputStyles = StyleSheet.create({
     minHeight: 80,
     textAlignVertical: 'top',
   },
+  charCount: {
+    alignSelf: 'flex-end',
+    marginTop: spacing.xs,
+    fontSize: 12,
+    color: colors.textMuted,
+  },
+  charCountLimit: {
+    color: colors.danger,
+  },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',

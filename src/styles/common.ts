@@ -410,6 +410,13 @@ export const common = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.inputBackground,
   },
+  // Smaller, no background - for icons inside cards/rows (e.g. "more" dots)
+  // [iconButton, iconButtonPlain]
+  iconButtonPlain: {
+    width: 28,
+    height: 28,
+    backgroundColor: 'transparent',
+  },
   // Selectable list row: [icon][rowMain: title/subtitle] ........ [radio]
   // Add common.tileActive for the selected state
   optionRow: {

@@ -1,8 +1,8 @@
 import AsyncStorage  from "@react-native-async-storage/async-storage";
-import { Habit } from "../types/habit";
+import { HabitType } from "../types/habit";
 
 const HABITS_KEY = 'HABITS'
-export async function saveHabits(habits:Habit[]): Promise<void> {
+export async function saveHabits(habits:HabitType[]): Promise<void> {
     try {
         const json = JSON.stringify(habits)
         await AsyncStorage.setItem(HABITS_KEY, json)
@@ -11,12 +11,12 @@ export async function saveHabits(habits:Habit[]): Promise<void> {
     }
 }
 
-export async function loadHabits(): Promise<Habit[] | null> {
+export async function loadHabits(): Promise<HabitType[] | null> {
     try {
         const json = await AsyncStorage.getItem(HABITS_KEY);
         if (json == null) return null;
 
-        const parsed: Habit[] = JSON.parse(json)
+        const parsed: HabitType[] = JSON.parse(json)
         return parsed.map((habit) => ({
             ...habit,
             completedDates: habit.completedDates ?? [],

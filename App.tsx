@@ -7,13 +7,14 @@ import CreateHabitScreen from './src/screens/CreateHabitScreen';
 import type { RootStackParamList } from './src/types/navigation';
 import EditHabitScreen from './src/screens/EditHabitScreen';
 import { HabitsProvider } from './src/context/HabitsContext';
+import { AppProvider } from './src/context/appContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
     <SafeAreaProvider>
-      <HabitsProvider>
+      <AppProvider>
         <NavigationContainer>
           <Stack.Navigator>
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -22,7 +23,7 @@ export default function App() {
             <Stack.Screen name='EditHabit' component={EditHabitScreen} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
-      </HabitsProvider>
+      </AppProvider>
     </SafeAreaProvider>
   );
 }

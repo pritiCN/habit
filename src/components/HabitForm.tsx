@@ -21,7 +21,6 @@ import { FrequencyDaysSet, StartOptions } from '../constants/frequencyTypeSet'
 import TimePicker from './picker/TimePicker'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IconComponent } from './AppIcon'
-import { Labels } from '../constants/labelset'
 
 const getCurrentTime = () => {
     const now = new Date();
@@ -153,8 +152,6 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
         return () => setCurrentHabit(initialHabit)
     }, [initialHabit])
     
-    console.log(labels);
-    
     return (
         <View>
             {/* Habit name (required) */}
@@ -171,7 +168,11 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     placeholder='e.g. Drink Water'
                     value={name}
                     onChangeText={setName}
+                    maxLength={50}
                 />
+                <Text style={[inputStyles.charCount, name.length >= 50 && inputStyles.charCountLimit]}>
+                    {name.length}/{50}
+                </Text>
             </View>
 
             {/* Color picker */}
@@ -210,7 +211,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     onChangeText={setDescription}
                     maxLength={100}
                 />
-                <Text style={styles.charCount}>{description.length}/100</Text>
+                <Text style={[inputStyles.charCount, description.length >= 100 && inputStyles.charCountLimit]}>{description.length}/100</Text>
             </View>
 
             {/* Labels */}
@@ -357,6 +358,7 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     <FrequencyPickerModal 
                         selectedFrequecny={selectedFrequecny}
                         onClose={() => setIsFrequencyModalVisible(false)}
+                        selectedColor={habitColor}
                         onDone={(freq) => {
                             setSelectedFrequency(freq)
                             setIsFrequencyModalVisible(false)

@@ -8,16 +8,22 @@ import { FrequencyDaysSet, FrequencyTypeSet } from '../../constants/frequencyTyp
 import OptionRow from '../OptionRow'
 import { Calendar, DateData } from 'react-native-calendars'
 import { Frequecny } from '../../types/habit'
+import { useHabits } from '../../context/HabitsContext'
 
-const FrequencyPickerModal = ({onClose, onDone, selectedFrequecny}: {
+const FrequencyPickerModal = ({onClose, onDone, selectedFrequecny, selectedColor}: {
     onClose: ()=> void
     onDone: (frequecny: Frequecny) => void
-    selectedFrequecny?: Frequecny
+    selectedFrequecny?: Frequecny,
+    selectedColor?:string
 }) => {    
     const insets = useSafeAreaInsets()
     const [selectedType, setSelectedType] = useState<string>(selectedFrequecny?.type || 'daily')
     const [selectedDays, setSelectedDays] = useState<string[]>(selectedFrequecny?.days || [])
     const [onSelectedDates, setOnSelectedDates] = useState<number[]>(selectedFrequecny?.dates || [])
+    const {currentHabit} = useHabits();
+
+    console.log(currentHabit);
+    
 
     const handleDaysSelection = (day: DateData) => {
         setOnSelectedDates((prev) => 

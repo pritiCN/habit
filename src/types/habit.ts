@@ -9,13 +9,13 @@ export type Frequecny = {
     dates?: number[]
 }
 
-export type Habit = {
+export type HabitType = {
     id: string;
     name: string;
     colorId: string;
     description?: string;
     iconId: string;
-    completedDates: number[]
+    completedDates?: number[]
     labelIds?: string[]
     frequency?: Frequecny
     reminder?: Reminder

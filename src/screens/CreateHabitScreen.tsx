@@ -12,7 +12,7 @@ import { useHabits } from '../context/HabitsContext'
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateHabit'>;
 
 const CreateHabitScreen = ({navigation}: Props) => {
-  const {addHabit} = useHabits();
+  // const {addHabit} = useHabits();
   return (
     <SafeAreaView style={common.screen}>
       <ScrollView
@@ -25,10 +25,10 @@ const CreateHabitScreen = ({navigation}: Props) => {
           <Text style={[common.subtitle, styles.subtitle]}>Small step. Big changes.</Text>
         </View>
 
-        <HabitForm onSave={(habit) => {
+        {/* <HabitForm onSave={(habit) => {
           addHabit(habit)
           navigation.goBack();
-        }} />
+        }} /> */}
       </ScrollView>
     </SafeAreaView>
   )
