@@ -12,8 +12,8 @@ import { useHabits } from '../../../context/HabitsContext'
 const HabitItem = ({habitData}: {
     habitData: HabitType
 }) => {
-    const {getColor} = useApp();
-    const {completeToday, isDoneCurrentHabit} = useHabits()
+    const {getColor, openModal} = useApp();
+    const {completeToday, isDoneCurrentHabit, setCurrentHabit} = useHabits()
     const habitColor = getColor(habitData.colorId);
     const isHabitDone = isDoneCurrentHabit(new Date, habitData.completedDates ?? [])
     
@@ -34,7 +34,10 @@ const HabitItem = ({habitData}: {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[common.iconButton, common.iconButtonPlain]}
-                    onPress={() => {}}
+                    onPress={() => {
+                        setCurrentHabit(habitData)
+                        openModal('EditHabitItemModal')
+                    }}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
                 >
                     <Ionicons name="ellipsis-vertical" size={18} color={colors.textMuted} />

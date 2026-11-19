@@ -15,12 +15,12 @@ type HabitsContextType = {
     storedHabits: HabitType[];
     completeToday: (id: string) => void;
     isDoneCurrentHabit: (date: Date, completedDate: number[]) => boolean
+    currentHabit: HabitType | undefined
+    setCurrentHabit: (habit:HabitType | undefined) => void
     // addHabit: (habit: HabitType) => void;
     // updateHabit: (habit: HabitType) => void;
     // deleteHabit: (id: string) => void;
     // getColor: (colorId: string, text?: boolean) => string;
-    // currentHabit: HabitType | undefined
-    // setCurrentHabit: (habit:HabitType | undefined) => void
     // toMilliSec: (date: string) => number
     // milliSecToSring: (date: number) => string
     // to12Hour: (time: string) => { hour: string; minute: string; period: string }
@@ -38,7 +38,7 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     const [storedHabits, setStoredHabits] = useState<HabitType[]>([]);
     const [isLoaded, setIsLoaded] = useState(false);
     const {getDateMillis} = useApp()
-    // const [currentHabit, setCurrentHabit] = useState<HabitType | undefined>(undefined)
+    const [currentHabit, setCurrentHabit] = useState<HabitType | undefined>(undefined)
     // const [labels, setLabels] = useState<Label[]>([])
     // const [isLabelsLoaded, setIsLabelsLoaded] = useState(false)
 
@@ -165,13 +165,13 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         <HabitsContext.Provider value={{
             storedHabits, 
             completeToday,
-            isDoneCurrentHabit
+            isDoneCurrentHabit,
+            currentHabit,
+            setCurrentHabit,
             // addHabit, 
             // updateHabit, 
             // deleteHabit,
             // getColor,
-            // currentHabit,
-            // setCurrentHabit,
             // toMilliSec,
             // milliSecToSring,
             // to12Hour,

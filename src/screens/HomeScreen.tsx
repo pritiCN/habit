@@ -1,57 +1,14 @@
 import React from 'react'
-import { View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import type { RootStackParamList } from '../types/navigation'
 import { common } from '../styles/common'
 import { styles } from '../styles/HomeScreen.styles'
-import { colors } from '../styles/theme'
-import { getTodayMillis } from '../utils/date'
-import { HabitsProvider, useHabits } from '../context/HabitsContext'
-import { HabitType } from '../types/habit'
-import { IconComponent } from '../components/AppIcon'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import HabitsItems from '../components/habit/habitItems/HabitsItems'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
-// function HabitItem({
-//   habit,
-//   onPress,
-//   onToggle
-// }: {
-//     habit: HabitType;
-//     onPress: () => void;
-//     onToggle: () => void;
-//   }) {
-//     // const { getColor } = useHabits();
-//     const today = getTodayMillis()
-//     const isDoneToday = habit.completedDates.includes(today);
-//     // const habitColor = getColor(habit.colorId);
-    
-//   return (
-//     <TouchableOpacity
-//       // 8-digit hex: habit color at ~10% (background) and ~30% (border) opacity
-//       style={[common.card, styles.habitCard, { backgroundColor: `${habitColor}1A`, borderColor: `${habitColor}4D` }]}
-//       onPress={onPress}
-//     >
-//       <View style={[common.buttonRow, styles.habitInfo]}>
-//         <IconComponent icon={habit.iconId} color={habitColor} />
-//         <Text style={[common.bodyText, { color: habitColor }]}>{habit.name}</Text>
-//       </View>
-
-//       <TouchableOpacity
-//         style={[styles.toggleButton, isDoneToday && styles.toggleButtonDone]}
-//         onPress={onToggle}
-//       >
-//         <Ionicons name="checkmark" size={16} color={isDoneToday ? colors.onPrimary : colors.textMuted} />
-//       </TouchableOpacity>
-//     </TouchableOpacity>
-//   );
-// }
-
-const HomeScreen = ({ navigation }: Props) => {
-  // const {habits, toggleToday} = useHabits();  
-  
+const HomeScreen = ({ navigation }: Props) => {  
   return (
     <SafeAreaView style={common.screen}>      
       <View style={styles.header}>
@@ -62,31 +19,7 @@ const HomeScreen = ({ navigation }: Props) => {
           <Text style={common.buttonText}>+ Add</Text>
         </TouchableOpacity>
       </View>
-      <HabitsProvider>
-        <HabitsItems />
-      </HabitsProvider>
-
-      {/* <FlatList
-        data={habits}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <HabitItem
-            habit={item}
-            onPress={() =>
-              navigation.navigate('EditHabit', {
-                habitId: item.id,
-              })
-            }
-            onToggle={() => toggleToday(item.id)}
-          />
-        )}
-        ListEmptyComponent={
-          <Text style={[common.subtitle, { textAlign: 'center', marginTop: 32 }]}>
-            No habits yet. Tap "+ Add" to create one.
-          </Text>
-        }
-        contentContainerStyle={styles.list}
-      /> */}
+      <HabitsItems />
     </SafeAreaView>
   )
 }
