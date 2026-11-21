@@ -17,8 +17,8 @@ type HabitsContextType = {
     isDoneCurrentHabit: (date: Date, completedDate: number[]) => boolean
     currentHabit: HabitType | undefined
     setCurrentHabit: (habit:HabitType | undefined) => void
-    // addHabit: (habit: HabitType) => void;
-    // updateHabit: (habit: HabitType) => void;
+    addHabit: (habit: HabitType) => void;
+    updateHabit: (habit: HabitType) => void;
     // deleteHabit: (id: string) => void;
     // getColor: (colorId: string, text?: boolean) => string;
     // toMilliSec: (date: string) => number
@@ -80,6 +80,14 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         return completedDate.includes(selectedDate) ?? false
     }
 
+    const addHabit = (habit: HabitType) => {
+        setStoredHabits((prev) => [...prev, habit])
+    }
+
+    const updateHabit = (updated: HabitType) => {
+        setStoredHabits((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
+    }
+
     // useEffect(() => {
     //     (async ()=> {
     //         try {
@@ -115,14 +123,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
 
     // const deleteLabel = (id: string) => {
     //     setLabels((prev) => prev.filter((l) => l.id !== id))
-    // }
-
-    // const addHabit = (habit: HabitType) => {
-    //     setHabits((prev) => [...prev, habit])
-    // }
-
-    // const updateHabit = (updated: HabitType) => {
-    //     setHabits((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
     // }
 
     // const deleteHabit = (habitId: string) => {
@@ -168,8 +168,8 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             isDoneCurrentHabit,
             currentHabit,
             setCurrentHabit,
-            // addHabit, 
-            // updateHabit, 
+            addHabit, 
+            updateHabit, 
             // deleteHabit,
             // getColor,
             // toMilliSec,

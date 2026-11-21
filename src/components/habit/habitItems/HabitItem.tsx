@@ -14,7 +14,7 @@ const HabitItem = ({habitData}: {
 }) => {
     const {getColor, openModal} = useApp();
     const {completeToday, isDoneCurrentHabit, setCurrentHabit} = useHabits()
-    const habitColor = getColor(habitData.colorId);
+    const habitColor = getColor(habitData.colorId ?? '');
     const isHabitDone = isDoneCurrentHabit(new Date, habitData.completedDates ?? [])
     
     return (

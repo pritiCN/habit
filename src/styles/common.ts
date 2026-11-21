@@ -112,6 +112,14 @@ export const common = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.border,
   },
+  // Bordered group of menu rows: menuGroup > [menuItem, divider, menuItem, ...]
+  menuGroup: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.md,
+    marginTop: spacing.md,
+  },
   // Settings-style row: [icon][title/subtitle] ........ [badge][chevron]
   // Combine rowMain with buttonRow so the text side takes the free space
   rowMain: {
@@ -237,6 +245,9 @@ export const common = StyleSheet.create({
   },
   textSuccess: {
     color: colors.success,
+  },
+  textDanger: {
+    color: colors.danger,
   },
   // Non-bold part inside a bold label, e.g. <Text style={common.label}>Title <Text style={common.textRegular}>(Optional)</Text></Text>
   textRegular: {

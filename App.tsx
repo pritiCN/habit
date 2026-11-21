@@ -24,8 +24,9 @@ export default function App() {
               <Stack.Screen name='CreateHabit' component={CreateHabitScreen} options={{ headerShown: false }} />
               <Stack.Screen name='EditHabit' component={EditHabitScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
+            {/* Inside NavigationContainer so modals can use useNavigation() */}
+            <HabitModals />
           </NavigationContainer>
-          <HabitModals />
         </HabitsProvider>
       </AppProvider>
     </SafeAreaProvider>

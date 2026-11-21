@@ -1,10 +1,10 @@
-export type Color = {
+export type ColorType = {
     id: string;
     color: string;
     blackColor?: boolean;
 }
 
-export const ColorsSet: Color[] = [
+export const ColorsSet: ColorType[] = [
     {id: '1', color: '#F44336'},
     {id: '2', color: '#E91E63'},
     {id: '3', color: '#9C27B0'},

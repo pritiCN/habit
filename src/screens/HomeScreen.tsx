@@ -5,16 +5,21 @@ import type { RootStackParamList } from '../types/navigation'
 import { common } from '../styles/common'
 import { styles } from '../styles/HomeScreen.styles'
 import HabitsItems from '../components/habit/habitItems/HabitsItems'
+import { useHabits } from '../context/HabitsContext'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
 const HomeScreen = ({ navigation }: Props) => {  
+  const {setCurrentHabit} = useHabits();
   return (
     <SafeAreaView style={common.screen}>      
       <View style={styles.header}>
         <TouchableOpacity
           style={common.button}
-          onPress={() => navigation.navigate('CreateHabit')}
+          onPress={() => {
+            navigation.navigate('CreateHabit')
+            setCurrentHabit(undefined)
+          }}
         >
           <Text style={common.buttonText}>+ Add</Text>
         </TouchableOpacity>

@@ -12,9 +12,9 @@ export type Frequecny = {
 export type HabitType = {
     id: string;
     name: string;
-    colorId: string;
+    colorId?: string;
+    iconId?: string;
     description?: string;
-    iconId: string;
     completedDates?: number[]
     labelIds?: string[]
     frequency?: Frequecny

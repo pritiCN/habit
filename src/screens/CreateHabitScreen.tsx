@@ -25,10 +25,12 @@ const CreateHabitScreen = ({navigation}: Props) => {
           <Text style={[common.subtitle, styles.subtitle]}>Small step. Big changes.</Text>
         </View>
 
-        {/* <HabitForm onSave={(habit) => {
-          addHabit(habit)
-          navigation.goBack();
-        }} /> */}
+        <HabitForm 
+        // onSave={(habit) => {
+        //   addHabit(habit)
+        //   navigation.goBack();
+        // }} 
+        />
       </ScrollView>
     </SafeAreaView>
   )

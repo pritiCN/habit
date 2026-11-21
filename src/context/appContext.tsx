@@ -1,6 +1,5 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 import { ColorsSet } from '../constants/colorset'
-import HabitModals from '../components/habit/modal/HabitModals'
 
 type AppContextType = {
     getColor: (colorId: string) => string
@@ -8,12 +7,15 @@ type AppContextType = {
     openModal: (modalType: string) => void
     selectedModal: string
     closeModal: () => void
+    setSelectedColor: (colorId: string) => void
+    selectedColor: string
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [selectedModal, setSelectedModal] = useState('')
+    const [selectedColor, setSelectedColor] = useState<string>('')
 
     const getColor = (colorId: string) => {
         const colorCode = ColorsSet.find((c) => c.id === colorId)
@@ -35,13 +37,17 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         setSelectedModal('')
     }
 
+    
+
     return (
         <AppContext.Provider value={{
             getColor,
             getDateMillis,
             selectedModal,
             openModal,
-            closeModal
+            closeModal,
+            setSelectedColor,
+            selectedColor
         }}>
             {children}
         </AppContext.Provider>

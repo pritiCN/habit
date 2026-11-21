@@ -6,7 +6,7 @@ import { inputStyles } from '../styles/input.styles'
 import { styles } from '../styles/form.styles'
 import { colors } from '../styles/theme'
 import LabelPickerModal from './label/LabelPickerModal'
-import { Frequecny, Habit, Reminder } from '../types/habit'
+// import { Frequecny, Habit, Reminder } from '../types/habit'
 import ColorField from './ColorField'
 import { ColorsSet } from '../constants/colorset'
 import IconField from './IconField'
@@ -21,137 +21,157 @@ import { FrequencyDaysSet, StartOptions } from '../constants/frequencyTypeSet'
 import TimePicker from './picker/TimePicker'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { IconComponent } from './AppIcon'
+import { HabitType } from '../types/habit'
+import { useNavigation } from '@react-navigation/native'
+import { useApp } from '../context/appContext'
 
-const getCurrentTime = () => {
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0')
-    const mm = String(now.getMinutes()).padStart(2, '0')
-    return `${hh}:${mm}`
-}
+// const getCurrentTime = () => {
+//     const now = new Date();
+//     const hh = String(now.getHours()).padStart(2, '0')
+//     const mm = String(now.getMinutes()).padStart(2, '0')
+//     return `${hh}:${mm}`
+// }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+// const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-// e.g. 16 Nov 2026
-const formatDate = (ms: number) => {
-    const d = new Date(ms)
-    return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`
-}
+// // e.g. 16 Nov 2026
+// const formatDate = (ms: number) => {
+//     const d = new Date(ms)
+//     return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`
+// }
 
-// Title + subtitle shown in the Frequency panel
-const getFrequencySummary = (freq?: Frequecny) => {
-    switch (freq?.type) {
-        case 'daily':
-            return { title: 'Every day', subtitle: 'Repeats daily' }
-        case 'weekly': {
-            const days = FrequencyDaysSet
-                .filter((d) => freq.days?.includes(d.id))
-                .map((d) => d.short)
-                .join(', ')
-            return { title: 'Selected days', subtitle: days || 'No days selected' }
-        }
-        case 'custom': {
-            const count = freq.dates?.length ?? 0
-            return { title: 'Specific dates', subtitle: `${count} ${count === 1 ? 'date' : 'dates'} selected` }
-        }
-        default:
-            return { title: 'Not set', subtitle: 'Tap to choose how often' }
-    }
-}
+// // Title + subtitle shown in the Frequency panel
+// const getFrequencySummary = (freq?: Frequecny) => {
+//     switch (freq?.type) {
+//         case 'daily':
+//             return { title: 'Every day', subtitle: 'Repeats daily' }
+//         case 'weekly': {
+//             const days = FrequencyDaysSet
+//                 .filter((d) => freq.days?.includes(d.id))
+//                 .map((d) => d.short)
+//                 .join(', ')
+//             return { title: 'Selected days', subtitle: days || 'No days selected' }
+//         }
+//         case 'custom': {
+//             const count = freq.dates?.length ?? 0
+//             return { title: 'Specific dates', subtitle: `${count} ${count === 1 ? 'date' : 'dates'} selected` }
+//         }
+//         default:
+//             return { title: 'Not set', subtitle: 'Tap to choose how often' }
+//     }
+// }
 
-const HabitForm = ({onSave, initialHabit, secondaryAction}: {
-        onSave: (habit: Habit) => void;
-        initialHabit?: Habit;
-        secondaryAction?: { label: string; onPress: () => void };
-    }) => {
-    const [name, setName] = useState(initialHabit?.name ?? '');
-    const [description, setDescription] = useState(initialHabit?.description ?? '')
-    const [selectedIcon, setSeletedIcon] = useState(initialHabit?.iconId ?? IconsSet[0].id)
-    const [selectedColor, setSelectedColor] = useState(initialHabit?.colorId ?? ColorsSet[0].id)
-    const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
-    const [isFrequencyModalVisible, setIsFrequencyModalVisible] = useState(false)
-    const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelIds ?? []);
-    const [actionStartFrom, setActionStartForm] = useState<'start' | 'calender' | ''>('')
-    const [startFromStatus, setStartFromStatus] = useState<string>('today')
-    const [startDate, setStartDate] = useState<string | undefined>(undefined)
-    const {setCurrentHabit, toMilliSec, milliSecToSring, to12Hour, labels, getColor} = useHabits()
-    const [reminder, setReminder] = useState<Reminder>(() => (initialHabit?.reminder || {status: false, time: getCurrentTime()}))
-    const [timePickerVisibility, setTimepickerVisibility] = useState(false)
-    const [selectedFrequecny, setSelectedFrequency] = useState<Frequecny | undefined>(initialHabit?.frequency)
+const HabitForm = (
+    // {onSave, initialHabit, secondaryAction}: {
+    //     onSave: (habit: Habit) => void;
+    //     initialHabit?: Habit;
+    //     secondaryAction?: { label: string; onPress: () => void };
+    // }
+) => {
+    const navigation = useNavigation()
+    const {currentHabit, updateHabit, addHabit} = useHabits();    
+    const {selectedColor, setSelectedColor} = useApp()
+    const [name, setName] = useState(currentHabit?.name ?? '');
+    // const [selectedColor, setSelectedColor] = useState(currentHabit?.colorId ?? ColorsSet[0].id)
+    const [selectedIcon, setSeletedIcon] = useState(currentHabit?.iconId ?? IconsSet[0].id)
+    const [description, setDescription] = useState(currentHabit?.description ?? '')
     
-    const startLabel = startFromStatus === 'custom' && startDate
-        ? startDate
-        : StartOptions.find((o) => o.id === startFromStatus)?.name
+    // const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
+    // const [isFrequencyModalVisible, setIsFrequencyModalVisible] = useState(false)
+    // const [labelIds, setLabelIds] = useState<string[]>(initialHabit?.labelIds ?? []);
+    // const [actionStartFrom, setActionStartForm] = useState<'start' | 'calender' | ''>('')
+    // const [startFromStatus, setStartFromStatus] = useState<string>('today')
+    // const [startDate, setStartDate] = useState<string | undefined>(undefined)
+    // const {setCurrentHabit, toMilliSec, milliSecToSring, to12Hour, labels, getColor} = useHabits()
+    // const [reminder, setReminder] = useState<Reminder>(() => (initialHabit?.reminder || {status: false, time: getCurrentTime()}))
+    // const [timePickerVisibility, setTimepickerVisibility] = useState(false)
+    // const [selectedFrequecny, setSelectedFrequency] = useState<Frequecny | undefined>(initialHabit?.frequency)
+    
+    // const startLabel = startFromStatus === 'custom' && startDate
+    //     ? startDate
+    //     : StartOptions.find((o) => o.id === startFromStatus)?.name
 
-    // Selected labels in order, skipping ids whose label was deleted
-    const selectedLabels = labelIds
-        .map((id) => labels.find((item) => item.id === id))
-        .filter((label): label is NonNullable<typeof label> => !!label)
-    const habitColor = getColor(selectedColor)
-    // Text colour that stays readable on top of the habit colour
-    const onHabitColor = ColorsSet.find((c) => c.id === selectedColor)?.blackColor ? '#000000' : colors.onPrimary
-    const frequencySummary = getFrequencySummary(selectedFrequecny)
+    // // Selected labels in order, skipping ids whose label was deleted
+    // const selectedLabels = labelIds
+    //     .map((id) => labels.find((item) => item.id === id))
+    //     .filter((label): label is NonNullable<typeof label> => !!label)
+    // const habitColor = getColor(selectedColor)
+    // // Text colour that stays readable on top of the habit colour
+    // const onHabitColor = ColorsSet.find((c) => c.id === selectedColor)?.blackColor ? '#000000' : colors.onPrimary
+    // const frequencySummary = getFrequencySummary(selectedFrequecny)
 
-    const getStartDateMs = () => {
-        if(startFromStatus === 'custom' && startDate) return toMilliSec(startDate)
+    // const getStartDateMs = () => {
+    //     if(startFromStatus === 'custom' && startDate) return toMilliSec(startDate)
 
-        const date = new Date()
-        date.setHours(0, 0, 0, 0)
-        if(startFromStatus === 'tomorrow') date.setDate(date.getDate() + 1)
-        return date.getTime()
-    }
+    //     const date = new Date()
+    //     date.setHours(0, 0, 0, 0)
+    //     if(startFromStatus === 'tomorrow') date.setDate(date.getDate() + 1)
+    //     return date.getTime()
+    // }
 
-    // e.g. "Today, 16 Nov 2026" or "20 Nov 2026" for a picked date
-    const startText = startFromStatus === 'custom'
-        ? (startDate ? formatDate(toMilliSec(startDate)) : startLabel)
-        : `${startLabel}, ${formatDate(getStartDateMs())}`
+    // // e.g. "Today, 16 Nov 2026" or "20 Nov 2026" for a picked date
+    // const startText = startFromStatus === 'custom'
+    //     ? (startDate ? formatDate(toMilliSec(startDate)) : startLabel)
+    //     : `${startLabel}, ${formatDate(getStartDateMs())}`
     
     const handleSave = () => {
         const trimmed = name.trim();
         if(trimmed === '') return;
 
-        const newHabit: Habit = {
-            id: initialHabit?.id ??  Date.now().toString(),
+        const newHabit: HabitType = {
+            id: currentHabit?.id ??  Date.now().toString(),
             name: trimmed,
             colorId: selectedColor,
             description: description,
             iconId: selectedIcon,
-            completedDates: initialHabit?.completedDates ??  [],
-            labelIds: labelIds,
-            frequency: selectedFrequecny,
-            startDate: getStartDateMs(),
-            reminder: reminder
+            completedDates: currentHabit?.completedDates ??  [],
+            // labelIds: labelIds,
+            // frequency: selectedFrequecny,
+            // startDate: getStartDateMs(),
+            // reminder: reminder
         }
 
-        onSave(newHabit)
-    }
-
-    const handleStartSelect = (id: string) => {
-        setStartFromStatus(id)
-        if(id === 'custom') {
-            setActionStartForm('calender')
+        if(currentHabit) {
+            updateHabit(newHabit)
         } else {
-            setActionStartForm('')
+            addHabit(newHabit)
         }
+
+        navigation.goBack()
     }
 
-    const handleDateSelect = (date: string) => {
-        setStartDate(date)
-        setActionStartForm('')
-    }
-
-    const setValueofStartDate = (habit:Habit | undefined) => {
-        if(!habit?.startDate) return
-
-        setStartFromStatus('custom')
-        setStartDate(milliSecToSring(habit.startDate))        
-    }
-    
     useEffect(() => {
-        setCurrentHabit(initialHabit)
-        setValueofStartDate(initialHabit)
-        return () => setCurrentHabit(initialHabit)
-    }, [initialHabit])
+        setSelectedColor(currentHabit?.colorId ?? ColorsSet[0].id)
+    },[currentHabit?.colorId])
+
+    // const handleStartSelect = (id: string) => {
+    //     setStartFromStatus(id)
+    //     if(id === 'custom') {
+    //         setActionStartForm('calender')
+    //     } else {
+    //         setActionStartForm('')
+    //     }
+    // }
+
+    // const handleDateSelect = (date: string) => {
+    //     setStartDate(date)
+    //     setActionStartForm('')
+    // }
+
+    // const setValueofStartDate = (habit:Habit | undefined) => {
+    //     if(!habit?.startDate) return
+
+    //     setStartFromStatus('custom')
+    //     setStartDate(milliSecToSring(habit.startDate))        
+    // }
     
+    // useEffect(() => {
+    //     setCurrentHabit(initialHabit)
+    //     setValueofStartDate(initialHabit)
+    //     return () => setCurrentHabit(initialHabit)
+    // }, [initialHabit])
+    
+    // console.log(name);
     return (
         <View>
             {/* Habit name (required) */}
@@ -177,25 +197,23 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
 
             {/* Color picker */}
             <ColorField
-                panalStyle={[common.panel, styles.fieldGroup]}
-                selectedColor={selectedColor}
-                currentColor={initialHabit?.colorId ?? undefined}
-                onSelect={setSelectedColor}
+                // currentColor={initialHabit?.colorId ?? undefined}
+                // onSelect={setSelectedColor}
             />
 
             {/* Icon picker */}
 
-            <IconField 
+            {/* <IconField 
                 panalStyle={[common.panel, styles.iconSection]}
                 selectedIcon={selectedIcon}
                 onSelect={setSeletedIcon}
                 selectedColor={selectedColor}
                 currentIcon={initialHabit?.iconId ?? undefined}
-            />
+            /> */}
 
             {/* Description */}
             
-            <View style={[common.panel, styles.fieldGroup]}>
+            {/* <View style={[common.panel, styles.fieldGroup]}>
                 <View style={common.fieldHeader}>
                     <View style={common.rowIcon}>
                         <MaterialCommunityIcons name="file-document-outline" size={22} color={colors.text} />
@@ -212,11 +230,11 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     maxLength={100}
                 />
                 <Text style={[inputStyles.charCount, description.length >= 100 && inputStyles.charCountLimit]}>{description.length}/100</Text>
-            </View>
+            </View> */}
 
             {/* Labels */}
 
-            <View style={[common.panel, styles.fieldGroup]}>
+            {/* <View style={[common.panel, styles.fieldGroup]}>
                 <View style={common.fieldHeader}>
                     <View style={common.rowIcon}>
                         <MaterialCommunityIcons name="tag-outline" size={22} color={colors.text} />
@@ -258,11 +276,11 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                         </Text>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
 
             {/* Frequency */}
 
-            <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setIsFrequencyModalVisible(true)}>
+            {/* <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setIsFrequencyModalVisible(true)}>
                 <View style={common.buttonRow}>
                     <View style={[common.rowIcon, common.alignTop]}>
                         <MaterialCommunityIcons name="calendar-clock-outline" size={22} color={colors.text} />
@@ -274,11 +292,11 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     </View>
                     <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* Reminder */}
 
-            <View style={[common.panel, styles.fieldGroup]}>
+            {/* <View style={[common.panel, styles.fieldGroup]}>
                 <View style={common.buttonRow}>
                     <View style={[common.rowIcon, common.alignTop]}>
                         <Ionicons name="notifications-outline" size={22} color={colors.text} />
@@ -315,11 +333,11 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                         <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                     </TouchableOpacity>
                 </View>
-            </View>
+            </View> */}
 
             {/* Start From */}
 
-            <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setActionStartForm('start')}>
+            {/* <TouchableOpacity style={[common.panel, styles.fieldGroup]} onPress={() => setActionStartForm('start')}>
                 <View style={common.buttonRow}>
                     <View style={[common.rowIcon, common.alignTop]}>
                         <MaterialCommunityIcons name="calendar-month-outline" size={22} color={colors.text} />
@@ -332,96 +350,101 @@ const HabitForm = ({onSave, initialHabit, secondaryAction}: {
                     </View>
                     <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
                 </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             {/* Label Modal */}
             
             {
-                isLabelModalVisible && (
-                    <LabelProvider>
-                        <LabelPickerModal 
-                            onClose={() => setIsLabelModalVisible(false)} 
-                            onDone={(ids) => {
-                                setIsLabelModalVisible(false)
-                                setLabelIds(ids)
-                            }} 
-                            selectedLabels = {labelIds}
-                        />
-                    </LabelProvider>
-                )
+                // isLabelModalVisible && (
+                //     <LabelProvider>
+                //         <LabelPickerModal 
+                //             onClose={() => setIsLabelModalVisible(false)} 
+                //             onDone={(ids) => {
+                //                 setIsLabelModalVisible(false)
+                //                 setLabelIds(ids)
+                //             }} 
+                //             selectedLabels = {labelIds}
+                //         />
+                //     </LabelProvider>
+                // )
             }
 
             {/* Frequency */}
 
             {
-                isFrequencyModalVisible && (
-                    <FrequencyPickerModal 
-                        selectedFrequecny={selectedFrequecny}
-                        onClose={() => setIsFrequencyModalVisible(false)}
-                        selectedColor={habitColor}
-                        onDone={(freq) => {
-                            setSelectedFrequency(freq)
-                            setIsFrequencyModalVisible(false)
-                        }}
-                    />
-                )
+                // isFrequencyModalVisible && (
+                //     <FrequencyPickerModal 
+                //         selectedFrequecny={selectedFrequecny}
+                //         onClose={() => setIsFrequencyModalVisible(false)}
+                //         selectedColor={habitColor}
+                //         onDone={(freq) => {
+                //             setSelectedFrequency(freq)
+                //             setIsFrequencyModalVisible(false)
+                //         }}
+                //     />
+                // )
             }
 
             {/* start from */}
 
             {
-                actionStartFrom === 'start' && (
-                    <StartDateModal
-                        onclose={() => setActionStartForm('')}
-                        selected={startFromStatus}
-                        onSelect={handleStartSelect}
-                    />
-                )
+                // actionStartFrom === 'start' && (
+                //     <StartDateModal
+                //         onclose={() => setActionStartForm('')}
+                //         selected={startFromStatus}
+                //         onSelect={handleStartSelect}
+                //     />
+                // )
             }
 
             {/* Calender Picker */}
 
             {
-                actionStartFrom === 'calender' && (
-                    <CalenderPicker
-                        selected={startDate}
-                        onclose={() => setActionStartForm('')}
-                        onSelect={handleDateSelect}
-                    />
-                )
+                // actionStartFrom === 'calender' && (
+                //     <CalenderPicker
+                //         selected={startDate}
+                //         onclose={() => setActionStartForm('')}
+                //         onSelect={handleDateSelect}
+                //     />
+                // )
             }
 
             {/* Timer Picker */}
 
             {
-                timePickerVisibility && (
-                    <TimePicker
-                        onClose={() => setTimepickerVisibility(false)}
-                        time={reminder.time}
-                        onSelecte={(time) => {
-                            setReminder({...reminder, time})
-                            setTimepickerVisibility(false)
-                        }}
-                    />
-                )
+                // timePickerVisibility && (
+                //     <TimePicker
+                //         onClose={() => setTimepickerVisibility(false)}
+                //         time={reminder.time}
+                //         onSelecte={(time) => {
+                //             setReminder({...reminder, time})
+                //             setTimepickerVisibility(false)
+                //         }}
+                //     />
+                // )
             }
             
             <View style={common.buttonStack}>
                 <TouchableOpacity
-                    style={[common.button, common.buttonLg, {backgroundColor: habitColor}]}
+                    style={[
+                        common.button, common.buttonLg, 
+                        // {backgroundColor: habitColor}
+                    ]}
                     onPress={handleSave}
                 >
-                    <Text style={[common.buttonText, common.buttonLgText, {color: onHabitColor}]}>
-                        {initialHabit ? 'Save Changes' : 'Save Habit'}
+                    <Text style={[common.buttonText, common.buttonLgText, 
+                        // {color: onHabitColor}
+                        ]}>
+                        {currentHabit ? 'Save Changes' : 'Save Habit'}
                     </Text>
                 </TouchableOpacity>
-                {
+                {/* {
                     secondaryAction && (
                         <TouchableOpacity style={[common.buttonDanger, common.buttonLg]} onPress={secondaryAction.onPress}>
                             <Text style={[common.buttonDangerText, common.buttonLgText]}>{secondaryAction.label}</Text>
                         </TouchableOpacity>
                     )
-                }
+                } */}
             </View>
         </View>
     )
