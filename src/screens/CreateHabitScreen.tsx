@@ -6,7 +6,7 @@ import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/navigation'
-import HabitForm from '../components/HabitForm'
+import HabitForm from '../components/habit/HabitForm'
 import { useHabits } from '../context/HabitsContext'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CreateHabit'>;

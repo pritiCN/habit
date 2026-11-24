@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Toggle from './Toggle'
-import { common } from '../styles/common'
-import { inputStyles } from '../styles/input.styles'
-import { styles } from '../styles/form.styles'
-import { colors } from '../styles/theme'
-import LabelPickerModal from './label/LabelPickerModal'
+import Toggle from '../Toggle'
+import { common } from '../../styles/common'
+import { inputStyles } from '../../styles/input.styles'
+import { styles } from '../../styles/form.styles'
+import { colors } from '../../styles/theme'
+import LabelPickerModal from '../label/LabelPickerModal'
 // import { Frequecny, Habit, Reminder } from '../types/habit'
-import ColorField from './ColorField'
-import { ColorsSet } from '../constants/colorset'
-import IconField from './IconField'
-import { IconsSet } from '../constants/iconset'
-import { LabelProvider } from '../context/LabelContext'
-import { useHabits } from '../context/HabitsContext'
+import ColorField from '../ColorField'
+import { ColorsSet } from '../../constants/colorset'
+import IconField from '../IconField'
+import { IconsSet } from '../../constants/iconset'
+import { LabelProvider } from '../../context/LabelContext'
+import { useHabits } from '../../context/HabitsContext'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FrequencyPickerModal from './frequency/FrequencyPickerModal'
-import StartDateModal from './StartDateModal'
-import CalenderPicker from './frequency/CalenderPicker'
-import { FrequencyDaysSet, StartOptions } from '../constants/frequencyTypeSet'
-import TimePicker from './picker/TimePicker'
+import FrequencyPickerModal from '../frequency/FrequencyPickerModal'
+import StartDateModal from '../StartDateModal'
+import CalenderPicker from '../frequency/CalenderPicker'
+import { FrequencyDaysSet, StartOptions } from '../../constants/frequencyTypeSet'
+import TimePicker from '../picker/TimePicker'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { IconComponent } from './AppIcon'
-import { HabitType } from '../types/habit'
+import { IconComponent, iconSet } from '../AppIcon'
+import { HabitType } from '../../types/habit'
 import { useNavigation } from '@react-navigation/native'
-import { useApp } from '../context/appContext'
+import { useApp } from '../../context/appContext'
 
 // const getCurrentTime = () => {
 //     const now = new Date();
@@ -69,9 +69,17 @@ const HabitForm = (
     // }
 ) => {
     const navigation = useNavigation()
-    const {currentHabit, updateHabit, addHabit, selectedColor, setSelectedColor} = useHabits();    
+    const {
+        currentHabit, 
+        updateHabit, 
+        addHabit, 
+        selectedColor, 
+        setSelectedColor, 
+        selectedIcon, 
+        setSelectedIcon
+    } = useHabits();    
     const [name, setName] = useState(currentHabit?.name ?? '');
-    const [selectedIcon, setSeletedIcon] = useState(currentHabit?.iconId ?? IconsSet[0].id)
+    // const [selectedIcon, setSeletedIcon] = useState(currentHabit?.iconId ?? IconsSet[0].id)
     const [description, setDescription] = useState(currentHabit?.description ?? '')
     
     // const [isLabelModalVisible, setIsLabelModalVisible] = useState(false)
@@ -141,6 +149,10 @@ const HabitForm = (
     useEffect(() => {
         setSelectedColor(currentHabit?.colorId ?? ColorsSet[0].id)
     },[currentHabit?.colorId])
+
+    useEffect(() => {
+        setSelectedIcon(currentHabit?.iconId ?? IconsSet[0].id)
+    }, [currentHabit?.iconId])
 
     // const handleStartSelect = (id: string) => {
     //     setStartFromStatus(id)

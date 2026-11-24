@@ -5,6 +5,7 @@ import { common } from '../../../styles/common'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import EditHabitItemModal from './EditHabitItemModal'
 import ColorsModal from './ColorsModal'
+import IconsModal from './IconsModal'
 
 const HabitModals = () => {
   const insets = useSafeAreaInsets()
@@ -28,18 +29,11 @@ const HabitModals = () => {
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
+              { currentModal === 'EditHabitItemModal' && <EditHabitItemModal /> }
 
-              {
-                currentModal === 'EditHabitItemModal' && (
-                  <EditHabitItemModal />
-                )
-              }
+              { currentModal === 'colorsModal' && <ColorsModal /> }
 
-              {
-                currentModal === 'colorsModal' && (
-                  <ColorsModal />
-                )
-              }
+              { currentModal === 'iconModal' && <IconsModal /> }
             </ScrollView>
         </View>
       </View>

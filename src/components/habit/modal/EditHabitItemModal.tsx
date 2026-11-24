@@ -46,7 +46,24 @@ const EditHabitItemModal = () => {
           </View>
           <Text style={common.bodyText}>Color</Text>
         </TouchableOpacity>
+
         <View style={common.divider} />
+
+        <TouchableOpacity
+          style={common.menuItem}
+          onPress={() => {
+            closeModal()
+            openModal('iconModal')
+          }}
+        >
+          <View style={common.rowIcon}>
+            <MaterialCommunityIcons name="view-grid-plus-outline" size={22} color={colors.text} />
+          </View>
+          <Text style={common.bodyText}>Icon</Text>
+        </TouchableOpacity>
+
+        <View style={common.divider} />
+
         <TouchableOpacity
           style={common.menuItem}
           onPress={() => {
@@ -59,7 +76,9 @@ const EditHabitItemModal = () => {
           </View>
           <Text style={common.bodyText}>Edit</Text>
         </TouchableOpacity>
+
         <View style={common.divider} />
+
         <View style={common.menuItem}>
           <View style={common.rowIcon}>
             <Ionicons name="trash-outline" color={colors.danger} size={24} />
