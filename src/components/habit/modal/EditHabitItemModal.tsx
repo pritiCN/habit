@@ -6,12 +6,13 @@ import { useApp } from '../../../context/appContext'
 import { useHabits } from '../../../context/HabitsContext'
 import { IconComponent } from '../../AppIcon'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../types/navigation'
 
 const EditHabitItemModal = () => {
-  const { closeModal, getColor } = useApp()
+  const { closeModal, getColor, openModal } = useApp()
   const { currentHabit } = useHabits()
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
@@ -33,6 +34,19 @@ const EditHabitItemModal = () => {
         </TouchableOpacity>
       </View>
       <View style={common.menuGroup}>
+        <TouchableOpacity
+          style={common.menuItem}
+          onPress={() => {
+            closeModal()
+            openModal('colorsModal')
+          }}
+        >
+          <View style={common.rowIcon}>
+            <MaterialCommunityIcons name="palette-outline" size={22} color={colors.text} />
+          </View>
+          <Text style={common.bodyText}>Color</Text>
+        </TouchableOpacity>
+        <View style={common.divider} />
         <TouchableOpacity
           style={common.menuItem}
           onPress={() => {

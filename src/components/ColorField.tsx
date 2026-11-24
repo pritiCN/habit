@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { ColorsSet } from '../constants/colorset'
 import { common } from '../styles/common';
@@ -7,11 +7,13 @@ import { colors } from '../styles/theme';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useApp } from '../context/appContext';
+import { useHabits } from '../context/HabitsContext';
 
 const COLLAPSED_COUNT = 6
 
 const ColorField = () => {
-  const {openModal, selectedColor, setSelectedColor} = useApp();
+  const {selectedColor, setSelectedColor} = useHabits();  
+  const {openModal} = useApp()
   const current = ColorsSet.find((c) => c.id === selectedColor);
   const otherColor = ColorsSet.filter((c) => c.id !== selectedColor)
   const ordered = current ? [current, ...otherColor] : ColorsSet

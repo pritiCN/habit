@@ -8,13 +8,15 @@ import ColorsModal from './ColorsModal'
 
 const HabitModals = () => {
   const insets = useSafeAreaInsets()
-  const {closeModal, selectedModal} = useApp()
+  const {closeModal, modalState} = useApp()
   const close = () => {
     closeModal()
   }
+
+  const {currentModal} = modalState
   return (
     <Modal
-        visible={selectedModal !== ''}
+        visible={currentModal !== ''}
         animationType="slide"
         transparent={true}
         onRequestClose={close}
@@ -28,13 +30,13 @@ const HabitModals = () => {
             >
 
               {
-                selectedModal === 'EditHabitItemModal' && (
+                currentModal === 'EditHabitItemModal' && (
                   <EditHabitItemModal />
                 )
               }
 
               {
-                selectedModal === 'colorsModal' && (
+                currentModal === 'colorsModal' && (
                   <ColorsModal />
                 )
               }

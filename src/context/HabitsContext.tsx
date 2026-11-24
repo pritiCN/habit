@@ -19,6 +19,10 @@ type HabitsContextType = {
     setCurrentHabit: (habit:HabitType | undefined) => void
     addHabit: (habit: HabitType) => void;
     updateHabit: (habit: HabitType) => void;
+    setSelectedColor: (colorId: string) => void
+    selectedColor: string
+    setSelectedIcon: (iconId: string) => void
+    selectedIcon: string
     // deleteHabit: (id: string) => void;
     // getColor: (colorId: string, text?: boolean) => string;
     // toMilliSec: (date: string) => number
@@ -39,6 +43,8 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     const [isLoaded, setIsLoaded] = useState(false);
     const {getDateMillis} = useApp()
     const [currentHabit, setCurrentHabit] = useState<HabitType | undefined>(undefined)
+    const [selectedColor, setSelectedColor] = useState<string>('')
+    const [selectedIcon, setSelectedIcon] = useState<string>('')
     // const [labels, setLabels] = useState<Label[]>([])
     // const [isLabelsLoaded, setIsLabelsLoaded] = useState(false)
 
@@ -170,6 +176,10 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             setCurrentHabit,
             addHabit, 
             updateHabit, 
+            setSelectedColor,
+            selectedColor,
+            setSelectedIcon,
+            selectedIcon
             // deleteHabit,
             // getColor,
             // toMilliSec,

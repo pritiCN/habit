@@ -69,10 +69,8 @@ const HabitForm = (
     // }
 ) => {
     const navigation = useNavigation()
-    const {currentHabit, updateHabit, addHabit} = useHabits();    
-    const {selectedColor, setSelectedColor} = useApp()
+    const {currentHabit, updateHabit, addHabit, selectedColor, setSelectedColor} = useHabits();    
     const [name, setName] = useState(currentHabit?.name ?? '');
-    // const [selectedColor, setSelectedColor] = useState(currentHabit?.colorId ?? ColorsSet[0].id)
     const [selectedIcon, setSeletedIcon] = useState(currentHabit?.iconId ?? IconsSet[0].id)
     const [description, setDescription] = useState(currentHabit?.description ?? '')
     
@@ -194,22 +192,18 @@ const HabitForm = (
                     {name.length}/{50}
                 </Text>
             </View>
-
-            {/* Color picker */}
-            <ColorField
-                // currentColor={initialHabit?.colorId ?? undefined}
-                // onSelect={setSelectedColor}
-            />
+            
+            <ColorField />
 
             {/* Icon picker */}
 
-            {/* <IconField 
-                panalStyle={[common.panel, styles.iconSection]}
-                selectedIcon={selectedIcon}
-                onSelect={setSeletedIcon}
-                selectedColor={selectedColor}
-                currentIcon={initialHabit?.iconId ?? undefined}
-            /> */}
+            <IconField 
+                // panalStyle={[common.panel, styles.iconSection]}
+                // selectedIcon={selectedIcon}
+                // onSelect={setSeletedIcon}
+                // selectedColor={selectedColor}
+                // currentIcon={initialHabit?.iconId ?? undefined}
+            />
 
             {/* Description */}
             

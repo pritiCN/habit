@@ -1,21 +1,23 @@
 import React, { createContext, ReactNode, useContext, useState } from 'react'
 import { ColorsSet } from '../constants/colorset'
 
+type modalType = {
+    currentModal: string
+    prev?: string
+}
+
 type AppContextType = {
     getColor: (colorId: string) => string
     getDateMillis: (date: Date) => number
     openModal: (modalType: string) => void
-    selectedModal: string
+    modalState: modalType
     closeModal: () => void
-    setSelectedColor: (colorId: string) => void
-    selectedColor: string
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-    const [selectedModal, setSelectedModal] = useState('')
-    const [selectedColor, setSelectedColor] = useState<string>('')
+    const [modalState, setModalState] = useState<modalType>({currentModal: ''})
 
     const getColor = (colorId: string) => {
         const colorCode = ColorsSet.find((c) => c.id === colorId)
@@ -30,11 +32,11 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const openModal = (modalType: string) => {
-        setSelectedModal(modalType)
+        setModalState((c) => ({currentModal: modalType, prev: modalState.currentModal ?? undefined}))
     }
 
     const closeModal = () => {
-        setSelectedModal('')
+        setModalState((s) => ({ currentModal: s.prev ?? '', prev: undefined }))
     }
 
     
@@ -43,11 +45,9 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         <AppContext.Provider value={{
             getColor,
             getDateMillis,
-            selectedModal,
+            modalState,
             openModal,
             closeModal,
-            setSelectedColor,
-            selectedColor
         }}>
             {children}
         </AppContext.Provider>
