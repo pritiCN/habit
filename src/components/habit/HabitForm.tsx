@@ -61,7 +61,7 @@ import { useApp } from '../../context/appContext'
 //     }
 // }
 
-const HabitForm = (
+const HabitFormbk = (
     // {onSave, initialHabit, secondaryAction}: {
     //     onSave: (habit: Habit) => void;
     //     initialHabit?: Habit;
@@ -207,19 +207,11 @@ const HabitForm = (
             
             <ColorField />
 
-            {/* Icon picker */}
-
-            <IconField 
-                // panalStyle={[common.panel, styles.iconSection]}
-                // selectedIcon={selectedIcon}
-                // onSelect={setSeletedIcon}
-                // selectedColor={selectedColor}
-                // currentIcon={initialHabit?.iconId ?? undefined}
-            />
+            <IconField />
 
             {/* Description */}
             
-            {/* <View style={[common.panel, styles.fieldGroup]}>
+            <View style={[common.panel, styles.fieldGroup]}>
                 <View style={common.fieldHeader}>
                     <View style={common.rowIcon}>
                         <MaterialCommunityIcons name="file-document-outline" size={22} color={colors.text} />
@@ -236,11 +228,11 @@ const HabitForm = (
                     maxLength={100}
                 />
                 <Text style={[inputStyles.charCount, description.length >= 100 && inputStyles.charCountLimit]}>{description.length}/100</Text>
-            </View> */}
+            </View>
 
             {/* Labels */}
 
-            {/* <View style={[common.panel, styles.fieldGroup]}>
+            <View style={[common.panel, styles.fieldGroup]}>
                 <View style={common.fieldHeader}>
                     <View style={common.rowIcon}>
                         <MaterialCommunityIcons name="tag-outline" size={22} color={colors.text} />
@@ -249,7 +241,7 @@ const HabitForm = (
                 </View>
 
                 <View style={common.buttonRow}>
-                    <View style={[common.chipWrap, common.rowMain]}>
+                    {/* <View style={[common.chipWrap, common.rowMain]}>
                         {
                             selectedLabels.length === 0 ? (
                                 <Text style={common.subtitle}>Organize your habit with labels</Text>
@@ -271,8 +263,8 @@ const HabitForm = (
                                 })
                             )
                         }
-                    </View>
-                    <TouchableOpacity
+                    </View> */}
+                    {/* <TouchableOpacity
                         style={[common.chip, {backgroundColor: `${habitColor}1A`}]}
                         onPress={() => setIsLabelModalVisible(true)}
                     >
@@ -280,9 +272,9 @@ const HabitForm = (
                         <Text style={[common.chipText, {color: habitColor}]}>
                             {selectedLabels.length === 0 ? 'Add Labels' : 'Edit Labels'}
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
-            </View> */}
+            </View>
 
             {/* Frequency */}
 
@@ -456,4 +448,4 @@ const HabitForm = (
     )
 }
 
-export default HabitForm
+export default HabitFormbk

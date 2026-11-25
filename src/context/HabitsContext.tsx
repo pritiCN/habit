@@ -23,7 +23,7 @@ type HabitsContextType = {
     selectedColor: string
     setSelectedIcon: (iconId: string) => void
     selectedIcon: string
-    // deleteHabit: (id: string) => void;
+    deleteHabit: (id: string) => void;
     // getColor: (colorId: string, text?: boolean) => string;
     // toMilliSec: (date: string) => number
     // milliSecToSring: (date: number) => string
@@ -94,6 +94,10 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
         setStoredHabits((prev) => prev.map((h) => (h.id === updated.id ? updated : h)));
     }
 
+    const deleteHabit = (habitId: string) => {
+        setStoredHabits((prev) => prev.filter((h) => h.id !== habitId))
+    }
+
     // useEffect(() => {
     //     (async ()=> {
     //         try {
@@ -129,10 +133,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
 
     // const deleteLabel = (id: string) => {
     //     setLabels((prev) => prev.filter((l) => l.id !== id))
-    // }
-
-    // const deleteHabit = (habitId: string) => {
-    //     setHabits((prev) => prev.filter((h) => h.id !== habitId))
     // }
 
     // const getColor = (colorId: string, text?: boolean) => {
@@ -179,8 +179,8 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             setSelectedColor,
             selectedColor,
             setSelectedIcon,
-            selectedIcon
-            // deleteHabit,
+            selectedIcon,
+            deleteHabit,
             // getColor,
             // toMilliSec,
             // milliSecToSring,

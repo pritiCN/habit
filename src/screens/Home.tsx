@@ -9,7 +9,7 @@ import { useHabits } from '../context/HabitsContext'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Home'>
 
-const HomeScreen = ({ navigation }: Props) => {  
+const Home = ({ navigation }: Props) => {  
   const {setCurrentHabit} = useHabits();
   return (
     <SafeAreaView style={common.screen}>      
@@ -17,8 +17,8 @@ const HomeScreen = ({ navigation }: Props) => {
         <TouchableOpacity
           style={common.button}
           onPress={() => {
-            navigation.navigate('CreateHabit')
             setCurrentHabit(undefined)
+            navigation.navigate('HabitForm')
           }}
         >
           <Text style={common.buttonText}>+ Add</Text>
@@ -29,4 +29,4 @@ const HomeScreen = ({ navigation }: Props) => {
   )
 }
 
-export default HomeScreen
+export default Home

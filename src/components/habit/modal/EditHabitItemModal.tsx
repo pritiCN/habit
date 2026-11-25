@@ -13,7 +13,7 @@ import { RootStackParamList } from '../../../types/navigation'
 
 const EditHabitItemModal = () => {
   const { closeModal, getColor, openModal } = useApp()
-  const { currentHabit } = useHabits()
+  const { currentHabit, deleteHabit } = useHabits()
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   if (!currentHabit) return null
@@ -68,7 +68,7 @@ const EditHabitItemModal = () => {
           style={common.menuItem}
           onPress={() => {
             closeModal()
-            navigation.navigate('EditHabit')
+            navigation.navigate('HabitForm')
           }}
         >
           <View style={common.rowIcon}>
@@ -79,12 +79,17 @@ const EditHabitItemModal = () => {
 
         <View style={common.divider} />
 
-        <View style={common.menuItem}>
+        <TouchableOpacity style={common.menuItem}
+          onPress={() => {
+            deleteHabit(currentHabit.id)
+            closeModal()
+          }}
+        >
           <View style={common.rowIcon}>
             <Ionicons name="trash-outline" color={colors.danger} size={24} />
           </View>
           <Text style={[common.bodyText, common.textDanger]}>Delete</Text>
-        </View>
+        </TouchableOpacity> 
       </View>
     </>
   )
