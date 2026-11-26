@@ -6,9 +6,11 @@ import Home from './src/screens/Home';
 import type { RootStackParamList } from './src/types/navigation';
 import { HabitsProvider } from './src/context/HabitsContext';
 import { AppProvider } from './src/context/appContext';
-import HabitModals from './src/components/habit/modal/HabitModals';
+import AllModals from './src/components/AllModals';
 import { LabelProvider } from './src/context/LabelContext';
 import HabitForm from './src/screens/HabitForm';
+import Label from './src/screens/Label';
+import LabelForm from './src/screens/LabelForm';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,9 +25,11 @@ export default function App() {
                 <Stack.Screen name="Home" component={Home} />
                 {/* These screens draw their own back arrow (components/BackButton) */}
                 <Stack.Screen name='HabitForm' component={HabitForm} options={{headerShown: false}} />
+                <Stack.Screen name='Label' component={Label} options={{headerShown: false}} />
+                <Stack.Screen name='LabelForm' component={LabelForm} options={{headerShown: false}} />
               </Stack.Navigator>
               {/* Inside NavigationContainer so modals can use useNavigation() */}
-              <HabitModals />
+              <AllModals />
             </NavigationContainer>
           </LabelProvider>
         </HabitsProvider>

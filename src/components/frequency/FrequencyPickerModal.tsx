@@ -21,8 +21,6 @@ const FrequencyPickerModal = ({onClose, onDone, selectedFrequecny, selectedColor
     const [selectedDays, setSelectedDays] = useState<string[]>(selectedFrequecny?.days || [])
     const [onSelectedDates, setOnSelectedDates] = useState<number[]>(selectedFrequecny?.dates || [])
     const {currentHabit} = useHabits();
-
-    console.log(currentHabit);
     
 
     const handleDaysSelection = (day: DateData) => {

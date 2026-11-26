@@ -5,8 +5,8 @@ import { HabitType } from "../types/habit";
 import { HabitsSet } from "../constants/habitSet";
 import { ColorsSet } from "../constants/colorset";
 import { loadLabels, saveLabels } from "../storage/labelStorage";
-import { Label } from "../types/label";
-import { Labels } from "../constants/labelset";
+// import { Label } from "../types/label";
+// import { Labels } from "../constants/labelset";
 import { useApp } from "./appContext";
 
 const initialHabits: HabitType[] = HabitsSet;
@@ -24,7 +24,6 @@ type HabitsContextType = {
     setSelectedIcon: (iconId: string) => void
     selectedIcon: string
     deleteHabit: (id: string) => void;
-    // getColor: (colorId: string, text?: boolean) => string;
     // toMilliSec: (date: string) => number
     // milliSecToSring: (date: number) => string
     // to12Hour: (time: string) => { hour: string; minute: string; period: string }
@@ -135,15 +134,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     //     setLabels((prev) => prev.filter((l) => l.id !== id))
     // }
 
-    // const getColor = (colorId: string, text?: boolean) => {
-    //     const colorObj = ColorsSet.find((c) => c.id === colorId);
-    //     if(text) {
-    //         return colorObj ? colorObj.blackColor ? '#000000' : colorObj.color  : '#000000'
-    //     }
-        
-    //     return colorObj ? colorObj.color : '#000000'; // default to black if not found
-    // }
-
     // const toMilliSec = (date: string) => {
     //     const [year, month, day] = date.split('-').map(Number)
     //     return new Date(year, month - 1, day).getTime()
@@ -181,7 +171,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             setSelectedIcon,
             selectedIcon,
             deleteHabit,
-            // getColor,
             // toMilliSec,
             // milliSecToSring,
             // to12Hour,

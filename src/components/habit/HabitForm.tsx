@@ -180,8 +180,6 @@ const HabitFormbk = (
     //     setValueofStartDate(initialHabit)
     //     return () => setCurrentHabit(initialHabit)
     // }, [initialHabit])
-    
-    // console.log(name);
     return (
         <View>
             {/* Habit name (required) */}

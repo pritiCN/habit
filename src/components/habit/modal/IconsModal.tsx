@@ -19,7 +19,7 @@ const IconsModal = () => {
   const filteredIcon = IconsSet.filter((icon) => {
     return icon.name.toLowerCase().includes(search.trim().toLowerCase());
   })
-
+  
   const handleSave = (iconId: string) => {
     setSelectedIcon(iconId)
     if(currentHabit && modalState.prev) {

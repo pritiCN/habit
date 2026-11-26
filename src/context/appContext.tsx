@@ -7,7 +7,7 @@ type modalType = {
 }
 
 type AppContextType = {
-    getColor: (colorId: string) => string
+    getColor: (colorId: string, text?: boolean) => string;
     getDateMillis: (date: Date) => number
     openModal: (modalType: string) => void
     modalState: modalType
@@ -19,10 +19,13 @@ const AppContext = createContext<AppContextType | undefined>(undefined)
 export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [modalState, setModalState] = useState<modalType>({currentModal: ''})
 
-    const getColor = (colorId: string) => {
-        const colorCode = ColorsSet.find((c) => c.id === colorId)
-
-        return colorCode ? colorCode.color : '#000'
+    const getColor = (colorId: string, text?: boolean) => {
+        const colorObj = ColorsSet.find((c) => c.id === colorId);
+        if(text) {
+            return colorObj ? colorObj.blackColor ? '#000000' : colorObj.color  : '#000000'
+        }
+        
+        return colorObj ? colorObj.color : '#000000'; // default to black if not found
     }
 
     const getDateMillis = (date: Date) => {
@@ -37,9 +40,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
 
     const closeModal = () => {
         setModalState((s) => ({ currentModal: s.prev ?? '', prev: undefined }))
-    }
-
-    
+    }    
 
     return (
         <AppContext.Provider value={{

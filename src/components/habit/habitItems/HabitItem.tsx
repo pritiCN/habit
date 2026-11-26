@@ -9,13 +9,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { colors } from '../../../styles/theme'
 import { useHabits } from '../../../context/HabitsContext'
 import { ColorsSet } from '../../../constants/colorset'
+import { IconsSet } from '../../../constants/iconset'
 
 const HabitItem = ({habitData}: {
     habitData: HabitType
 }) => {
     const {getColor, openModal} = useApp();
     const {setSelectedColor} = useHabits()
-    const {completeToday, isDoneCurrentHabit, setCurrentHabit} = useHabits()
+    const {completeToday, isDoneCurrentHabit, setCurrentHabit, setSelectedIcon} = useHabits()
     const habitColor = getColor(habitData.colorId ?? '');
     const isHabitDone = isDoneCurrentHabit(new Date, habitData.completedDates ?? [])
     
@@ -39,6 +40,7 @@ const HabitItem = ({habitData}: {
                     onPress={() => {
                         setCurrentHabit(habitData)
                         setSelectedColor(habitData.colorId ?? ColorsSet[0].id)
+                        setSelectedIcon(habitData.iconId ?? IconsSet[0].id)
                         openModal('EditHabitItemModal')
                     }}
                     hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}

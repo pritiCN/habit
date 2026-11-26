@@ -7,7 +7,7 @@ import { styles } from '../../styles/LabelPickerModal.styles'
 import { inputStyles } from '../../styles/input.styles'
 import { IconComponent } from '../AppIcon'
 import { useHabits } from '../../context/HabitsContext'
-import LabelForm from './LabelForm'
+import LabelForm from '../../screens/LabelForm'
 import { useLabel } from '../../context/LabelContext'
 import LabelActionPopup from './LabelActionPopup'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -20,15 +20,15 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
   const [search, setSearch] = useState('');
   const [mode, setMode] = useState<'pick' | 'create'>('pick')
   const [actionLabel, SetActionLabel] = useState('')
-  const {getColor} = useHabits();
-  const {searchLabels, setSelectedIds, toggleLabel, selectedIds, startEditing} = useLabel();
+  // const {getColor} = useHabits();
+  // const {searchLabels, setSelectedIds, toggleLabel, selectedIds, startEditing} = useLabel();
   const insets = useSafeAreaInsets()
 
-  useEffect(() => {
-    setSelectedIds(selectedLabels)
-  }, [])
+  // useEffect(() => {
+  //   setSelectedIds(selectedLabels)
+  // }, [])
   
-  const filteredLabels = searchLabels(search) 
+  // const filteredLabels = searchLabels(search) 
 
   const setIsCreating = () => {
     setMode('pick');
@@ -36,7 +36,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
 
   const handleUpdate = (labelId: string) => {
     setMode('create')
-    startEditing(labelId)
+    // startEditing(labelId)
     SetActionLabel('')
   }
   
@@ -70,7 +70,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                     </TouchableOpacity>
                   </View>
 
-                  <View style={inputStyles.searchBar}>
+                  {/* <View style={inputStyles.searchBar}>
                     <Ionicons name="search" size={18} color={colors.textMuted} />
                     <TextInput
                       style={inputStyles.searchInput}
@@ -79,13 +79,13 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                       value={search}
                       onChangeText={setSearch}
                     />
-                  </View>
+                  </View> */}
 
                   {/* <Text style={[common.heading, common.section]}>Recently Used</Text>
                   <View style={styles.chipGrid}>
 
                   </View> */}
-                  <Text style={[common.heading, common.section]}>All Labels</Text>
+                  {/* <Text style={[common.heading, common.section]}>All Labels</Text>
                   <View style={styles.chipGrid}>
                     {
                       filteredLabels.map((label) => {
@@ -119,7 +119,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                         <Text style={{ color: colors.textMuted }}>No labels found</Text>
                       )
                     }
-                  </View>
+                  </View> */}
 
                   <TouchableOpacity style={styles.createButton} onPress={() => setMode('create')}>
                     <Ionicons name="add" size={22} color={colors.primary} />

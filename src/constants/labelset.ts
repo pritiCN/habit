@@ -1,6 +1,6 @@
-import { Label } from '../types/label'
+import { LabelType } from '../types/label'
 
-export const Labels: Label[] = [
+export const Labelset: LabelType[] = [
     {id: 'Health', name: 'Health', colorId: '6', iconId: 'heart'},
     {id: 'Fitness', name: 'Fitness', colorId: '2', iconId: 'dumbbell'},
     {id: 'Productivity', name: 'Productivity', colorId: '3', iconId: 'bar_chart'},

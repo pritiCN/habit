@@ -1,12 +1,17 @@
-import React, { createContext, ReactNode, useContext, useState } from 'react'
-import { Label } from '../types/label';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { LabelType } from '../types/label';
 import { useHabits } from './HabitsContext';
+import { loadLabels } from '../storage/labelStorage';
+import { Labelset } from '../constants/labelset';
 
+const initialLabel: LabelType[] = Labelset
 // UI state for the label picker only (selection + editing).
 // Label data, loading and saving live in HabitsContext.
 type LabelContextType = {
     // data (from HabitsContext)
-    // labels: Label[];
+    storedLabel: LabelType[];
+    currentLabel: LabelType | undefined
+    setCurrentLabel: (label: LabelType | undefined) => void
     // searchLabels: (query: string) => Label[];
     // addLabel: (label: Label) => void;
     // updateLabel: (label: Label) => void;
@@ -26,9 +31,20 @@ type LabelContextType = {
 const LabelContext = createContext<LabelContextType | undefined>(undefined);
 
 export function LabelProvider({children}: {children: ReactNode}) {
+    const [storedLabel, setStoredLabel] = useState<LabelType[]>([])
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [currentLabel, setCurrentLabel] = useState<LabelType | undefined>(undefined)
     // const { labels, searchLabels, addLabel, updateLabel, deleteLabel: removeLabel } = useHabits()
     // const [selectedIds, setSelectedIds] = useState<string[]>([])
     // const [editingLabel, setEditingLabel] = useState<Label | null>(null)
+
+    useEffect(() => {
+        (async () => {
+            const stored = await loadLabels()
+            setStoredLabel(stored ?? initialLabel)
+            setIsLoaded(true);
+        })();
+    }, [])
 
     // // Also clear the deleted label from the picker's UI state
     // const deleteLabel = (id: string) => {
@@ -51,8 +67,9 @@ export function LabelProvider({children}: {children: ReactNode}) {
 
     return (
         <LabelContext.Provider value={{
-            // labels,
-            // searchLabels,
+            storedLabel,
+            currentLabel,
+            setCurrentLabel
             // addLabel,
             // updateLabel,
             // deleteLabel,
