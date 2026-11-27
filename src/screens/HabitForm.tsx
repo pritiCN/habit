@@ -14,11 +14,13 @@ import IconField from '../components/IconField';
 import { HabitType } from '../types/habit';
 import { ColorsSet } from '../constants/colorset';
 import { IconsSet } from '../constants/iconset';
+import { useApp } from '../context/appContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HabitForm'>;
 
 const HabitForm = ({navigation}: Props) => {
-    const {currentHabit, selectedColor, selectedIcon, updateHabit, addHabit, setSelectedColor, setSelectedIcon} = useHabits();
+    const {selectedColor, setSelectedColor} = useApp()
+    const {currentHabit, selectedIcon, updateHabit, addHabit, setSelectedIcon} = useHabits();
     const hasHabit = currentHabit !== undefined 
     const [name, setName] = useState(currentHabit?.name ?? '');
     const [description, setDescription] = useState(currentHabit?.description ?? '')

@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { LabelType } from '../types/label';
 import { useHabits } from './HabitsContext';
-import { loadLabels } from '../storage/labelStorage';
+import { loadLabels, saveLabels } from '../storage/labelStorage';
 import { Labelset } from '../constants/labelset';
 
 const initialLabel: LabelType[] = Labelset
@@ -12,7 +12,7 @@ type LabelContextType = {
     storedLabel: LabelType[];
     currentLabel: LabelType | undefined
     setCurrentLabel: (label: LabelType | undefined) => void
-    // searchLabels: (query: string) => Label[];
+    updateLabel: (updated: LabelType) => void;
     // addLabel: (label: Label) => void;
     // updateLabel: (label: Label) => void;
     // deleteLabel: (id: string) => void;
@@ -46,6 +46,14 @@ export function LabelProvider({children}: {children: ReactNode}) {
         })();
     }, [])
 
+    useEffect(() => {
+        saveLabels(storedLabel)
+    }, [storedLabel, isLoaded])
+
+    const updateLabel = (updated: LabelType) => {
+        setStoredLabel((prev) => prev.map((l) => (l.id === updated.id) ? updated : l))
+    }
+
     // // Also clear the deleted label from the picker's UI state
     // const deleteLabel = (id: string) => {
     //     removeLabel(id)
@@ -69,7 +77,8 @@ export function LabelProvider({children}: {children: ReactNode}) {
         <LabelContext.Provider value={{
             storedLabel,
             currentLabel,
-            setCurrentLabel
+            setCurrentLabel,
+            updateLabel
             // addLabel,
             // updateLabel,
             // deleteLabel,

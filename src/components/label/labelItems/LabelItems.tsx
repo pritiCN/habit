@@ -7,8 +7,12 @@ import { common } from '../../../styles/common'
 import { styles } from '../../../styles/LabelPickerModal.styles'
 import { useLabel } from '../../../context/LabelContext'
 import LabelItem from './LabelItem'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../../../types/navigation'
 
 const LabelItems = () => {
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     const [search, setSearch] = useState('')
     const {storedLabel} = useLabel()
     
@@ -48,7 +52,8 @@ const LabelItems = () => {
 
             <TouchableOpacity 
                 style={styles.createButton} 
-                // onPress={() => setMode('create')}
+                onPress={() => navigation.navigate('LabelForm')}
+                    
             >
             <Ionicons name="add" size={22} color={colors.primary} />
             <Text style={styles.createButtonText}>Create New Label</Text>

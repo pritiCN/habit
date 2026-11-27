@@ -13,6 +13,8 @@ import { useLabel } from '../context/LabelContext'
 import BackButton from '../components/BackButton'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/navigation'
+import { LabelType } from '../types/label'
+import { useNavigation } from '@react-navigation/native'
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LabelForm'>;
@@ -21,27 +23,38 @@ const LabelForm = ({
 }: {
     // onCancel: () => void;
 }) => {
-    // const {addLabel, editingLabel, clearEditingLabel, updateLabel} = useLabel();
-    // const [selectedColor, setSelectedColor] = useState(editingLabel?.colorId ?? ColorsSet[0].id)
-    // const [selectedIcon, setSeletedIcon] = useState(editingLabel?.iconId ?? IconsSet[0].id)    
-    // const [name, setName] = useState(editingLabel?.name ?? '')
+    const navigation = useNavigation()
+    const {currentLabel, updateLabel} = useLabel();
+    const [selectedColor, setSelectedColor] = useState(currentLabel?.colorId ?? ColorsSet[0].id)
+    const [selectedIcon, setSeletedIcon] = useState(currentLabel?.iconId ?? IconsSet[0].id)    
+    const [name, setName] = useState(currentLabel?.name ?? '')
     
-    // const handleSave = () => {
-    //     const trimming = name.trim();
-    //     if(trimming === '') return        
+    const handleSave = () => {
+        const trimming = name.trim();
+        if(trimming === '') return     
+        
+        const newLabel: LabelType = {
+            id: currentLabel?.id ?? Date.now().toString(),
+            name: trimming,
+            colorId: selectedColor,
+            iconId: selectedIcon
+        }
 
-    //     if (editingLabel) {
-    //         updateLabel({ ...editingLabel, name: trimming, colorId: selectedColor, iconId: selectedIcon })
-    //     } else {
-    //         addLabel({ id: Date.now().toString(), name: trimming, colorId: selectedColor, iconId: selectedIcon })
-    //     }
-    //     handleCancel()
-    // }
+        if (currentLabel) {
+            updateLabel(newLabel)
+        } else {
+        //     addLabel({ id: Date.now().toString(), name: trimming, colorId: selectedColor, iconId: selectedIcon })
+        }
+
+        navigation.goBack();
+    }
 
     // const handleCancel = () => {
     //     onCancel()
     //     clearEditingLabel()
     // }
+    console.log(currentLabel);
+    
     return (
         <SafeAreaView style={common.screen}>
             <ScrollView
@@ -50,16 +63,11 @@ const LabelForm = ({
             >
                 <BackButton />
                 <View style={{ backgroundColor: colors.background }}>
-                    {/* <View style={[common.buttonRow, { justifyContent: 'space-between' }]}>
-                        <TouchableOpacity onPress={handleCancel} hitSlop={10}>
-                            <Ionicons name="arrow-back" size={24} />
-                        </TouchableOpacity>
-                    </View>
 
                     <View style={styles.header}>
                         <Text style={[common.title, styles.title]}>
                             {
-                                editingLabel ? 'Update Label' : 'Create New Label'
+                                currentLabel ? 'Update Label' : 'Create New Label'
                             }
                         </Text>
                         <Text style={[common.subtitle, styles.subtitle]}>Customize your label to organize your habits.</Text>
@@ -76,23 +84,18 @@ const LabelForm = ({
                         />
                     </View>
 
-                    <ColorField
-                        panalStyle={styles.fieldGroup}
-                        selectedColor={selectedColor}
-                        onSelect={setSelectedColor}
-                        currentColor={editingLabel?.colorId ?? undefined}
-                    />
+                    <ColorField />
 
-                    <IconField 
+                    {/* <IconField 
                         panalStyle={[common.panel, styles.iconSection]}
                         selectedIcon={selectedIcon}
                         onSelect={setSeletedIcon}
                         selectedColor={selectedColor}
                         currentIcon={editingLabel?.iconId ?? undefined}
-                    />
+                    /> */}
                     <TouchableOpacity style={common.button} onPress={handleSave}>
-                        <Text style={common.buttonText}>{editingLabel ? 'Update label' : 'Save label'}</Text>
-                    </TouchableOpacity> */}
+                        <Text style={common.buttonText}>{currentLabel ? 'Update label' : 'Save label'}</Text>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </SafeAreaView>

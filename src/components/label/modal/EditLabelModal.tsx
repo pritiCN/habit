@@ -11,7 +11,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../../types/navigation'
 
 const EditLabelModal = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     const {currentLabel} = useLabel();
     const {getColor, closeModal} = useApp()
     const colorCode = getColor(currentLabel?.colorId ?? '')

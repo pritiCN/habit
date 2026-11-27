@@ -69,15 +69,8 @@ const HabitFormbk = (
     // }
 ) => {
     const navigation = useNavigation()
-    const {
-        currentHabit, 
-        updateHabit, 
-        addHabit, 
-        selectedColor, 
-        setSelectedColor, 
-        selectedIcon, 
-        setSelectedIcon
-    } = useHabits();    
+    const {selectedColor, setSelectedColor} = useApp()
+    const { currentHabit, updateHabit, addHabit, selectedIcon, setSelectedIcon } = useHabits();    
     const [name, setName] = useState(currentHabit?.name ?? '');
     // const [selectedIcon, setSeletedIcon] = useState(currentHabit?.iconId ?? IconsSet[0].id)
     const [description, setDescription] = useState(currentHabit?.description ?? '')

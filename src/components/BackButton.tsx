@@ -4,16 +4,20 @@ import { useNavigation } from '@react-navigation/native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
 import { colors } from '../styles/theme'
+import { useLabel } from '../context/LabelContext'
 
 // Plain "←" that goes back one screen. Use on screens with headerShown: false
 const BackButton = () => {
     const navigation = useNavigation()
-
+    const {setCurrentLabel} = useLabel()
     return (
         <TouchableOpacity
             style={common.backButton}
             hitSlop={12}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+                navigation.goBack()
+                setCurrentLabel(undefined)
+            }}
             accessibilityRole="button"
             accessibilityLabel="Go back"
         >

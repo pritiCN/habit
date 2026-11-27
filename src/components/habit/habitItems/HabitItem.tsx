@@ -14,8 +14,7 @@ import { IconsSet } from '../../../constants/iconset'
 const HabitItem = ({habitData}: {
     habitData: HabitType
 }) => {
-    const {getColor, openModal} = useApp();
-    const {setSelectedColor} = useHabits()
+    const {getColor, openModal, setSelectedColor} = useApp();
     const {completeToday, isDoneCurrentHabit, setCurrentHabit, setSelectedIcon} = useHabits()
     const habitColor = getColor(habitData.colorId ?? '');
     const isHabitDone = isDoneCurrentHabit(new Date, habitData.completedDates ?? [])

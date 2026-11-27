@@ -4,7 +4,6 @@ import { getTodayMillis } from "../utils/date";
 import { HabitType } from "../types/habit";
 import { HabitsSet } from "../constants/habitSet";
 import { ColorsSet } from "../constants/colorset";
-import { loadLabels, saveLabels } from "../storage/labelStorage";
 // import { Label } from "../types/label";
 // import { Labels } from "../constants/labelset";
 import { useApp } from "./appContext";
@@ -19,8 +18,6 @@ type HabitsContextType = {
     setCurrentHabit: (habit:HabitType | undefined) => void
     addHabit: (habit: HabitType) => void;
     updateHabit: (habit: HabitType) => void;
-    setSelectedColor: (colorId: string) => void
-    selectedColor: string
     setSelectedIcon: (iconId: string) => void
     selectedIcon: string
     deleteHabit: (id: string) => void;
@@ -42,7 +39,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     const [isLoaded, setIsLoaded] = useState(false);
     const {getDateMillis} = useApp()
     const [currentHabit, setCurrentHabit] = useState<HabitType | undefined>(undefined)
-    const [selectedColor, setSelectedColor] = useState<string>('')
     const [selectedIcon, setSelectedIcon] = useState<string>('')
     // const [labels, setLabels] = useState<Label[]>([])
     // const [isLabelsLoaded, setIsLabelsLoaded] = useState(false)
@@ -96,20 +92,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
     const deleteHabit = (habitId: string) => {
         setStoredHabits((prev) => prev.filter((h) => h.id !== habitId))
     }
-
-    // useEffect(() => {
-    //     (async ()=> {
-    //         try {
-    //             const stored = await loadLabels()
-    //             setLabels(stored ?? Labels)                
-    //         } catch (error) {
-    //             console.warn('Failed to load labels', error)
-    //             setLabels(Labels)
-    //         } finally {
-    //             setIsLabelsLoaded(true)
-    //         }
-    //     })()
-    // }, [])
 
     // useEffect(() => {
     //     if (isLabelsLoaded) {
@@ -166,8 +148,6 @@ export function HabitsProvider({ children }: { children: ReactNode }) {
             setCurrentHabit,
             addHabit, 
             updateHabit, 
-            setSelectedColor,
-            selectedColor,
             setSelectedIcon,
             selectedIcon,
             deleteHabit,

@@ -9,8 +9,8 @@ import { colors } from '../../../styles/theme'
 import { useHabits } from '../../../context/HabitsContext'
 
 const ColorsModal = () => {
-    const {closeModal, modalState} = useApp()
-    const {selectedColor, setSelectedColor, currentHabit, updateHabit, setCurrentHabit} = useHabits();
+    const {closeModal, modalState, selectedColor, setSelectedColor} = useApp()
+    const {currentHabit, updateHabit, setCurrentHabit} = useHabits();
     
     const handleSelect = (colorId: string) => {
         setSelectedColor(colorId)
