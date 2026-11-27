@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
@@ -15,6 +15,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/navigation'
 import { LabelType } from '../types/label'
 import { useNavigation } from '@react-navigation/native'
+import { useApp } from '../context/appContext'
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LabelForm'>;
@@ -24,9 +25,9 @@ const LabelForm = ({
     // onCancel: () => void;
 }) => {
     const navigation = useNavigation()
+    const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon} = useApp()
     const {currentLabel, updateLabel} = useLabel();
-    const [selectedColor, setSelectedColor] = useState(currentLabel?.colorId ?? ColorsSet[0].id)
-    const [selectedIcon, setSeletedIcon] = useState(currentLabel?.iconId ?? IconsSet[0].id)    
+    // const [selectedIcon, setSeletedIcon] = useState(currentLabel?.iconId ?? IconsSet[0].id)    
     const [name, setName] = useState(currentLabel?.name ?? '')
     
     const handleSave = () => {
@@ -49,11 +50,13 @@ const LabelForm = ({
         navigation.goBack();
     }
 
-    // const handleCancel = () => {
-    //     onCancel()
-    //     clearEditingLabel()
-    // }
-    console.log(currentLabel);
+    useEffect(() => {
+        setSelectedColor(currentLabel?.colorId ?? ColorsSet[0].id)
+    }, [currentLabel?.colorId])
+
+    useEffect(() => {
+        setSelectedIcon(currentLabel?.iconId ?? IconsSet[0].id)
+    }, [currentLabel?.iconId])
     
     return (
         <SafeAreaView style={common.screen}>
@@ -86,13 +89,7 @@ const LabelForm = ({
 
                     <ColorField />
 
-                    {/* <IconField 
-                        panalStyle={[common.panel, styles.iconSection]}
-                        selectedIcon={selectedIcon}
-                        onSelect={setSeletedIcon}
-                        selectedColor={selectedColor}
-                        currentIcon={editingLabel?.iconId ?? undefined}
-                    /> */}
+                    <IconField />
                     <TouchableOpacity style={common.button} onPress={handleSave}>
                         <Text style={common.buttonText}>{currentLabel ? 'Update label' : 'Save label'}</Text>
                     </TouchableOpacity>

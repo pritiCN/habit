@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { inputStyles } from '../../../styles/input.styles'
-import { colors } from '../../../styles/theme'
+import { inputStyles } from '../../styles/input.styles'
+import { colors } from '../../styles/theme'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { common } from '../../../styles/common'
-import { styles } from '../../../styles/LabelPickerModal.styles'
-import { useLabel } from '../../../context/LabelContext'
+import { common } from '../../styles/common'
+import { styles } from '../../styles/LabelPickerModal.styles'
+import { useLabel } from '../../context/LabelContext'
 import LabelItem from './LabelItem'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../types/navigation'
+import { RootStackParamList } from '../../types/navigation'
 
 const LabelItems = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()

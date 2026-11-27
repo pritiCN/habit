@@ -1,21 +1,21 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { HabitType } from '../../../types/habit'
-import { common } from '../../../styles/common'
-import { styles } from '../../../styles/HomeScreen.styles'
-import { useApp } from '../../../context/appContext'
-import { IconComponent } from '../../AppIcon'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { colors } from '../../../styles/theme'
-import { useHabits } from '../../../context/HabitsContext'
-import { ColorsSet } from '../../../constants/colorset'
-import { IconsSet } from '../../../constants/iconset'
+import { HabitType } from '../../types/habit'
+import { useApp } from '../../context/appContext'
+import { common } from '../../styles/common'
+import { styles } from '../../styles/HomeScreen.styles'
+import { IconComponent } from '../AppIcon'
+import { useHabits } from '../../context/HabitsContext'
+import { colors } from '../../styles/theme'
+import { ColorsSet } from '../../constants/colorset'
+import { IconsSet } from '../../constants/iconset'
 
 const HabitItem = ({habitData}: {
     habitData: HabitType
 }) => {
-    const {getColor, openModal, setSelectedColor} = useApp();
-    const {completeToday, isDoneCurrentHabit, setCurrentHabit, setSelectedIcon} = useHabits()
+    const {getColor, openModal, setSelectedColor, setSelectedIcon} = useApp();
+    const {completeToday, isDoneCurrentHabit, setCurrentHabit} = useHabits()
     const habitColor = getColor(habitData.colorId ?? '');
     const isHabitDone = isDoneCurrentHabit(new Date, habitData.completedDates ?? [])
     

@@ -3,18 +3,15 @@ import { Modal, ScrollView, Text, View } from 'react-native'
 import { useApp } from '../context/appContext'
 import { common } from '../styles/common'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import EditHabitItemModal from './habit/modal/EditHabitItemModal'
-import ColorsModal from './habit/modal/ColorsModal'
-import IconsModal from './habit/modal/IconsModal'
-import { useHabits } from '../context/HabitsContext'
-import EditLabelModal from './label/modal/EditLabelModal'
+import EditHabitItemModal from './habit/EditHabitItemModal'
+import ColorsModal from './modal/ColorsModal'
+import IconsModal from './modal/IconsModal'
+import EditLabelModal from './label/EditLabelModal'
 
 const AllModals = () => {
   const insets = useSafeAreaInsets()
-  const {setCurrentHabit} = useHabits()
   const {closeModal, modalState} = useApp()
   const close = () => {
-    setCurrentHabit(undefined)
     closeModal()
   }
 

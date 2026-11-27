@@ -1,19 +1,21 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { common } from '../../../styles/common'
-import { colors } from '../../../styles/theme'
-import { useApp } from '../../../context/appContext'
-import { useHabits } from '../../../context/HabitsContext'
-import { IconComponent } from '../../AppIcon'
+import { common } from '../../styles/common'
+import { colors } from '../../styles/theme'
+import { useApp } from '../../context/appContext'
+import { useHabits } from '../../context/HabitsContext'
+import { IconComponent } from '../AppIcon'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../types/navigation'
+import { RootStackParamList } from '../../types/navigation'
+import { useLabel } from '../../context/LabelContext'
 
 const EditHabitItemModal = () => {
   const { closeModal, getColor, openModal } = useApp()
-  const { currentHabit, deleteHabit } = useHabits()
+  const { currentHabit, deleteHabit, setCurrentHabit } = useHabits()
+  const {setCurrentLabel} = useLabel();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
 
   if (!currentHabit) return null
@@ -29,7 +31,11 @@ const EditHabitItemModal = () => {
         <View style={common.rowMain}>
           <Text style={common.heading} numberOfLines={1}>{currentHabit.name}</Text>
         </View>
-        <TouchableOpacity style={common.iconButton} onPress={closeModal}>
+        <TouchableOpacity style={common.iconButton} onPress={() => {
+          closeModal()
+          setCurrentHabit(undefined)
+          setCurrentLabel(undefined);
+        }}>
           <Ionicons name="close" size={20} color={colors.text} />
         </TouchableOpacity>
       </View>

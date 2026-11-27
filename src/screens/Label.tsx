@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { SafeAreaView, ScrollView, Text, View } from 'react-native'
 import { RootStackParamList } from '../types/navigation'
-import LabelItems from '../components/label/labelItems/LabelItems'
+import LabelItems from '../components/label/LabelItems'
 import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 

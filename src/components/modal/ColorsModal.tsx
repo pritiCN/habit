@@ -1,25 +1,35 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { common } from '../../../styles/common'
-import { ColorsSet } from '../../../constants/colorset'
-import { useApp } from '../../../context/appContext'
-import { styles } from '../../../styles/form.styles'
+import { common } from '../../styles/common'
+import { ColorsSet } from '../../constants/colorset'
+import { useApp } from '../../context/appContext'
+import { styles } from '../../styles/form.styles'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { colors } from '../../../styles/theme'
-import { useHabits } from '../../../context/HabitsContext'
+import { colors } from '../../styles/theme'
+import { useHabits } from '../../context/HabitsContext'
+import { useLabel } from '../../context/LabelContext'
 
 const ColorsModal = () => {
     const {closeModal, modalState, selectedColor, setSelectedColor} = useApp()
     const {currentHabit, updateHabit, setCurrentHabit} = useHabits();
+    const {currentLabel, updateLabel, setCurrentLabel} = useLabel();
     
     const handleSelect = (colorId: string) => {
         setSelectedColor(colorId)
-        if(modalState.prev && currentHabit)
-        {
+        console.log(currentHabit, currentLabel);
+        
+        if(modalState.prev && currentHabit) {
             const updated = {...currentHabit, colorId}
             updateHabit(updated)
             setCurrentHabit(updated)
         }
+
+        if(modalState.prev && currentLabel) {
+            const updated = {...currentLabel, colorId}
+            updateLabel(updated)
+            setCurrentLabel(updated)
+        }
+
         closeModal()
     }
     return (

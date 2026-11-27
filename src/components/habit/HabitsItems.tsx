@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { useHabits } from '../../../context/HabitsContext'
+import { useHabits } from '../../context/HabitsContext'
 import HabitItem from './HabitItem';
 
 const HabitsItems = () => {

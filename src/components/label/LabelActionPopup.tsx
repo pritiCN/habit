@@ -10,7 +10,7 @@ const LabelActionPopup = ({closePopup, labelId, updateLabel}: {
     updateLabel: (labelId: string)=> void
     labelId: string
 }) => {
-    const {deleteLabel} = useLabel();
+    // const {deleteLabel} = useLabel();
 
     return (
         <Pressable style={common.backdrop}
@@ -25,7 +25,7 @@ const LabelActionPopup = ({closePopup, labelId, updateLabel}: {
                 <View style={common.divider} />
 
                 <TouchableOpacity style={common.menuItem} onPress={() => {
-                        deleteLabel(labelId)
+                        // deleteLabel(labelId)
                         closePopup()
                     }}
                 >

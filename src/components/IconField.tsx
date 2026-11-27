@@ -4,7 +4,6 @@ import { common } from '../styles/common'
 import { styles } from '../styles/form.styles'
 import { IconsSet } from '../constants/iconset'
 import { IconComponent } from './AppIcon'
-import { useHabits } from '../context/HabitsContext'
 import { colors } from '../styles/theme'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,8 +12,7 @@ import { useApp } from '../context/appContext'
 const COLLAPSED_COUNT = 6
 
 const IconField = () => {
-    const {selectedIcon, selectedColor, setSelectedIcon} = useHabits();
-    const {getColor, openModal} = useApp()
+    const {selectedColor, selectedIcon, setSelectedIcon, getColor, openModal} = useApp();
     const colorCode = getColor(selectedColor || '#000');
 
     const current = IconsSet.find((i) => i.id === selectedIcon);    

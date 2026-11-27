@@ -19,8 +19,8 @@ import { useApp } from '../context/appContext';
 type Props = NativeStackScreenProps<RootStackParamList, 'HabitForm'>;
 
 const HabitForm = ({navigation}: Props) => {
-    const {selectedColor, setSelectedColor} = useApp()
-    const {currentHabit, selectedIcon, updateHabit, addHabit, setSelectedIcon} = useHabits();
+    const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon} = useApp()
+    const {currentHabit, updateHabit, addHabit} = useHabits();
     const hasHabit = currentHabit !== undefined 
     const [name, setName] = useState(currentHabit?.name ?? '');
     const [description, setDescription] = useState(currentHabit?.description ?? '')

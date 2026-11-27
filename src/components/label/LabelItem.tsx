@@ -1,18 +1,20 @@
 import React from 'react'
-import { LabelType } from '../../../types/label'
+import { LabelType } from '../../types/label'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { useApp } from '../../../context/appContext'
-import { styles } from '../../../styles/LabelPickerModal.styles'
-import { IconComponent } from '../../AppIcon'
-import { common } from '../../../styles/common'
+import { useApp } from '../../context/appContext'
+import { styles } from '../../styles/LabelPickerModal.styles'
+import { IconComponent } from '../AppIcon'
+import { common } from '../../styles/common'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { colors } from '../../../styles/theme'
-import { useLabel } from '../../../context/LabelContext'
+import { colors } from '../../styles/theme'
+import { useLabel } from '../../context/LabelContext'
+import { ColorsSet } from '../../constants/colorset'
+import { IconsSet } from '../../constants/iconset'
 
 const LabelItem = ({labelData}: {
     labelData: LabelType
 }) => {
-    const {getColor, openModal} = useApp()
+    const {getColor, openModal, setSelectedColor, setSelectedIcon} = useApp()
     const {setCurrentLabel} = useLabel();
     const colorCode = getColor(labelData.colorId)
     return (
@@ -37,8 +39,9 @@ const LabelItem = ({labelData}: {
                 style={[common.iconButton, common.iconButtonPlain]}
                 onPress={() => {
                     setCurrentLabel(labelData)
+                    setSelectedColor(labelData.colorId ?? ColorsSet[0].id)
+                    setSelectedIcon(labelData.iconId ?? IconsSet[0].id)
                     openModal('EditLabelModal')
-                    // setSelectedColor(habitData.colorId ?? ColorsSet[0].id)
                 }}
                 hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
             >

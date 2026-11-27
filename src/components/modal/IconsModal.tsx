@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { common } from '../../../styles/common'
+import { common } from '../../styles/common'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { colors, spacing } from '../../../styles/theme'
-import { useApp } from '../../../context/appContext'
-import { inputStyles } from '../../../styles/input.styles'
-import { IconsSet } from '../../../constants/iconset'
-import { useHabits } from '../../../context/HabitsContext'
-import { IconComponent } from '../../AppIcon'
-import { styles } from '../../../styles/form.styles'
+import { colors, spacing } from '../../styles/theme'
+import { useApp } from '../../context/appContext'
+import { inputStyles } from '../../styles/input.styles'
+import { IconsSet } from '../../constants/iconset'
+import { useHabits } from '../../context/HabitsContext'
+import { IconComponent } from '../AppIcon'
+import { styles } from '../../styles/form.styles'
+import { useLabel } from '../../context/LabelContext'
 
 const IconsModal = () => {
-  const {closeModal, getColor, modalState} = useApp();
-  const {selectedColor, setSelectedIcon, selectedIcon, currentHabit, setCurrentHabit, updateHabit} = useHabits()
+  const {closeModal, getColor, modalState, selectedColor, setSelectedIcon, selectedIcon,} = useApp();
+  const { currentHabit, setCurrentHabit, updateHabit} = useHabits()
+  const {currentLabel, updateLabel, setCurrentLabel} = useLabel()
   const colorCode = getColor(selectedColor || '#000');
   const [search, setSearch] = useState('')
 
@@ -26,6 +28,12 @@ const IconsModal = () => {
       const updated = {...currentHabit, iconId}
       updateHabit(updated)
       setCurrentHabit(updated)
+    }
+
+    if(currentLabel && modalState.prev) {
+      const updated = {...currentLabel, iconId}
+      updateLabel(updated)
+      setCurrentLabel(updated);
     }
     closeModal()
   }

@@ -1,19 +1,20 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { common } from '../../../styles/common'
-import { useLabel } from '../../../context/LabelContext'
-import { useApp } from '../../../context/appContext'
-import { IconComponent } from '../../AppIcon'
+import { common } from '../../styles/common'
+import { useLabel } from '../../context/LabelContext'
+import { useApp } from '../../context/appContext'
+import { IconComponent } from '../AppIcon'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { colors } from '../../../styles/theme'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from '../../styles/theme'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '../../../types/navigation'
+import { RootStackParamList } from '../../types/navigation'
 
 const EditLabelModal = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     const {currentLabel} = useLabel();
-    const {getColor, closeModal} = useApp()
+    const {getColor, closeModal, openModal} = useApp()
     const colorCode = getColor(currentLabel?.colorId ?? '')
     return (
         <>        
@@ -29,6 +30,35 @@ const EditLabelModal = () => {
                 </TouchableOpacity>
             </View>
             <View style={common.menuGroup}>
+                    <TouchableOpacity
+                      style={common.menuItem}
+                      onPress={() => {
+                        closeModal()
+                        openModal('colorsModal')
+                      }}
+                    >
+                      <View style={common.rowIcon}>
+                        <MaterialCommunityIcons name="palette-outline" size={22} color={colors.text} />
+                      </View>
+                      <Text style={common.bodyText}>Color</Text>
+                    </TouchableOpacity>
+            
+                    <View style={common.divider} />
+            
+                    <TouchableOpacity
+                      style={common.menuItem}
+                      onPress={() => {
+                        closeModal()
+                        openModal('iconModal')
+                      }}
+                    >
+                      <View style={common.rowIcon}>
+                        <MaterialCommunityIcons name="view-grid-plus-outline" size={22} color={colors.text} />
+                      </View>
+                      <Text style={common.bodyText}>Icon</Text>
+                    </TouchableOpacity>
+            
+                    <View style={common.divider} />
 
                 <TouchableOpacity
                 style={common.menuItem}
