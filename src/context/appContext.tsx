@@ -16,6 +16,8 @@ type AppContextType = {
     selectedColor: string
     setSelectedIcon: (iconId: string) => void
     selectedIcon: string
+    selectedLabel: string[]
+    setSelectedLabel: (label: string[]) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -24,6 +26,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [modalState, setModalState] = useState<modalType>({currentModal: ''})
     const [selectedColor, setSelectedColor] = useState<string>('')
     const [selectedIcon, setSelectedIcon] = useState<string>('')
+    const [selectedLabel, setSelectedLabel] = useState<string[]>([])
 
     const getColor = (colorId: string, text?: boolean) => {
         const colorObj = ColorsSet.find((c) => c.id === colorId);
@@ -59,6 +62,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
             selectedColor,
             setSelectedIcon,
             selectedIcon,
+            selectedLabel,
+            setSelectedLabel
         }}>
             {children}
         </AppContext.Provider>

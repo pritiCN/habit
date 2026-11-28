@@ -10,11 +10,13 @@ import LabelItem from './LabelItem'
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../../types/navigation'
+import { useApp } from '../../context/appContext'
 
 const LabelItems = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     const [search, setSearch] = useState('')
     const {storedLabel, setCurrentLabel} = useLabel()
+    const {closeModal} = useApp();
     
     const filteredLabels = storedLabel.filter((item) => {
         return item.name.toLowerCase().includes(search.trim().toLowerCase())
@@ -54,6 +56,7 @@ const LabelItems = () => {
                 style={styles.createButton} 
                 onPress={() => {
                     setCurrentLabel(undefined)
+                    closeModal();
                     navigation.navigate('LabelForm')
                 }}                    
             >

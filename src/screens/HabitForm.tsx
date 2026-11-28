@@ -15,15 +15,18 @@ import { HabitType } from '../types/habit';
 import { ColorsSet } from '../constants/colorset';
 import { IconsSet } from '../constants/iconset';
 import { useApp } from '../context/appContext';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'HabitForm'>;
 
 const HabitForm = ({navigation}: Props) => {
-    const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon} = useApp()
+    const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon, getColor, openModal, modalState} = useApp()
     const {currentHabit, updateHabit, addHabit} = useHabits();
     const hasHabit = currentHabit !== undefined 
     const [name, setName] = useState(currentHabit?.name ?? '');
     const [description, setDescription] = useState(currentHabit?.description ?? '')
+    const habitColor = getColor(selectedColor)
+        // console.log(route);
         
         const handleSave = () => {
             const trimmed = name.trim();
@@ -129,8 +132,8 @@ const HabitForm = ({navigation}: Props) => {
                         </View>
 
                         <View style={common.buttonRow}>
-                            {/* <View style={[common.chipWrap, common.rowMain]}>
-                                {
+                            <View style={[common.chipWrap, common.rowMain]}>
+                                {/* {
                                     selectedLabels.length === 0 ? (
                                         <Text style={common.subtitle}>Organize your habit with labels</Text>
                                     ) : (
@@ -150,17 +153,21 @@ const HabitForm = ({navigation}: Props) => {
                                             )
                                         })
                                     )
-                                }
-                            </View> */}
-                            {/* <TouchableOpacity
-                                style={[common.chip, {backgroundColor: `${habitColor}1A`}]}
-                                onPress={() => setIsLabelModalVisible(true)}
+                                } */}
+                            </View>
+                            <TouchableOpacity
+                                style={[
+                                    common.chip, 
+                                    {backgroundColor: `${habitColor}1A`}
+                                ]}
+                                onPress={() => openModal('LabelPickerModal')}
                             >
                                 <Ionicons name="add" size={16} color={habitColor} />
                                 <Text style={[common.chipText, {color: habitColor}]}>
-                                    {selectedLabels.length === 0 ? 'Add Labels' : 'Edit Labels'}
+                                    Add Labels
+                                    {/* {selectedLabels.length === 0 ? 'Add Labels' : 'Edit Labels'} */}
                                 </Text>
-                            </TouchableOpacity> */}
+                            </TouchableOpacity>
                         </View>
                     </View>
                     

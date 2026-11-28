@@ -16,7 +16,6 @@ const ColorsModal = () => {
     
     const handleSelect = (colorId: string) => {
         setSelectedColor(colorId)
-        console.log(currentHabit, currentLabel);
         
         if(modalState.prev && currentHabit) {
             const updated = {...currentHabit, colorId}

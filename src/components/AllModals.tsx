@@ -7,6 +7,7 @@ import EditHabitItemModal from './habit/EditHabitItemModal'
 import ColorsModal from './modal/ColorsModal'
 import IconsModal from './modal/IconsModal'
 import EditLabelModal from './label/EditLabelModal'
+import LabelPickerModal from './label/LabelPickerModal'
 
 const AllModals = () => {
   const insets = useSafeAreaInsets()
@@ -37,6 +38,8 @@ const AllModals = () => {
               { currentModal === 'iconModal' && <IconsModal /> }
 
               { currentModal === 'EditLabelModal' && <EditLabelModal />}
+
+              { currentModal === 'LabelPickerModal' && <LabelPickerModal />}
             </ScrollView>
         </View>
       </View>

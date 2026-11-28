@@ -13,16 +13,17 @@ import BackButton from '../components/BackButton'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../types/navigation'
 import { LabelType } from '../types/label'
-import { useNavigation } from '@react-navigation/native'
 import { useApp } from '../context/appContext'
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LabelForm'>;
-const LabelForm = () => {
-    const navigation = useNavigation()
-    const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon} = useApp()
+const LabelForm = ({navigation}: Props) => {
+    const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon, closeModal, openModal} = useApp()
     const {currentLabel, updateLabel, addLabel} = useLabel();   
     const [name, setName] = useState(currentLabel?.name ?? '')
+    const state = navigation.getState();
+    const previousRoute = state.routes[state.index - 1];
+    const previousScreen = previousRoute?.name; // e.g. 'Home'
     
     const handleSave = () => {
         const trimming = name.trim();
@@ -40,7 +41,11 @@ const LabelForm = () => {
         } else {
             addLabel(newLabel)
         }
-
+        
+        if(previousScreen === 'HabitForm') {
+            closeModal();
+            openModal('LabelPickerModal')
+        }
         navigation.goBack();
     }
 
