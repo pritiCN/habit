@@ -1,6 +1,5 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react'
 import { LabelType } from '../types/label';
-import { useHabits } from './HabitsContext';
 import { loadLabels, saveLabels } from '../storage/labelStorage';
 import { Labelset } from '../constants/labelset';
 
@@ -13,19 +12,8 @@ type LabelContextType = {
     currentLabel: LabelType | undefined
     setCurrentLabel: (label: LabelType | undefined) => void
     updateLabel: (updated: LabelType) => void;
-    // addLabel: (label: Label) => void;
-    // updateLabel: (label: Label) => void;
-    // deleteLabel: (id: string) => void;
-
-    // // selection
-    // selectedIds: string[];
-    // setSelectedIds: (ids: string[]) => void;
-    // toggleLabel: (id: string) => void;
-
-    // // editing
-    // editingLabel: Label | null;
-    // startEditing: (id: string) => void;
-    // clearEditingLabel: () => void;
+    deleteLabel: (id: string) => void;
+    addLabel: (label: LabelType) => void;
 }
 
 const LabelContext = createContext<LabelContextType | undefined>(undefined);
@@ -54,6 +42,14 @@ export function LabelProvider({children}: {children: ReactNode}) {
         setStoredLabel((prev) => prev.map((l) => (l.id === updated.id) ? updated : l))
     }
 
+    const deleteLabel = (id: string) => {
+        setStoredLabel((prev) => prev.filter((l) => l.id !== id))
+    }
+
+    const addLabel = (label: LabelType) => {
+        setStoredLabel((prev) => [...prev, label])
+    }
+
     // // Also clear the deleted label from the picker's UI state
     // const deleteLabel = (id: string) => {
     //     removeLabel(id)
@@ -78,8 +74,9 @@ export function LabelProvider({children}: {children: ReactNode}) {
             storedLabel,
             currentLabel,
             setCurrentLabel,
-            updateLabel
-            // addLabel,
+            updateLabel,
+            deleteLabel,
+            addLabel,
             // updateLabel,
             // deleteLabel,
             // selectedIds,

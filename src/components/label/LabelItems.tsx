@@ -14,7 +14,7 @@ import { RootStackParamList } from '../../types/navigation'
 const LabelItems = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
     const [search, setSearch] = useState('')
-    const {storedLabel} = useLabel()
+    const {storedLabel, setCurrentLabel} = useLabel()
     
     const filteredLabels = storedLabel.filter((item) => {
         return item.name.toLowerCase().includes(search.trim().toLowerCase())
@@ -52,8 +52,10 @@ const LabelItems = () => {
 
             <TouchableOpacity 
                 style={styles.createButton} 
-                onPress={() => navigation.navigate('LabelForm')}
-                    
+                onPress={() => {
+                    setCurrentLabel(undefined)
+                    navigation.navigate('LabelForm')
+                }}                    
             >
             <Ionicons name="add" size={22} color={colors.primary} />
             <Text style={styles.createButtonText}>Create New Label</Text>

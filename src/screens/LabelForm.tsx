@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { common } from '../styles/common'
 import { inputStyles } from '../styles/input.styles'
 import { colors } from '../styles/theme'
@@ -19,15 +18,10 @@ import { useApp } from '../context/appContext'
 
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LabelForm'>;
-const LabelForm = ({
-    // onCancel
-}: {
-    // onCancel: () => void;
-}) => {
+const LabelForm = () => {
     const navigation = useNavigation()
     const {selectedColor, setSelectedColor, selectedIcon, setSelectedIcon} = useApp()
-    const {currentLabel, updateLabel} = useLabel();
-    // const [selectedIcon, setSeletedIcon] = useState(currentLabel?.iconId ?? IconsSet[0].id)    
+    const {currentLabel, updateLabel, addLabel} = useLabel();   
     const [name, setName] = useState(currentLabel?.name ?? '')
     
     const handleSave = () => {
@@ -44,7 +38,7 @@ const LabelForm = ({
         if (currentLabel) {
             updateLabel(newLabel)
         } else {
-        //     addLabel({ id: Date.now().toString(), name: trimming, colorId: selectedColor, iconId: selectedIcon })
+            addLabel(newLabel)
         }
 
         navigation.goBack();

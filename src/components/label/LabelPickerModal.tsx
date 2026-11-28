@@ -56,7 +56,7 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
             {
               mode === 'create' ? (
                 <LabelForm 
-                  onCancel={setIsCreating}
+                  // onCancel={setIsCreating}
                 />
               ) : (
                 <>
@@ -65,9 +65,9 @@ const LabelPickerModal = ({onClose, onDone, selectedLabels} : {
                       <Ionicons name="arrow-back" size={22} color={colors.text} />
                     </TouchableOpacity>
                     <Text style={[common.label, common.headerTitle]}>Select Labels</Text>
-                    <TouchableOpacity onPress={() => onDone(selectedIds)}>
+                    {/* <TouchableOpacity onPress={() => onDone(selectedIds)}>
                       <Text style={[common.label, common.textSuccess]}>Done ({selectedIds.length})</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
 
                   {/* <View style={inputStyles.searchBar}>

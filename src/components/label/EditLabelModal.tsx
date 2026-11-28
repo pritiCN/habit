@@ -13,7 +13,7 @@ import { RootStackParamList } from '../../types/navigation'
 
 const EditLabelModal = () => {
     const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>()
-    const {currentLabel} = useLabel();
+    const {currentLabel, deleteLabel} = useLabel();
     const {getColor, closeModal, openModal} = useApp()
     const colorCode = getColor(currentLabel?.colorId ?? '')
     return (
@@ -30,35 +30,35 @@ const EditLabelModal = () => {
                 </TouchableOpacity>
             </View>
             <View style={common.menuGroup}>
-                    <TouchableOpacity
-                      style={common.menuItem}
-                      onPress={() => {
-                        closeModal()
-                        openModal('colorsModal')
-                      }}
-                    >
-                      <View style={common.rowIcon}>
-                        <MaterialCommunityIcons name="palette-outline" size={22} color={colors.text} />
-                      </View>
-                      <Text style={common.bodyText}>Color</Text>
-                    </TouchableOpacity>
-            
-                    <View style={common.divider} />
-            
-                    <TouchableOpacity
-                      style={common.menuItem}
-                      onPress={() => {
-                        closeModal()
-                        openModal('iconModal')
-                      }}
-                    >
-                      <View style={common.rowIcon}>
-                        <MaterialCommunityIcons name="view-grid-plus-outline" size={22} color={colors.text} />
-                      </View>
-                      <Text style={common.bodyText}>Icon</Text>
-                    </TouchableOpacity>
-            
-                    <View style={common.divider} />
+                <TouchableOpacity
+                    style={common.menuItem}
+                    onPress={() => {
+                    closeModal()
+                    openModal('colorsModal')
+                    }}
+                >
+                    <View style={common.rowIcon}>
+                    <MaterialCommunityIcons name="palette-outline" size={22} color={colors.text} />
+                    </View>
+                    <Text style={common.bodyText}>Color</Text>
+                </TouchableOpacity>
+        
+                <View style={common.divider} />
+        
+                <TouchableOpacity
+                    style={common.menuItem}
+                    onPress={() => {
+                    closeModal()
+                    openModal('iconModal')
+                    }}
+                >
+                    <View style={common.rowIcon}>
+                    <MaterialCommunityIcons name="view-grid-plus-outline" size={22} color={colors.text} />
+                    </View>
+                    <Text style={common.bodyText}>Icon</Text>
+                </TouchableOpacity>
+        
+                <View style={common.divider} />
 
                 <TouchableOpacity
                 style={common.menuItem}
@@ -77,8 +77,8 @@ const EditLabelModal = () => {
 
                 <TouchableOpacity style={common.menuItem}
                 onPress={() => {
-                    // deleteHabit(currentHabit.id)
-                    // closeModal()
+                    deleteLabel(currentLabel?.id ?? '')
+                    closeModal()
                 }}
                 >
                     <View style={common.rowIcon}>
